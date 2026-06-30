@@ -34,8 +34,8 @@
                             {{ $criterion['label'] }} :
                         </span>
                         
-                        <!-- Interative Stars rating component -->
-                        <x-ui.rating-stars 
+                        <!-- Reusable Keyboard-Accessible Rating Component -->
+                        <x-star-rating 
                             name="{{ $criterion['name'] }}" 
                             value="{{ old($criterion['name'], $criterion['value']) }}" 
                         />

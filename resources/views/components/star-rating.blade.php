@@ -7,22 +7,34 @@
 <div x-data="{ 
     rating: {{ $value }}, 
     hoverRating: 0,
-    readonly: {{ $readonly ? 'true' : 'false' }}
-}" class="flex items-center gap-2">
+    readonly: {{ $readonly ? 'true' : 'false' }},
+    focusRating: 0
+}" 
+     class="flex items-center gap-1"
+     role="radiogroup"
+     aria-label="Penilaian Bintang"
+     @mouseleave="if(!readonly) hoverRating = 0">
+     
     <!-- Hidden Input for Form Submission -->
     <input type="hidden" name="{{ $name }}" :value="rating">
     
     <template x-for="star in 5">
         <button type="button" 
+                role="radio"
+                :aria-checked="rating === star"
+                :tabindex="readonly ? '-1' : '0'"
                 @click="if(!readonly) rating = star" 
                 @mouseover="if(!readonly) hoverRating = star"
-                @mouseleave="if(!readonly) hoverRating = 0"
-                :class="readonly ? 'cursor-default' : 'cursor-pointer'"
-                class="focus:outline-none transition-transform duration-100 active:scale-95"
-                aria-label="Rate star">
+                @focus="if(!readonly) focusRating = star"
+                @blur="if(!readonly) focusRating = 0"
+                @keydown.space.prevent="if(!readonly) rating = star"
+                @keydown.enter.prevent="if(!readonly) rating = star"
+                :class="readonly ? 'cursor-default' : 'cursor-pointer focus:outline-none focus:scale-110'"
+                class="transition-all duration-100 p-0.5"
+                :aria-label="'Bintang ' + star + ' dari 5'">
             <!-- Stars styled matching screenshot: solid black filled when rated, empty thin black outline when unrated -->
-            <svg class="w-8 h-8 transition-all duration-150" 
-                 :class="(hoverRating ? star <= hoverRating : star <= rating) ? 'text-gray-900 fill-gray-900' : 'text-gray-900 fill-none'"
+            <svg class="w-8 h-8 transition-colors duration-150" 
+                 :class="((hoverRating || focusRating) ? star <= (hoverRating || focusRating) : star <= rating) ? 'text-gray-900 fill-gray-900' : 'text-gray-900 fill-none'"
                  fill="none" 
                  stroke="currentColor" 
                  stroke-width="1.8" 
