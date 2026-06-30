@@ -7,13 +7,23 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Tampilan Login (Dummy)
+// Tampilan Login Admin (Dummy)
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-// Aksi Login POST (Dummy - Bypass langsung ke Home Siswa)
+// Aksi Login POST Admin (Dummy - Bypass ke Dashboard Admin)
 Route::post('/login', function () {
+    return redirect()->route('dashboard');
+});
+
+// Tampilan Login Siswa (Dummy)
+Route::get('/siswa/login', function () {
+    return view('auth.student-login');
+})->name('siswa.login');
+
+// Aksi Login POST Siswa (Dummy - Bypass ke Home Siswa)
+Route::post('/siswa/login', function () {
     return redirect()->route('siswa.home');
 });
 
