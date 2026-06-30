@@ -64,6 +64,27 @@ Route::put('/pengguna/ketua/{id}', function () {
     return redirect()->route('pengguna.ketua.index');
 })->name('pengguna.ketua.update');
 
+// Rute CRUD Siswa Pengguna (Dummy)
+Route::get('/pengguna/siswa', function () {
+    return view('pengguna.siswa.index');
+})->name('pengguna.siswa.index');
+
+Route::get('/pengguna/siswa/create', function () {
+    return view('pengguna.siswa.create');
+})->name('pengguna.siswa.create');
+
+Route::get('/pengguna/siswa/{id}/edit', function () {
+    return view('pengguna.siswa.edit');
+})->name('pengguna.siswa.edit');
+
+Route::post('/pengguna/siswa', function () {
+    return redirect()->route('pengguna.siswa.index');
+})->name('pengguna.siswa.store');
+
+Route::put('/pengguna/siswa/{id}', function () {
+    return redirect()->route('pengguna.siswa.index');
+})->name('pengguna.siswa.update');
+
 // Logout (Dummy - arahkan kembali ke Login)
 Route::post('/logout', function () {
     return redirect()->route('login');
