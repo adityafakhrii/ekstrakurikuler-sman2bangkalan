@@ -29,20 +29,20 @@ Route::post('/siswa/login', function () {
 
 // Rute Dashboard (Bypass Middleware Auth sementara untuk status Dummy)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard.index');
 })->name('dashboard');
 
 // Rute Ekstrakurikuler (Dummy)
 Route::get('/ekskul', function () {
-    return view('ekskul.index');
+    return view('admin.ekstrakurikuler.index');
 })->name('ekskul.index');
 
 Route::get('/ekskul/create', function () {
-    return view('ekskul.create');
+    return view('admin.ekstrakurikuler.create');
 })->name('ekskul.create');
 
 Route::get('/ekskul/{id}/edit', function () {
-    return view('ekskul.edit');
+    return view('admin.ekstrakurikuler.edit');
 })->name('ekskul.edit');
 
 Route::post('/ekskul', function () {
@@ -55,15 +55,15 @@ Route::put('/ekskul/{id}', function () {
 
 // Rute CRUD Ketua Pengguna (Dummy)
 Route::get('/pengguna/ketua', function () {
-    return view('pengguna.ketua.index');
+    return view('admin.ketua.index');
 })->name('pengguna.ketua.index');
 
 Route::get('/pengguna/ketua/create', function () {
-    return view('pengguna.ketua.create');
+    return view('admin.ketua.create');
 })->name('pengguna.ketua.create');
 
 Route::get('/pengguna/ketua/{id}/edit', function () {
-    return view('pengguna.ketua.edit');
+    return view('admin.ketua.edit');
 })->name('pengguna.ketua.edit');
 
 Route::post('/pengguna/ketua', function () {
@@ -76,15 +76,15 @@ Route::put('/pengguna/ketua/{id}', function () {
 
 // Rute CRUD Siswa Pengguna (Dummy)
 Route::get('/pengguna/siswa', function () {
-    return view('pengguna.siswa.index');
+    return view('admin.siswa.index');
 })->name('pengguna.siswa.index');
 
 Route::get('/pengguna/siswa/create', function () {
-    return view('pengguna.siswa.create');
+    return view('admin.siswa.create');
 })->name('pengguna.siswa.create');
 
 Route::get('/pengguna/siswa/{id}/edit', function () {
-    return view('pengguna.siswa.edit');
+    return view('admin.siswa.edit');
 })->name('pengguna.siswa.edit');
 
 Route::post('/pengguna/siswa', function () {
@@ -97,15 +97,15 @@ Route::put('/pengguna/siswa/{id}', function () {
 
 // Rute CRUD Admin Pengguna (Dummy)
 Route::get('/pengguna/admin', function () {
-    return view('pengguna.admin.index');
+    return view('admin.admin.index');
 })->name('pengguna.admin.index');
 
 Route::get('/pengguna/admin/create', function () {
-    return view('pengguna.admin.create');
+    return view('admin.admin.create');
 })->name('pengguna.admin.create');
 
 Route::get('/pengguna/admin/{id}/edit', function () {
-    return view('pengguna.admin.edit');
+    return view('admin.admin.edit');
 })->name('pengguna.admin.edit');
 
 Route::post('/pengguna/admin', function () {
@@ -118,7 +118,7 @@ Route::put('/pengguna/admin/{id}', function () {
 
 // Rute Profil/Kelola Akun (Dummy)
 Route::get('/settings/profile', function () {
-    return view('profile.edit');
+    return view('admin.profile.edit');
 })->name('profile.edit');
 
 Route::patch('/settings/profile', function () {
@@ -135,12 +135,12 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     
     // 1. Home Page
     Route::get('/home', function () {
-        return view('siswa.home');
+        return view('student.home.index');
     })->name('home');
 
     // 2. Rekomendasi (Form Aspek Penilaian)
     Route::get('/rekomendasi', function () {
-        return view('siswa.rekomendasi.create');
+        return view('student.rekomendasi.create');
     })->name('rekomendasi.create');
 
     Route::post('/rekomendasi', function () {
@@ -149,22 +149,22 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
 
     // 3. Hasil Rekomendasi (Persentase Cocok)
     Route::get('/rekomendasi/hasil', function () {
-        return view('siswa.rekomendasi.results');
+        return view('student.rekomendasi.results');
     })->name('rekomendasi.results');
 
     // 4. Daftar Semua Ekskul (Umum)
     Route::get('/ekskul', function () {
-        return view('siswa.ekskul.index');
+        return view('student.ekstrakurikuler.index');
     })->name('ekskul.index');
 
     // 5. Detail Ekskul
     Route::get('/ekskul/{id}', function () {
-        return view('siswa.ekskul.show');
+        return view('student.ekstrakurikuler.show');
     })->name('ekskul.show');
 
     // 6. Formulir Pendaftaran Ekskul
     Route::get('/ekskul/{id}/daftar', function () {
-        return view('siswa.pendaftaran.create');
+        return view('student.pendaftaran.create');
     })->name('register.create');
 
     Route::post('/ekskul/{id}/daftar', function () {
@@ -173,6 +173,6 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
 
     // 7. Riwayat Pendaftaran
     Route::get('/riwayat', function () {
-        return view('siswa.pendaftaran.history');
+        return view('student.riwayat.index');
     })->name('register.history');
 });
