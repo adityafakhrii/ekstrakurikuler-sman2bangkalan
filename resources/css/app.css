@@ -8,10 +8,23 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-sans:
-        'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+    /* Set Font Utama ke Poppins */
+    --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+
+    /* Custom Brand Colors */
+    --color-brand-primary: #2a1b60;
+    --color-brand-accent: #6366f1;
+    --color-brand-accent-hover: #4f46e5;
+    
+    /* Custom UI Colors */
+    --color-ui-bg-card: #fcf6f6;
+    --color-ui-bg-stat: #e5e0f5;
+    --color-ui-yellow-btn: #facc15;
+    --color-ui-yellow-btn-hover: #eab308;
+    --color-ui-red-btn: #dc2626;
+    --color-ui-red-btn-hover: #b91c1c;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -45,20 +58,9 @@
     --color-input: var(--input);
     --color-ring: var(--ring);
 
-    --color-chart-1: var(--chart-1);
-    --color-chart-2: var(--chart-2);
-    --color-chart-3: var(--chart-3);
-    --color-chart-4: var(--chart-4);
-    --color-chart-5: var(--chart-5);
-
-    --color-sidebar: var(--sidebar);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-ring: var(--sidebar-ring);
+    --radius-3xl: 1.5rem;
+    --radius-2xl: 1rem;
+    --radius-xl: 0.75rem;
 }
 
 :root {
@@ -81,20 +83,7 @@
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.87 0 0);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.87 0 0);
 }
 
 .dark {
@@ -117,27 +106,230 @@
     --border: oklch(0.269 0 0);
     --input: oklch(0.269 0 0);
     --ring: oklch(0.439 0 0);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.985 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.269 0 0);
-    --sidebar-ring: oklch(0.439 0 0);
 }
 
 @layer base {
     * {
-        @apply border-border;
+        @apply border-[#f2eaea];
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply bg-[#f3f4f6] text-[#1f2937] antialiased;
+    }
+}
+
+/* Custom Design System Utilities (Tailwind CSS v4 @utility syntax) */
+
+/* 1. Cards */
+@utility card-main {
+    background-color: var(--color-ui-bg-card);
+    border-radius: var(--radius-3xl);
+    border: 1px solid #f2eaea;
+    box-shadow: 0 10px 30px rgba(42, 27, 96, 0.05);
+    padding: 2rem;
+}
+
+@utility card-stat {
+    background-color: var(--color-ui-bg-stat);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* 2. Buttons */
+@utility btn-primary {
+    background-color: var(--color-brand-accent);
+    color: white;
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-xl);
+    font-weight: 500;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--color-brand-accent-hover);
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    }
+    
+    &:focus-visible {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 2px white, 0 0 0 4px var(--color-brand-accent);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+@utility btn-secondary {
+    background-color: #e5e7eb;
+    color: #374151;
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-xl);
+    font-weight: 500;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+
+    &:hover {
+        background-color: #d1d5db;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+@utility btn-edit {
+    background-color: var(--color-ui-yellow-btn);
+    color: #1f2937;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--color-ui-yellow-btn-hover);
+    }
+}
+
+@utility btn-delete {
+    background-color: var(--color-ui-red-btn);
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--color-ui-red-btn-hover);
+    }
+}
+
+/* 3. Inputs & Forms */
+@utility input-field {
+    background-color: #faf5f5;
+    border: 1px solid #f2eaea;
+    border-radius: var(--radius-xl);
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    width: 100%;
+    color: #1f2937;
+    transition: all 0.15s ease-in-out;
+
+    &::placeholder {
+        color: #9ca3af;
+    }
+
+    &:focus {
+        outline: none;
+        background-color: white;
+        border-color: var(--color-brand-accent);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    &:disabled {
+        background-color: #f3f4f6;
+        color: #9ca3af;
+        cursor: not-allowed;
+    }
+}
+
+/* 4. Table Styles */
+@utility table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #f2eaea;
+    border-radius: var(--radius-xl);
+    background-color: white;
+}
+
+@utility table-header-cell {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    text-align: left;
+    border-bottom: 1px solid #f2eaea;
+}
+
+@utility table-body-cell {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+    border-bottom: 1px solid #f2eaea;
+}
+
+/* 5. Badges */
+@utility badge-success {
+    background-color: #d1fae5;
+    color: #065f46;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+}
+
+@utility badge-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+}
+
+@utility badge-info {
+    background-color: var(--color-ui-bg-stat);
+    color: var(--color-brand-primary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 6. Loading Skeleton & Pulse */
+@utility skeleton-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    background-color: #e5e7eb;
+    border-radius: var(--radius-sm);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .5;
     }
 }
