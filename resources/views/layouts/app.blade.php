@@ -20,22 +20,8 @@
     <!-- Top Navigation Header Component -->
     <x-navbar />
 
-    <!-- Hero Banner with Background Image and Violet Overlay -->
-    <section class="relative bg-brand-primary min-h-[380px] flex items-center justify-center text-center px-4 overflow-hidden">
-        <!-- Hero Background Image (SMAN 2 Bangkalan) -->
-        <div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 mix-blend-overlay" style="background-image: url('/images/bg-school-hero.jpg');"></div>
-        <!-- Dark overlay to ensure text contrast -->
-        <div class="absolute inset-0 bg-gradient-to-b from-brand-primary/80 via-brand-primary/90 to-brand-primary z-0"></div>
-
-        <div class="relative z-10 max-w-4xl mx-auto pb-24">
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide text-white drop-shadow-md">
-                Sistem Informasi Ekstrakurikuler
-            </h1>
-            <p class="text-xl sm:text-2xl md:text-3xl font-semibold text-white/95 mt-3 drop-shadow-sm">
-                SMAN 2 Bangkalan
-            </p>
-        </div>
-    </section>
+    <!-- Hero Banner Component -->
+    <x-hero />
 
     <!-- Main Content Wrapper (Overlapping Card) -->
     <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-16 relative z-20">
@@ -44,12 +30,8 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-brand-primary text-white py-6 border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm font-medium tracking-wide">
-            Copyright &copy; 2025 SMAN 2 Bangkalan | Ahmad Jihaduddin Salim
-        </div>
-    </footer>
+    <!-- Footer Component -->
+    <x-footer />
 
 </body>
 </html>
