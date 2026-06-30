@@ -12,9 +12,9 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-// Aksi Login POST (Dummy - Bypass langsung ke Dashboard)
+// Aksi Login POST (Dummy - Bypass langsung ke Home Siswa)
 Route::post('/login', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('siswa.home');
 });
 
 // Rute Dashboard (Bypass Middleware Auth sementara untuk status Dummy)
@@ -120,4 +120,49 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-// require __DIR__.'/settings.php';
+// Rute Modul Siswa (Student Frontend Rutes)
+Route::prefix('siswa')->name('siswa.')->group(function () {
+    
+    // 1. Home Page
+    Route::get('/home', function () {
+        return view('student.home');
+    })->name('home');
+
+    // 2. Rekomendasi (Form Aspek Penilaian)
+    Route::get('/rekomendasi', function () {
+        return view('student.rekomendasi.create');
+    })->name('rekomendasi.create');
+
+    Route::post('/rekomendasi', function () {
+        return redirect()->route('siswa.rekomendasi.results');
+    })->name('rekomendasi.store');
+
+    // 3. Hasil Rekomendasi (Persentase Cocok)
+    Route::get('/rekomendasi/hasil', function () {
+        return view('student.rekomendasi.results');
+    })->name('rekomendasi.results');
+
+    // 4. Daftar Semua Ekskul (Umum)
+    Route::get('/ekskul', function () {
+        return view('student.ekskul.index');
+    })->name('ekskul.index');
+
+    // 5. Detail Ekskul
+    Route::get('/ekskul/{id}', function () {
+        return view('student.ekskul.show');
+    })->name('ekskul.show');
+
+    // 6. Formulir Pendaftaran Ekskul
+    Route::get('/ekskul/{id}/daftar', function () {
+        return view('student.pendaftaran.create');
+    })->name('register.create');
+
+    Route::post('/ekskul/{id}/daftar', function () {
+        return redirect()->route('siswa.register.history');
+    })->name('register.store');
+
+    // 7. Riwayat Pendaftaran
+    Route::get('/riwayat', function () {
+        return view('student.pendaftaran.history');
+    })->name('register.history');
+});

@@ -17,14 +17,16 @@
 </head>
 <body class="font-sans bg-[#f3f4f6] text-[#1f2937] antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- Top Navigation Header Component -->
+    <!-- Sticky Navbar Component (Reused dynamically for Student/Admin) -->
     <x-navbar />
 
-    <!-- Hero Banner Component -->
-    <x-hero />
+    <!-- Hero Section (Shown only where needed via section block) -->
+    @hasSection('hero')
+        @yield('hero')
+    @endif
 
-    <!-- Main Content Wrapper (With overlap margin) -->
-    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-16 relative z-20">
+    <!-- Content Wrapper (Offsets overlap margin if Hero is present) -->
+    <main class="flex-grow w-full @hasSection('hero') max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-16 relative z-20 @else max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mb-16 relative z-20 @endif">
         @yield('content')
     </main>
 
