@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- 1. Hero Section with Interactive Slider (Frontend Only via AlpineJS) -->
-    <section class="bg-[#2A1B60] text-white pt-16 pb-32 md:pt-20 md:pb-36 overflow-hidden relative"
+    <section class="bg-[#2A1B60] text-white pt-16 pb-16 md:pt-20 md:pb-24 overflow-hidden relative"
              x-data="{ 
                 activeSlide: 0, 
                 slides: [
@@ -84,16 +84,10 @@
 
         </div>
 
-        <!-- SVG Curve transition divider to content below -->
-        <div class="absolute bottom-0 left-0 right-0 z-0 pointer-events-none">
-            <svg class="w-full h-12 md:h-16 text-[#f3f4f6] fill-current" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,48C180,64 360,74 720,74C1080,74 1260,64 1440,48L1440,74L0,74Z"></path>
-            </svg>
-        </div>
     </section>
 
     <!-- 2. Manfaat Section (Latar Belakang Abu-Abu) -->
-    <section class="bg-[#f3f4f6] pt-24 pb-28 relative">
+    <section class="bg-[#f3f4f6] pt-16 pb-16 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Title with underlined border like screens -->
             <div class="text-center mb-12">
@@ -182,16 +176,10 @@
             </div>
         </div>
 
-        <!-- Wave Curve transition divider to Section 3 below -->
-        <div class="absolute bottom-0 left-0 right-0 z-10 pointer-events-none">
-            <svg class="w-full h-12 md:h-20 text-white fill-current" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,48C180,24 360,10 720,10C1080,10 1260,24 1440,48L1440,74L0,74Z"></path>
-            </svg>
-        </div>
     </section>
 
     <!-- 3. Profile Section (Latar Belakang Putih) -->
-    <section class="bg-white pt-16 pb-24 relative">
+    <section class="bg-white pt-16 pb-16 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
                 
