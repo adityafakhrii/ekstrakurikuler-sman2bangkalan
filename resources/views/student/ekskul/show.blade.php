@@ -22,15 +22,15 @@
                     'pembina' => 'Sugeng Priyatno',
                     'ketua' => 'Fuad Sasmita',
                     'jadwal' => 'Jum’at, Jam 12.30 - 15.30',
-                    'description' => 'Pramuka adalah wadah pembinaan karakter, melatih kemandirian, tanggung jawab, dan jiwa kepemimpinan siswa. Melalui baris-berbaris, tali-temali, dan perkemahan, anggota belajar bekerja sama secara taktis menghadapi tantangan di alam bebas.',
-                    'image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
+                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
                 ],
                 2 => [
                     'name' => 'Paskibra',
                     'pembina' => 'Sugeng Priyatno',
                     'ketua' => 'Fuad Sasmita',
                     'jadwal' => 'Sabtu, Jam 08.00 - 11.00',
-                    'description' => 'Paskibra melatih siswa dalam ketegasan, kekuatan fisik, baris-berbaris yang presisi, dan menumbuhkan rasa cinta tanah air serta jiwa nasionalisme yang kuat melalui upacara bendera dan kegiatan sosial.',
+                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
                     'image' => 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=600&auto=format&fit=crop'
                 ],
                 3 => [
@@ -38,7 +38,7 @@
                     'pembina' => 'Sugeng Priyatno',
                     'ketua' => 'Fuad Sasmita',
                     'jadwal' => 'Rabu, Jam 15.30 - 17.30',
-                    'description' => 'Futsal mengasah ketangkasan fisik, koordinasi motorik, taktik permainan, dan sportivitas melalui latihan intensif dan pertandingan persahabatan tingkat daerah.',
+                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
                     'image' => 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=600&auto=format&fit=crop'
                 ]
             ];
@@ -53,10 +53,11 @@
             <!-- Left Side: Image with gradient curved border matching screenshot -->
             <div class="w-full md:w-2/5 flex items-center justify-center">
                 <div class="relative w-full max-w-xs">
-                    <div class="aspect-square w-full rounded-[2rem] overflow-hidden bg-white p-1.5 border-2 border-[#f2eaea] shadow-md">
-                        <div class="w-full h-full rounded-[1.8rem] overflow-hidden relative">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/30 via-transparent to-[#FBCFE8]/25 z-10 pointer-events-none"></div>
-                            <img src="{{ $ekskul['image'] }}" alt="{{ $ekskul['name'] }}" class="w-full h-full object-cover">
+                    <div class="aspect-square w-full rounded-[2.5rem] overflow-hidden bg-white p-1.5 border-2 border-[#f2eaea] shadow-md relative">
+                        <div class="w-full h-full rounded-[2.3rem] overflow-hidden relative p-1 bg-gradient-to-tr from-[#10b981] via-[#eab308] to-[#ef4444]">
+                            <div class="w-full h-full rounded-[2.1rem] overflow-hidden">
+                                <img src="{{ $ekskul['image'] }}" alt="{{ $ekskul['name'] }}" class="w-full h-full object-cover">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,20 +97,20 @@
                     </div>
                 </div>
 
-                <!-- Action Button Actions -->
-                <div class="flex items-center gap-3 pt-2">
-                    <!-- Daftar Button (Yellow styled) -->
+                <!-- Action Button Actions (Pushed to bottom right) -->
+                <div class="flex items-center justify-start md:justify-end gap-3 pt-4 w-full">
+                    <!-- Daftar Button (Yellow styled, rounded-full) -->
                     <x-ui.button 
                         onclick="window.location.href='{{ route('siswa.register.create', $id) }}'"
-                        class="bg-[#FDE047] hover:bg-[#FACC15] text-[#1F2937] px-8 py-3 rounded-xl text-xs font-semibold shadow-xs cursor-pointer border-0"
+                        class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] px-8 py-3 rounded-full text-xs font-bold shadow-xs cursor-pointer border-0"
                     >
                         Daftar
                     </x-ui.button>
 
-                    <!-- Kembali Button (Dark Gray/Navy with arrow) -->
+                    <!-- Kembali Button (Dark Gray/Navy with arrow, rounded-full) -->
                     <x-ui.button 
                         onclick="window.history.back()"
-                        class="bg-[#2D3748] hover:bg-[#1A202C] text-white px-6 py-3 rounded-xl text-xs font-semibold shadow-xs flex items-center gap-1.5 cursor-pointer border-0"
+                        class="bg-[#2D3748] hover:bg-[#1A202C] text-white px-6 py-3 rounded-full text-xs font-bold shadow-xs flex items-center gap-1.5 cursor-pointer border-0"
                     >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
