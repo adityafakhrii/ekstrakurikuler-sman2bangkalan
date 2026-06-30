@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Main Card Wrapper -->
-    <x-ui.card title="Kelola Akun">
+    <x-cards.card title="Kelola Akun">
         
         <!-- Profile Form (Centered vertical layout matching screenshot) -->
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="max-w-xl mx-auto space-y-6">
@@ -44,7 +44,7 @@
                     <label for="name" class="block text-sm font-semibold text-gray-800">
                         Nama Lengkap
                     </label>
-                    <x-ui.input 
+                    <x-forms.input 
                         name="name" 
                         placeholder="Masukkan Nama Lengkap" 
                         value="{{ old('name', Auth::user()->name ?? 'Ahmad Jihaduddin Salim') }}" 
@@ -58,7 +58,7 @@
                     <label for="username" class="block text-sm font-semibold text-gray-800">
                         Username
                     </label>
-                    <x-ui.input 
+                    <x-forms.input 
                         name="username" 
                         placeholder="Masukkan Username" 
                         value="{{ old('username', Auth::user()->username ?? 'ahmad_jihad') }}" 
@@ -72,7 +72,7 @@
                     <label for="password" class="block text-sm font-semibold text-gray-800">
                         Password Baru
                     </label>
-                    <x-ui.input 
+                    <x-forms.input 
                         type="password" 
                         name="password" 
                         placeholder="" 
@@ -85,7 +85,7 @@
                     <label for="password_confirmation" class="block text-sm font-semibold text-gray-800">
                         Konfirmasi Password Baru
                     </label>
-                    <x-ui.input 
+                    <x-forms.input 
                         type="password" 
                         name="password_confirmation" 
                         placeholder="" 
@@ -98,21 +98,21 @@
             <!-- Action Buttons (Right Aligned matching screenshot) -->
             <div class="flex justify-end gap-3 pt-6 border-t border-[#f2eaea]">
                 <!-- Simpan Button -->
-                <x-ui.button type="submit" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white py-2.5 px-6 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm">
+                <x-buttons.button type="submit" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white py-2.5 px-6 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm">
                     <!-- Save Icon -->
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                     </svg>
                     Simpan
-                </x-ui.button>
+                </x-buttons.button>
 
                 <!-- Batal Button (Grey) -->
-                <x-ui.button variant="secondary" type="button" onclick="window.location.href='{{ route('dashboard') }}'" class="text-xs font-semibold py-2.5 px-6 rounded-lg shadow-sm">
+                <x-buttons.button variant="secondary" type="button" onclick="window.location.href='{{ route('dashboard') }}'" class="text-xs font-semibold py-2.5 px-6 rounded-lg shadow-sm">
                     Batal
-                </x-ui.button>
+                </x-buttons.button>
             </div>
 
         </form>
 
-    </x-ui.card>
+    </x-cards.card>
 @endsection

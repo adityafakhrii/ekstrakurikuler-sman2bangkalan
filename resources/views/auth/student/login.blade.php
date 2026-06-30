@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.guest')
 
-    <title>Login Siswa - EKSIS SMAN 2 Bangkalan</title>
+@section('title', 'Login Siswa - EKSIS SMAN 2 Bangkalan')
 
-    <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Styles and Scripts via Vite -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="font-sans bg-white text-[#1f2937] antialiased min-h-screen flex items-center justify-center p-6 md:p-12">
-
+@section('content')
     <!-- Main Container: Two-column layout grid -->
-    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+    <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mx-auto py-12 md:py-24">
         
         <!-- Left Column: Heading & Subtitle -->
         <div class="space-y-3 text-center md:text-left">
@@ -47,7 +33,7 @@
 
                     <!-- Nomor Induk Input Field -->
                     <div>
-                        <x-ui.input 
+                        <x-forms.input 
                             label="Nomor Induk" 
                             name="nomor_induk" 
                             placeholder="Masukkan Nomor Induk" 
@@ -59,12 +45,12 @@
 
                     <!-- Submit Button (Solid black styled matching screenshot) -->
                     <div class="pt-2">
-                        <x-ui.button 
+                        <x-buttons.button 
                             type="submit" 
                             class="w-full bg-black hover:bg-gray-900 text-white justify-center py-3.5 rounded-xl font-bold transition-all duration-200 shadow-sm border-0 cursor-pointer"
                         >
                             Login
-                        </x-ui.button>
+                        </x-buttons.button>
                     </div>
                 </form>
 
@@ -72,6 +58,4 @@
         </div>
 
     </div>
-
-</body>
-</html>
+@endsection

@@ -1,6 +1,7 @@
 @extends('layouts.guest')
 
-@section('title', 'Login - EKSIS SMAN 2 Bangkalan')
+@section('title', 'Login Admin - EKSIS SMAN 2 Bangkalan')
+@section('guest-backdrop', true)
 
 @section('content')
     <!-- Form Title -->
@@ -27,7 +28,7 @@
 
         <!-- Username Input Field -->
         <div>
-            <x-ui.input 
+            <x-forms.input 
                 label="Username" 
                 name="username" 
                 placeholder="Masukkan Username" 
@@ -39,7 +40,7 @@
 
         <!-- Password Input Field -->
         <div>
-            <x-ui.input 
+            <x-forms.input 
                 label="Password" 
                 name="password" 
                 type="password" 
@@ -50,12 +51,12 @@
 
         <!-- Submit Button (Black styled button matching screenshot) -->
         <div class="pt-2">
-            <x-ui.button 
+            <x-buttons.button 
                 type="submit" 
-                class="w-full bg-black hover:bg-gray-900 text-white justify-center py-3 rounded-xl font-semibold transition-all duration-200 shadow-sm"
+                class="w-full bg-black hover:bg-gray-900 text-white justify-center py-3 rounded-xl font-semibold transition-all duration-200 shadow-sm border-0 cursor-pointer"
             >
                 Login
-            </x-ui.button>
+            </x-buttons.button>
         </div>
     </form>
 @endsection

@@ -34,6 +34,21 @@
                        class="transition-colors duration-200 {{ request()->routeIs('siswa.register.history') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Riwayat Daftar
                     </a>
+                @elseif(request()->is('ketua*'))
+                    <!-- Ketua Menu Items -->
+                    <a href="{{ route('ketua.dashboard') }}" 
+                       class="transition-colors duration-200 {{ request()->routeIs('ketua.dashboard') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
+                        Dashboard
+                    </a>
+                    <a href="#" class="transition-colors duration-200 text-gray-300 hover:text-white">
+                        Pendaftaran
+                    </a>
+                    <a href="#" class="transition-colors duration-200 text-gray-300 hover:text-white">
+                        Data Anggota
+                    </a>
+                    <a href="#" class="transition-colors duration-200 text-gray-300 hover:text-white">
+                        Data Absensi
+                    </a>
                 @else
                     <!-- Admin Menu Items -->
                     <!-- Dashboard (Active) -->
@@ -176,6 +191,24 @@
                         Logout
                     </button>
                 </form>
+            @elseif(request()->is('ketua*'))
+                <!-- Ketua Mobile Menu Items -->
+                <a href="{{ route('ketua.dashboard') }}" 
+                   class="block py-2.5 px-3 rounded-lg text-white font-medium hover:bg-white/10 transition-colors duration-150">
+                    Dashboard
+                </a>
+                <a href="#" 
+                   class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+                    Pendaftaran
+                </a>
+                <a href="#" 
+                   class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+                    Data Anggota
+                </a>
+                <a href="#" 
+                   class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+                    Data Absensi
+                </a>
             @else
                 <!-- Admin Mobile Menu Items -->
                 <!-- Dashboard Link -->

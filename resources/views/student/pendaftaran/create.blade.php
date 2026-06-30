@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <x-ui.card title="Formulir Daftar Ekstrakurikuler">
+    <x-cards.card title="Formulir Daftar Ekstrakurikuler">
         <p class="text-sm text-gray-500 font-light text-center max-w-2xl mx-auto -mt-4 mb-10 leading-relaxed">
             Isi Formulir pendaftaran ini dengan benar sesuai data pribadi kamu, dan berikan alasan mengikuti Ekstrakurikuler agar membantu dalam proses konfirmasi pendaftaranmu.
         </p>
@@ -40,7 +40,7 @@
                         Nisn :
                     </label>
                     <div class="flex-grow">
-                        <x-ui.input 
+                        <x-forms.input 
                             name="nisn" 
                             placeholder="Masukkan Nisn" 
                             value="{{ old('nisn', '21082') }}" 
@@ -55,7 +55,7 @@
                         Nama Lengkap :
                     </label>
                     <div class="flex-grow">
-                        <x-ui.input 
+                        <x-forms.input 
                             name="name" 
                             placeholder="Masukkan Nama Lengkap" 
                             value="{{ old('name', 'Ahmad Jihaduddin Salim') }}" 
@@ -70,13 +70,13 @@
                         Jenis Kelamin :
                     </label>
                     <div class="flex-grow flex items-center gap-6">
-                        <x-ui.radio 
+                        <x-forms.radio 
                             label="Laki - Laki" 
                             name="gender" 
                             value="L" 
                             checked="{{ old('gender', 'L') == 'L' }}" 
                         />
-                        <x-ui.radio 
+                        <x-forms.radio 
                             label="Perempuan" 
                             name="gender" 
                             value="P" 
@@ -91,7 +91,7 @@
                         Kelas-Jurusan :
                     </label>
                     <div class="flex-grow">
-                        <x-ui.input 
+                        <x-forms.input 
                             name="class_major" 
                             placeholder="Masukkan Kelas-Jurusan" 
                             value="{{ old('class_major') }}" 
@@ -106,7 +106,7 @@
                         Email :
                     </label>
                     <div class="flex-grow">
-                        <x-ui.input 
+                        <x-forms.input 
                             type="email"
                             name="email" 
                             placeholder="Masukkan Email" 
@@ -122,7 +122,7 @@
                         No.Whatsapp :
                     </label>
                     <div class="flex-grow">
-                        <x-ui.input 
+                        <x-forms.input 
                             name="whatsapp" 
                             placeholder="Masukkan No.Whatsapp" 
                             value="{{ old('whatsapp') }}" 
@@ -137,7 +137,7 @@
                         Alamat :
                     </label>
                     <div class="flex-grow">
-                        <x-ui.input 
+                        <x-forms.input 
                             name="address" 
                             placeholder="Masukkan Alamat" 
                             value="{{ old('address') }}" 
@@ -151,7 +151,7 @@
                     <span class="text-sm font-semibold text-gray-800">
                         Alasan Mengikuti :
                     </span>
-                    <x-ui.textarea 
+                    <x-forms.textarea 
                         name="reason" 
                         placeholder="Masukkan Alasan Mengikuti Ekskul" 
                         value="{{ old('reason') }}" 
@@ -164,16 +164,16 @@
             <!-- Action Buttons matching screenshot style inside the card -->
             <div class="flex justify-end gap-3 pt-6 border-t border-[#f2eaea] max-w-3xl mx-auto">
                 <!-- Konfirmasi Button (Yellow, rounded-full) -->
-                <x-ui.button type="submit" class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] py-2.5 px-8 rounded-full text-xs font-bold shadow-xs cursor-pointer border-0">
+                <x-buttons.button type="submit" class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] py-2.5 px-8 rounded-full text-xs font-bold shadow-xs cursor-pointer border-0">
                     Konfirmasi
-                </x-ui.button>
+                </x-buttons.button>
 
                 <!-- Batal Button (Red, rounded-full) -->
-                <x-ui.button variant="secondary" type="button" onclick="window.history.back()" class="bg-[#EF4444] hover:bg-[#DC2626] text-white py-2.5 px-8 rounded-full text-xs font-bold shadow-xs cursor-pointer border-0">
+                <x-buttons.button variant="secondary" type="button" onclick="window.history.back()" class="bg-[#EF4444] hover:bg-[#DC2626] text-white py-2.5 px-8 rounded-full text-xs font-bold shadow-xs cursor-pointer border-0">
                     Batal
-                </x-ui.button>
+                </x-buttons.button>
             </div>
 
         </form>
-    </x-ui.card>
+    </x-cards.card>
 @endsection

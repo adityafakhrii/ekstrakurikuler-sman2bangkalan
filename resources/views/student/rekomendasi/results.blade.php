@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <x-ui.card title="Daftar Ekstrakurikuler">
+    <x-cards.card title="Daftar Ekstrakurikuler">
         <p class="text-sm text-gray-500 font-light text-center max-w-2xl mx-auto -mt-4 mb-12 leading-relaxed">
             Kamu sudah merekomendasikan sesuai preferensimu untuk memilih Ekstrakurikuler, berikut Daftar Ekstrakurikuler yang sudah diurutkan dari yang paling cocok untukmu.
         </p>
@@ -63,7 +63,7 @@
         <!-- Grid Layout: 2 Columns Desktop, 1 Column Mobile matching screenshot exactly -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
             @foreach($ekskuls as $index => $ekskul)
-                <x-ui.ekskul-card 
+                <x-cards.ekskul-card 
                     name="{{ $ekskul['name'] }}"
                     match="{{ $ekskul['match'] }}"
                     gradient="{{ $ekskul['gradient'] }}"
@@ -74,5 +74,5 @@
             @endforeach
         </div>
 
-    </x-ui.card>
+    </x-cards.card>
 @endsection

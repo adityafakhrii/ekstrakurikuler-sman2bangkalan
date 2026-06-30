@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: ['resources/css/shared/app.css', 'resources/js/shared/app.js'],
             refresh: true,
         }),
         tailwindcss(),

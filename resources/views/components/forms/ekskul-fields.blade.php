@@ -12,7 +12,7 @@
             Nama Ekstrakurikuler :
         </label>
         <div class="flex-grow">
-            <x-ui.input 
+            <x-forms.input 
                 name="name" 
                 placeholder="Masukkan nama Ekstrakurikuler" 
                 value="{{ old('name', $name) }}" 
@@ -27,7 +27,7 @@
             Nama Pembina :
         </label>
         <div class="flex-grow">
-            <x-ui.input 
+            <x-forms.input 
                 name="pembina" 
                 placeholder="Masukkan nama Pembina" 
                 value="{{ old('pembina', $pembina) }}" 
@@ -44,7 +44,7 @@
             <label for="description" class="text-sm font-semibold text-gray-800">
                 Deskripsi Ekstrakurikuler :
             </label>
-            <x-ui.textarea 
+            <x-forms.textarea 
                 name="description" 
                 placeholder="Masukkan Deskripsi" 
                 value="{{ old('description', $description) }}" 

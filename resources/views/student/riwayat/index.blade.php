@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <x-ui.card title="Riwayat Pendaftaran Ekstrakurikuler">
+    <x-cards.card title="Riwayat Pendaftaran Ekstrakurikuler">
         <p class="text-sm text-gray-500 font-light text-center max-w-2xl mx-auto -mt-4 mb-8 leading-relaxed">
             Pantau status pendaftaran ekstrakurikuler yang telah Anda ajukan di bawah ini. Status akan diperbarui oleh Admin setelah melalui proses verifikasi.
         </p>
@@ -252,5 +252,5 @@
             </div>
 
         </div>
-    </x-ui.card>
+    </x-cards.card>
 @endsection

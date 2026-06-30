@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <x-ui.card title="Rekomendasi Ekstrakurikuler">
+    <x-cards.card title="Rekomendasi Ekstrakurikuler">
         <p class="text-sm text-gray-500 font-light text-center max-w-2xl mx-auto -mt-4 mb-8 leading-relaxed">
             Agar mendapatkan Ekstrakurikuler yang sesuai dengan preferensimu, minta tolong nilai 6 aspek berikut yang sesuai dengan minat dan bakat kamu.
         </p>
@@ -35,7 +35,7 @@
                         </span>
                         
                         <!-- Reusable Keyboard-Accessible Rating Component -->
-                        <x-star-rating 
+                        <x-forms.star-rating 
                             name="{{ $criterion['name'] }}" 
                             value="{{ old($criterion['name'], $criterion['value']) }}" 
                         />
@@ -46,16 +46,16 @@
             <!-- Action Buttons matching screenshot style inside the card -->
             <div class="flex justify-end gap-3 pt-6 border-t border-[#f2eaea]">
                 <!-- Submit Button (Green) -->
-                <x-ui.button type="submit" class="bg-[#22C55E] hover:bg-[#16A34A] text-white py-2.5 px-6 rounded-xl text-xs font-semibold shadow-xs cursor-pointer">
+                <x-buttons.button type="submit" class="bg-[#22C55E] hover:bg-[#16A34A] text-white py-2.5 px-6 rounded-xl text-xs font-semibold shadow-xs cursor-pointer">
                     Submit
-                </x-ui.button>
+                </x-buttons.button>
 
                 <!-- Edit Button (Yellow) -->
-                <x-ui.button variant="secondary" type="button" class="bg-[#FDE047] hover:bg-[#FACC15] text-[#1F2937] py-2.5 px-6 rounded-xl text-xs font-semibold shadow-xs cursor-pointer border-0">
+                <x-buttons.button variant="secondary" type="button" class="bg-[#FDE047] hover:bg-[#FACC15] text-[#1F2937] py-2.5 px-6 rounded-xl text-xs font-semibold shadow-xs cursor-pointer border-0">
                     Edit
-                </x-ui.button>
+                </x-buttons.button>
             </div>
 
         </form>
-    </x-ui.card>
+    </x-cards.card>
 @endsection

@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-    <x-ui.card title="Detail Ekstrakurikuler">
+    <x-cards.card title="Detail Ekstrakurikuler">
         <p class="text-sm text-gray-500 font-light text-center max-w-2xl mx-auto -mt-4 mb-10 leading-relaxed">
             Lihat Detail Ekstrakurikuler untuk mengenal lebih sebelum mendaftar, dan pastikan jadwal kegiatan ekstrakurikuler tidak bentrok dengan jadwal lain kamu.
         </p>
@@ -100,15 +100,15 @@
                 <!-- Action Button Actions (Pushed to bottom right) -->
                 <div class="flex items-center justify-start md:justify-end gap-3 pt-4 w-full">
                     <!-- Daftar Button (Yellow styled, rounded-full) -->
-                    <x-ui.button 
+                    <x-buttons.button 
                         onclick="window.location.href='{{ route('siswa.register.create', $id) }}'"
                         class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] px-8 py-3 rounded-full text-xs font-bold shadow-xs cursor-pointer border-0"
                     >
                         Daftar
-                    </x-ui.button>
+                    </x-buttons.button>
 
                     <!-- Kembali Button (Dark Gray/Navy with arrow, rounded-full) -->
-                    <x-ui.button 
+                    <x-buttons.button 
                         onclick="window.history.back()"
                         class="bg-[#2D3748] hover:bg-[#1A202C] text-white px-6 py-3 rounded-full text-xs font-bold shadow-xs flex items-center gap-1.5 cursor-pointer border-0"
                     >
@@ -116,11 +116,11 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                         </svg>
                         Kembali
-                    </x-ui.button>
+                    </x-buttons.button>
                 </div>
             </div>
 
         </div>
 
-    </x-ui.card>
+    </x-cards.card>
 @endsection

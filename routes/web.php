@@ -9,7 +9,7 @@ Route::get('/', function () {
 
 // Tampilan Login Admin (Dummy)
 Route::get('/login', function () {
-    return view('auth.login');
+    return view('auth.admin.login');
 })->name('login');
 
 // Aksi Login POST Admin (Dummy - Bypass ke Dashboard Admin)
@@ -19,7 +19,7 @@ Route::post('/login', function () {
 
 // Tampilan Login Siswa (Dummy)
 Route::get('/siswa/login', function () {
-    return view('auth.student-login');
+    return view('auth.student.login');
 })->name('siswa.login');
 
 // Aksi Login POST Siswa (Dummy - Bypass ke Home Siswa)
@@ -97,15 +97,15 @@ Route::put('/pengguna/siswa/{id}', function () {
 
 // Rute CRUD Admin Pengguna (Dummy)
 Route::get('/pengguna/admin', function () {
-    return view('admin.admin.index');
+    return view('admin.users.index');
 })->name('pengguna.admin.index');
 
 Route::get('/pengguna/admin/create', function () {
-    return view('admin.admin.create');
+    return view('admin.users.create');
 })->name('pengguna.admin.create');
 
 Route::get('/pengguna/admin/{id}/edit', function () {
-    return view('admin.admin.edit');
+    return view('admin.users.edit');
 })->name('pengguna.admin.edit');
 
 Route::post('/pengguna/admin', function () {
@@ -175,4 +175,11 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     Route::get('/riwayat', function () {
         return view('student.riwayat.index');
     })->name('register.history');
+});
+
+// Rute Modul Ketua (Ketua Frontend Rutes)
+Route::prefix('ketua')->name('ketua.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('ketua.dashboard.index');
+    })->name('dashboard');
 });
