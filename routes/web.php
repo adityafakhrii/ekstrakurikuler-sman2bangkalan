@@ -27,6 +27,14 @@ Route::get('/ekskul', function () {
     return view('ekskul.index');
 })->name('ekskul.index');
 
+Route::get('/ekskul/create', function () {
+    return view('ekskul.create');
+})->name('ekskul.create');
+
+Route::post('/ekskul', function () {
+    return redirect()->route('ekskul.index');
+})->name('ekskul.store');
+
 // Logout (Dummy - arahkan kembali ke Login)
 Route::post('/logout', function () {
     return redirect()->route('login');

@@ -15,7 +15,7 @@
             <!-- Right: Tambah Button & Search Input -->
             <div class="flex items-center gap-3 self-end md:self-auto">
                 <!-- Tambah Ekskul Button (Indigo/Purple styled button) -->
-                <x-ui.button class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold py-2.5 px-4 rounded-lg inline-flex items-center gap-1.5 transition-all shadow-sm">
+                <x-ui.button onclick="window.location.href='{{ route('ekskul.create') }}'" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold py-2.5 px-4 rounded-lg inline-flex items-center gap-1.5 transition-all shadow-sm">
                     <!-- Plus Icon -->
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
