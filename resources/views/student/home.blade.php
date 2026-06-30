@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- 1. Hero Section with Interactive Slider (Frontend Only via AlpineJS) -->
-    <section class="bg-[#2A1B60] text-white pt-12 pb-24 md:py-20 overflow-hidden relative"
+    <section class="bg-[#2A1B60] text-white pt-16 pb-32 md:pt-20 md:pb-36 overflow-hidden relative"
              x-data="{ 
                 activeSlide: 0, 
                 slides: [
@@ -93,7 +93,7 @@
     </section>
 
     <!-- 2. Manfaat Section (Latar Belakang Abu-Abu) -->
-    <section class="bg-[#f3f4f6] pt-16 pb-20 relative">
+    <section class="bg-[#f3f4f6] pt-24 pb-28 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Title with underlined border like screens -->
             <div class="text-center mb-12">
@@ -191,15 +191,15 @@
     </section>
 
     <!-- 3. Profile Section (Latar Belakang Putih) -->
-    <section class="bg-white py-16 relative">
+    <section class="bg-white pt-16 pb-24 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row items-center gap-12 max-w-6xl mx-auto">
                 
                 <!-- Left Image Mockup with colorful border -->
                 <div class="w-full lg:w-2/5 flex items-center justify-center">
-                    <div class="relative w-full max-w-sm">
+                    <div class="relative w-full max-w-[340px]">
                         <!-- Custom border design system matching school gate mockup -->
-                        <div class="aspect-[3/4] w-full rounded-[2.5rem] overflow-hidden bg-white p-1.5 border-2 border-[#f2eaea] shadow-xl relative">
+                        <div class="aspect-[4/5] w-full rounded-[2.5rem] overflow-hidden bg-white p-1.5 border-2 border-[#f2eaea] shadow-xl relative">
                             <div class="w-full h-full rounded-[2.3rem] overflow-hidden relative">
                                 <div class="absolute inset-0 bg-gradient-to-tr from-[#6366F1]/20 via-transparent to-[#FBCFE8]/15 z-10 pointer-events-none"></div>
                                 <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop" 

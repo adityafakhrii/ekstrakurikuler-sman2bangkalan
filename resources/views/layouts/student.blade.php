@@ -25,10 +25,16 @@
         @yield('hero')
     @endif
 
-    <!-- Content Wrapper (Offsets overlap margin if Hero is present) -->
-    <main class="flex-grow w-full @hasSection('hero') max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-16 relative z-20 @else max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mb-16 relative z-20 @endif">
-        @yield('content')
-    </main>
+    <!-- Content Wrapper (Offsets overlap margin if Hero is present, or allows full-width if no Hero is defined) -->
+    @hasSection('hero')
+        <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-16 relative z-20">
+            @yield('content')
+        </main>
+    @else
+        <main class="flex-grow w-full relative z-20">
+            @yield('content')
+        </main>
+    @endif
 
     <!-- Footer Component -->
     <x-footer />
