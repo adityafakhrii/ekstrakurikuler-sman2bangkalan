@@ -49,7 +49,7 @@
                          class="absolute left-0 mt-3 w-48 rounded-xl bg-white text-gray-800 shadow-xl border border-[#f2eaea] py-2 z-50"
                          style="display: none;">
                         <a href="#" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Admin</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Ketua Ekskul</a>
+                        <a href="{{ route('pengguna.ketua.index') }}" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Ketua Ekskul</a>
                         <a href="#" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Siswa</a>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                 </button>
                 <div x-show="open" class="pl-6 mt-1 space-y-1 bg-white/5 rounded-lg py-1">
                     <a href="#" class="block py-2 px-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-md">Admin</a>
-                    <a href="#" class="block py-2 px-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-md">Ketua Ekskul</a>
+                    <a href="{{ route('pengguna.ketua.index') }}" class="block py-2 px-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-md">Ketua Ekskul</a>
                     <a href="#" class="block py-2 px-3 text-gray-300 hover:text-white hover:bg-white/10 rounded-md">Siswa</a>
                 </div>
             </div>

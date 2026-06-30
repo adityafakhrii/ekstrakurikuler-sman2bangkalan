@@ -43,6 +43,27 @@ Route::put('/ekskul/{id}', function () {
     return redirect()->route('ekskul.index');
 })->name('ekskul.update');
 
+// Rute CRUD Ketua Pengguna (Dummy)
+Route::get('/pengguna/ketua', function () {
+    return view('pengguna.ketua.index');
+})->name('pengguna.ketua.index');
+
+Route::get('/pengguna/ketua/create', function () {
+    return view('pengguna.ketua.create');
+})->name('pengguna.ketua.create');
+
+Route::get('/pengguna/ketua/{id}/edit', function () {
+    return view('pengguna.ketua.edit');
+})->name('pengguna.ketua.edit');
+
+Route::post('/pengguna/ketua', function () {
+    return redirect()->route('pengguna.ketua.index');
+})->name('pengguna.ketua.store');
+
+Route::put('/pengguna/ketua/{id}', function () {
+    return redirect()->route('pengguna.ketua.index');
+})->name('pengguna.ketua.update');
+
 // Logout (Dummy - arahkan kembali ke Login)
 Route::post('/logout', function () {
     return redirect()->route('login');
