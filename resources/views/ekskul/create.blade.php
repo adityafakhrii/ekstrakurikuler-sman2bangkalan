@@ -112,7 +112,7 @@
                             </span>
                             
                             <!-- Radio box container -->
-                            <div class="flex items-center gap-8 bg-white border border-[#f2eaea] rounded-xl px-6 py-2.5 flex-grow shadow-xs">
+                            <div class="flex items-center gap-4 sm:gap-8 flex-wrap bg-white border border-[#f2eaea] rounded-xl px-6 py-2.5 flex-grow shadow-xs">
                                 @for($i = 1; $i <= 5; $i++)
                                     <x-ui.radio 
                                         label="{{ $i }}" 

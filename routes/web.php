@@ -120,4 +120,4 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-require __DIR__.'/settings.php';
+// require __DIR__.'/settings.php';

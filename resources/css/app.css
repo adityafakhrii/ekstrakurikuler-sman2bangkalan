@@ -126,17 +126,14 @@
     border-radius: var(--radius-3xl);
     border: 1px solid #f2eaea;
     box-shadow: 0 10px 30px rgba(42, 27, 96, 0.05);
-    padding: 2rem;
+    @apply p-4 sm:p-8;
 }
 
 @utility card-stat {
     background-color: var(--color-ui-bg-stat);
     border-radius: var(--radius-xl);
-    padding: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    @apply p-4 sm:p-6 flex justify-between items-end;
 }
 
 /* 2. Buttons */

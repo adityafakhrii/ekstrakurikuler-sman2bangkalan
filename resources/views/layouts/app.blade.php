@@ -23,11 +23,9 @@
     <!-- Hero Banner Component -->
     <x-hero />
 
-    <!-- Main Content Wrapper (Overlapping Card) -->
+    <!-- Main Content Wrapper -->
     <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-16 relative z-20">
-        <div class="card-main min-h-[500px]">
-            @yield('content')
-        </div>
+        @yield('content')
     </main>
 
     <!-- Footer Component -->
