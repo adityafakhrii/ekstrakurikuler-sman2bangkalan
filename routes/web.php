@@ -106,6 +106,15 @@ Route::put('/pengguna/admin/{id}', function () {
     return redirect()->route('pengguna.admin.index');
 })->name('pengguna.admin.update');
 
+// Rute Profil/Kelola Akun (Dummy)
+Route::get('/settings/profile', function () {
+    return view('profile.edit');
+})->name('profile.edit');
+
+Route::patch('/settings/profile', function () {
+    return redirect()->route('dashboard');
+})->name('profile.update');
+
 // Logout (Dummy - arahkan kembali ke Login)
 Route::post('/logout', function () {
     return redirect()->route('login');

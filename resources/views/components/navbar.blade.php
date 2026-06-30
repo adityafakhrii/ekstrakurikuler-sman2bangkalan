@@ -88,7 +88,7 @@
                          x-transition:leave-end="transform opacity-0 scale-95 -translate-y-2"
                          class="absolute right-0 mt-3 w-48 rounded-xl bg-white text-gray-800 shadow-xl border border-[#f2eaea] py-2 z-50"
                          style="display: none;">
-                        <a href="#" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Profil Saya</a>
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Profil Saya</a>
                         <hr class="border-gray-100 my-1">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -170,7 +170,7 @@
                 </div>
             </div>
             
-            <a href="#" class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+            <a href="{{ route('profile.edit') }}" class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                 Profil Saya
             </a>
             <form method="POST" action="{{ route('logout') }}">
