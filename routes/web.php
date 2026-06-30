@@ -85,6 +85,27 @@ Route::put('/pengguna/siswa/{id}', function () {
     return redirect()->route('pengguna.siswa.index');
 })->name('pengguna.siswa.update');
 
+// Rute CRUD Admin Pengguna (Dummy)
+Route::get('/pengguna/admin', function () {
+    return view('pengguna.admin.index');
+})->name('pengguna.admin.index');
+
+Route::get('/pengguna/admin/create', function () {
+    return view('pengguna.admin.create');
+})->name('pengguna.admin.create');
+
+Route::get('/pengguna/admin/{id}/edit', function () {
+    return view('pengguna.admin.edit');
+})->name('pengguna.admin.edit');
+
+Route::post('/pengguna/admin', function () {
+    return redirect()->route('pengguna.admin.index');
+})->name('pengguna.admin.store');
+
+Route::put('/pengguna/admin/{id}', function () {
+    return redirect()->route('pengguna.admin.index');
+})->name('pengguna.admin.update');
+
 // Logout (Dummy - arahkan kembali ke Login)
 Route::post('/logout', function () {
     return redirect()->route('login');
