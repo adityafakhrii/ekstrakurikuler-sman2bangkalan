@@ -19,8 +19,8 @@
                 </a>
                 
                 <!-- Data Ekstrakurikuler (Link Biasa sesuai Screenshot) -->
-                <a href="#" 
-                   class="text-gray-300 hover:text-white transition-colors duration-200">
+                <a href="{{ route('ekskul.index') }}" 
+                   class="transition-colors duration-200 {{ request()->routeIs('ekskul.index') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                     Data Ekstrakurikuler
                 </a>
 
@@ -134,8 +134,8 @@
             </a>
 
             <!-- Data Ekstrakurikuler Link (Mobile) -->
-            <a href="#" 
-               class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+            <a href="{{ route('ekskul.index') }}" 
+               class="block py-2.5 px-3 rounded-lg {{ request()->routeIs('ekskul.index') ? 'text-white font-medium bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/10' }} transition-colors duration-150">
                 Data Ekstrakurikuler
             </a>
 

@@ -22,6 +22,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+// Rute Ekstrakurikuler (Dummy)
+Route::get('/ekskul', function () {
+    return view('ekskul.index');
+})->name('ekskul.index');
+
 // Logout (Dummy - arahkan kembali ke Login)
 Route::post('/logout', function () {
     return redirect()->route('login');
