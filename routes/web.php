@@ -135,12 +135,12 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     
     // 1. Home Page
     Route::get('/home', function () {
-        return view('student.home');
+        return view('siswa.home');
     })->name('home');
 
     // 2. Rekomendasi (Form Aspek Penilaian)
     Route::get('/rekomendasi', function () {
-        return view('student.rekomendasi.create');
+        return view('siswa.rekomendasi.create');
     })->name('rekomendasi.create');
 
     Route::post('/rekomendasi', function () {
@@ -149,22 +149,22 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
 
     // 3. Hasil Rekomendasi (Persentase Cocok)
     Route::get('/rekomendasi/hasil', function () {
-        return view('student.rekomendasi.results');
+        return view('siswa.rekomendasi.results');
     })->name('rekomendasi.results');
 
     // 4. Daftar Semua Ekskul (Umum)
     Route::get('/ekskul', function () {
-        return view('student.ekskul.index');
+        return view('siswa.ekskul.index');
     })->name('ekskul.index');
 
     // 5. Detail Ekskul
     Route::get('/ekskul/{id}', function () {
-        return view('student.ekskul.show');
+        return view('siswa.ekskul.show');
     })->name('ekskul.show');
 
     // 6. Formulir Pendaftaran Ekskul
     Route::get('/ekskul/{id}/daftar', function () {
-        return view('student.pendaftaran.create');
+        return view('siswa.pendaftaran.create');
     })->name('register.create');
 
     Route::post('/ekskul/{id}/daftar', function () {
@@ -173,6 +173,6 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
 
     // 7. Riwayat Pendaftaran
     Route::get('/riwayat', function () {
-        return view('student.pendaftaran.history');
+        return view('siswa.pendaftaran.history');
     })->name('register.history');
 });
