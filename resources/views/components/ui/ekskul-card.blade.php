@@ -3,13 +3,16 @@
     'description',
     'image' => '/images/placeholder-ekskul.jpg',
     'match' => null,
-    'route' => '#'
+    'route' => '#',
+    'gradient' => null
 ])
 
 <div class="bg-white border border-[#f2eaea] rounded-3xl p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col gap-4">
     <!-- Image wrapper matching mockup style -->
-    <div class="w-full aspect-[16/10] overflow-hidden rounded-2xl bg-gray-100 border border-gray-100">
-        <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" onerror="this.src='https://placehold.co/600x375?text={{ urlencode($name) }}'">
+    <div class="w-full aspect-[16/10] overflow-hidden rounded-2xl bg-gray-100 border border-gray-100 @if($gradient) p-1 bg-gradient-to-tr {{ $gradient }} @endif">
+        <div class="w-full h-full @if($gradient) rounded-[0.9rem] @else rounded-[1.2rem] @endif overflow-hidden relative">
+            <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" onerror="this.src='https://placehold.co/600x375?text={{ urlencode($name) }}'">
+        </div>
     </div>
 
     <!-- Content -->
