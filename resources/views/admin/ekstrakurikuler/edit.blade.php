@@ -30,12 +30,14 @@
             <!-- Section 1: Informasi Umum -->
             <div>
                 <x-forms.section-title title="Bagian 1: Informasi Umum" />
-                <x-forms.ekskul-fields 
-                    :name="$ekskul['name']" 
-                    :pembina="$ekskul['pembina']" 
-                    :description="$ekskul['description']" 
-                    :logo-filename="$ekskul['logo_filename']" 
-                />
+                <div class="pl-6">
+                    <x-forms.ekskul-fields 
+                        :name="$ekskul['name']" 
+                        :pembina="$ekskul['pembina']" 
+                        :description="$ekskul['description']" 
+                        :logo-filename="$ekskul['logo_filename']" 
+                    />
+                </div>
             </div>
 
             <!-- Section 2: Penilaian Aspek Pendukung -->
@@ -43,7 +45,7 @@
                 <x-forms.section-title title="Bagian 2: Penilaian Aspek Pendukung (Untuk Rekomendasi)" />
                 
                 <!-- Criteria List (Exactly matching screenshot values) -->
-                <div class="space-y-4">
+                <div class="space-y-4 pl-6">
                     @php
                         // 6 Recommendation Criteria with preset values from screenshot
                         $criteria = [
@@ -57,13 +59,15 @@
                     @endphp
 
                     @foreach($criteria as $criterion)
-                        <div class="flex flex-col md:flex-row md:items-center gap-4">
-                            <span class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                                {{ $criterion['label'] }} :
+                        <!-- Grid Layout 12 Columns matching screenshot -->
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                            <span class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                                {{ $criterion['label'] }}
                             </span>
+                            <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
                             
                             <!-- Radio box container -->
-                            <div class="flex items-center gap-4 sm:gap-8 flex-wrap bg-white border border-[#f2eaea] rounded-xl px-6 py-2.5 flex-grow shadow-xs">
+                            <div class="col-span-12 md:col-span-8 flex items-center gap-4 sm:gap-8 flex-wrap bg-[#FCFBFB] border border-[#f2eaea] rounded-xl px-6 py-2.5 shadow-xs">
                                 @for($i = 1; $i <= 5; $i++)
                                     <x-forms.radio 
                                         label="{{ $i }}" 
