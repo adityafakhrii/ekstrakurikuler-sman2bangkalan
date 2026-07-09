@@ -75,12 +75,15 @@
             @endforeach
         </x-tables.table>
 
-        <!-- Load More Button -->
+        <!-- Load More Button (Premium) -->
         <div class="flex justify-center mt-6">
-            <button class="flex items-center gap-2 border border-gray-300 rounded-lg px-4.5 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 focus:outline-none transition-colors duration-150 cursor-pointer bg-white shadow-xs">
-                <svg class="w-4 h-4 animate-spin text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3.2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18" />
-                </svg>
+            <button class="group relative flex items-center gap-3 bg-white border border-gray-200 hover:border-[#6366F1]/40 hover:bg-[#6366F1]/5 rounded-xl px-6 py-2.5 text-xs font-semibold text-gray-600 hover:text-[#6366F1] focus:outline-none transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md">
+                <!-- Bouncing dots -->
+                <span class="flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400 group-hover:bg-[#6366F1] animate-bounce" style="animation-delay: 0ms"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400 group-hover:bg-[#6366F1] animate-bounce" style="animation-delay: 150ms"></span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400 group-hover:bg-[#6366F1] animate-bounce" style="animation-delay: 300ms"></span>
+                </span>
                 Load more
             </button>
         </div>
