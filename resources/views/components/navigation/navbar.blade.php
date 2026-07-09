@@ -3,12 +3,23 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             
-            <!-- Logo & Brand (EKSIS) -->
-            <div class="flex items-center gap-3">
-                <!-- SMAN 2 Bangkalan Logo -->
-                <img src="/images/logo-sman2.png" alt="Logo SMAN 2 Bangkalan" class="h-10 w-auto object-contain" onerror="this.src='https://placehold.co/100x100?text=SMAN2'">
-                <span class="text-lg font-bold tracking-wider">EKSIS</span>
-            </div>
+            <!-- Logo & Brand (EKSIS) - Clickable, menuju ke index sesuai role -->
+            @if(request()->is('siswa*'))
+                <a href="{{ route('siswa.home') }}" class="flex items-center gap-3">
+                    <img src="/images/logo-sman2.png" alt="Logo SMAN 2 Bangkalan" class="h-10 w-auto object-contain" onerror="this.src='https://placehold.co/100x100?text=SMAN2'">
+                    <span class="text-lg font-bold tracking-wider">EKSIS</span>
+                </a>
+            @elseif(request()->is('ketua*'))
+                <a href="{{ route('ketua.dashboard') }}" class="flex items-center gap-3">
+                    <img src="/images/logo-sman2.png" alt="Logo SMAN 2 Bangkalan" class="h-10 w-auto object-contain" onerror="this.src='https://placehold.co/100x100?text=SMAN2'">
+                    <span class="text-lg font-bold tracking-wider">EKSIS</span>
+                </a>
+            @else
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3">
+                    <img src="/images/logo-sman2.png" alt="Logo SMAN 2 Bangkalan" class="h-10 w-auto object-contain" onerror="this.src='https://placehold.co/100x100?text=SMAN2'">
+                    <span class="text-lg font-bold tracking-wider">EKSIS</span>
+                </a>
+            @endif
 
             <!-- Navigation Links (Desktop) -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-normal">
