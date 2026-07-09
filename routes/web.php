@@ -33,8 +33,9 @@ Route::get('/siswa', function () {
         if (auth()->user()->isSiswa()) {
             return view('student.home.index');
         }
-        
+
         $redirectRoute = auth()->user()->isAdmin() ? 'dashboard' : 'ketua.dashboard';
+
         return redirect()->route($redirectRoute)->with('error', 'Silakan logout terlebih dahulu untuk masuk sebagai Siswa.');
     }
 

@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
                 ['Ketua Pramuka',    'ketua.pramuka',  'Ketua',  'password'],
                 ['Ketua Basket',     'ketua.basket',   'Ketua',  'password'],
                 ['Ketua PMR',        'ketua.pmr',      'Ketua',  'password'],
-                ['Ketua Paduan Suara','ketua.paduan',  'Ketua',  'password'],
+                ['Ketua Paduan Suara', 'ketua.paduan',  'Ketua',  'password'],
                 ['Ahmad Jihaduddin', '2120202',        'Siswa',  'password'],
                 ['Saiful Bahri',     '2120203',        'Siswa',  'password'],
                 ['Dewi Sartika',     '2120204',        'Siswa',  'password'],

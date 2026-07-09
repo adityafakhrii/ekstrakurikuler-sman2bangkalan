@@ -17,11 +17,11 @@ class UserSeeder extends Seeder
         User::firstOrCreate(
             ['username' => 'admin'],
             [
-                'name'              => 'Administrator',
-                'email'             => 'admin@sman2bangkalan.sch.id',
-                'password'          => Hash::make('password'),
-                'role'              => 'admin',
-                'username'          => 'admin',
+                'name' => 'Administrator',
+                'email' => 'admin@sman2bangkalan.sch.id',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'username' => 'admin',
                 'email_verified_at' => now(),
             ]
         );
@@ -41,11 +41,11 @@ class UserSeeder extends Seeder
             User::firstOrCreate(
                 ['username' => $ketua['username']],
                 [
-                    'name'              => $ketua['name'],
-                    'email'             => $ketua['email'],
-                    'password'          => Hash::make('password'),
-                    'role'              => 'ketua',
-                    'username'          => $ketua['username'],
+                    'name' => $ketua['name'],
+                    'email' => $ketua['email'],
+                    'password' => Hash::make('password'),
+                    'role' => 'ketua',
+                    'username' => $ketua['username'],
                     'email_verified_at' => now(),
                 ]
             );
@@ -64,11 +64,11 @@ class UserSeeder extends Seeder
             $user = User::firstOrCreate(
                 ['nisn' => $data['nisn']],
                 [
-                    'name'              => $data['name'],
-                    'nisn'              => $data['nisn'],
-                    'no_hp'             => $data['no_telp'],
-                    'password'          => Hash::make('password'),
-                    'role'              => 'siswa',
+                    'name' => $data['name'],
+                    'nisn' => $data['nisn'],
+                    'no_hp' => $data['no_telp'],
+                    'password' => Hash::make('password'),
+                    'role' => 'siswa',
                     'email_verified_at' => now(),
                 ]
             );
@@ -76,14 +76,14 @@ class UserSeeder extends Seeder
             Siswa::firstOrCreate(
                 ['user_id' => $user->id],
                 [
-                    'nis'           => $data['nis'],
-                    'nisn'          => $data['nisn'],
-                    'kelas'         => $data['kelas'],
-                    'rombel'        => $data['rombel'],
-                    'jurusan'       => $data['jurusan'],
-                    'no_telp'       => $data['no_telp'],
+                    'nis' => $data['nis'],
+                    'nisn' => $data['nisn'],
+                    'kelas' => $data['kelas'],
+                    'rombel' => $data['rombel'],
+                    'jurusan' => $data['jurusan'],
+                    'no_telp' => $data['no_telp'],
                     'jenis_kelamin' => $data['jenis_kelamin'],
-                    'tahun_masuk'   => $data['tahun_masuk'],
+                    'tahun_masuk' => $data['tahun_masuk'],
                 ]
             );
         }

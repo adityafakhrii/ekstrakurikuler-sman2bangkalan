@@ -4,7 +4,6 @@ namespace App\Http\Requests\Student;
 
 use App\Models\Pendaftaran;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StorePendaftaranRequest extends FormRequest
 {
@@ -27,6 +26,7 @@ class StorePendaftaranRequest extends FormRequest
 
             if (! $siswa) {
                 $validator->errors()->add('nisn', 'Data siswa tidak ditemukan. Silakan hubungi admin.');
+
                 return;
             }
 

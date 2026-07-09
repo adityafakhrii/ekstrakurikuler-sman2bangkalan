@@ -24,10 +24,10 @@ class PendaftaranController extends Controller
         $siswa = $request->user()->siswa;
 
         Pendaftaran::create([
-            'siswa_id'           => $siswa->id,
+            'siswa_id' => $siswa->id,
             'ekstrakurikuler_id' => $ekskul->id,
-            'status'             => 'menunggu',
-            'catatan_siswa'      => $request->validated('catatan_siswa'),
+            'status' => 'menunggu',
+            'catatan_siswa' => $request->validated('catatan_siswa'),
         ]);
 
         return redirect()

@@ -8,9 +8,9 @@ use App\Http\Requests\Admin\UpdateSiswaRequest;
 use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class SiswaController extends Controller
 {
@@ -32,23 +32,23 @@ class SiswaController extends Controller
             $validated = $request->validated();
 
             $user = User::create([
-                'name'     => $validated['nama_siswa'],
-                'nisn'     => $validated['nisn'],
-                'no_hp'    => $validated['no_hp'],
+                'name' => $validated['nama_siswa'],
+                'nisn' => $validated['nisn'],
+                'no_hp' => $validated['no_hp'],
                 'password' => Hash::make('password'),
-                'role'     => 'siswa',
+                'role' => 'siswa',
             ]);
 
             Siswa::create([
-                'user_id'        => $user->id,
-                'nis'            => $validated['nisn'],
-                'nisn'           => $validated['nisn'],
-                'kelas'          => 'X',
-                'rombel'         => 'X MIPA 1',
-                'jurusan'        => 'MIPA',
-                'no_telp'        => $validated['no_hp'],
-                'jenis_kelamin'  => 'L',
-                'tahun_masuk'    => now()->format('Y'),
+                'user_id' => $user->id,
+                'nis' => $validated['nisn'],
+                'nisn' => $validated['nisn'],
+                'kelas' => 'X',
+                'rombel' => 'X MIPA 1',
+                'jurusan' => 'MIPA',
+                'no_telp' => $validated['no_hp'],
+                'jenis_kelamin' => 'L',
+                'tahun_masuk' => now()->format('Y'),
             ]);
         });
 
@@ -70,14 +70,14 @@ class SiswaController extends Controller
             $validated = $request->validated();
 
             $siswa->update([
-                'nis'      => $validated['nisn'],
-                'nisn'     => $validated['nisn'],
-                'no_telp'  => $validated['no_hp'],
+                'nis' => $validated['nisn'],
+                'nisn' => $validated['nisn'],
+                'no_telp' => $validated['no_hp'],
             ]);
 
             $siswa->user->update([
-                'name'  => $validated['nama_siswa'],
-                'nisn'  => $validated['nisn'],
+                'name' => $validated['nama_siswa'],
+                'nisn' => $validated['nisn'],
                 'no_hp' => $validated['no_hp'],
             ]);
         });

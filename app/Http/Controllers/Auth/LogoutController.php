@@ -9,9 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LogoutController extends Controller
 {
-    /**
-     * Logout dan redirect ke halaman login yang sesuai.
-     */
     public function logout(Request $request): RedirectResponse
     {
         $user = $request->user();
@@ -23,7 +20,6 @@ class LogoutController extends Controller
 
         session()->flash('success', 'Anda telah berhasil keluar.');
 
-        // Redirect sesuai role sebelumnya
         if ($user?->isSiswa()) {
             return redirect()->route('siswa.login');
         }

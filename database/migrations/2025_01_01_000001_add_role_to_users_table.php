@@ -11,13 +11,13 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // Role untuk multi-role auth
             $table->enum('role', ['admin', 'ketua', 'siswa'])->default('siswa')->after('email');
-            
+
             // Username untuk admin & ketua login
             $table->string('username')->nullable()->unique()->after('role');
-            
+
             // NISN untuk siswa login
             $table->string('nisn')->nullable()->unique()->after('username');
-            
+
             // No HP
             $table->string('no_hp')->nullable()->after('nisn');
         });
