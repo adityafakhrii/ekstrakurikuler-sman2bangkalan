@@ -1,30 +1,58 @@
 @extends('layouts.admin')
 
-@section('title', 'Dashboard - EKSIS SMAN 2 Bangkalan')
+@section('title', 'Dashboard Admin - EKSIS SMAN 2 Bangkalan')
 
 @section('content')
-    <!-- Dashboard Stats Grid (Match screenshot layout) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto py-8">
+    <!-- Floating Card Container matching screenshot style and ketua layout structure -->
+    <div class="w-full max-w-5xl bg-[#FFF5F5] rounded-[2.5rem] shadow-xl p-8 sm:p-12 mx-auto">
         
-        <!-- Card 1: Ketua Ekstrakurikuler -->
-        <x-cards.stat-card 
-            title="Ketua Ekstrakurikuler" 
-            value="21" 
-        />
+        <!-- Grid of 3 Stats matching screenshot layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Card 1: Ketua Ekstrakurikuler -->
+            <div class="bg-[#E5E3F6] rounded-3xl p-6 relative flex flex-col justify-between min-h-[140px] shadow-sm">
+                <div>
+                    <span class="text-sm font-bold text-gray-800">Ketua Ekstrakurikuler</span>
+                    <h3 class="text-4xl font-extrabold text-gray-900 mt-2">21</h3>
+                </div>
+                <!-- Siluet Person Icon in bottom right (Absolute positioned cleanly) -->
+                <div class="absolute bottom-4 right-4 text-black">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </div>
+            </div>
 
-        <!-- Card 2: Anggota Ekstrakurikuler -->
-        <x-cards.stat-card 
-            title="Anggota Ekstrakurikuler" 
-            value="433" 
-        />
+            <!-- Card 2: Anggota Ekstrakurikuler -->
+            <div class="bg-[#E5E3F6] rounded-3xl p-6 relative flex flex-col justify-between min-h-[140px] shadow-sm">
+                <div>
+                    <span class="text-sm font-bold text-gray-800">Anggota Ekstrakurikuler</span>
+                    <h3 class="text-4xl font-extrabold text-gray-900 mt-2">433</h3>
+                </div>
+                <!-- Siluet Person Icon in bottom right (Absolute positioned cleanly) -->
+                <div class="absolute bottom-4 right-4 text-black">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </div>
+            </div>
 
-        <!-- Card 3: Ekstrakurikuler (Centered below) -->
-        <div class="md:col-span-2 md:flex md:justify-center">
-            <x-cards.stat-card 
-                title="Ekstrakurikuler" 
-                value="21" 
-                class="w-full md:w-[calc(50%-1rem)]" 
-            />
+            <!-- Card 3: Ekstrakurikuler (Centered in row 2) -->
+            <div class="md:col-span-2 flex justify-center">
+                <div class="bg-[#E5E3F6] rounded-3xl p-6 relative flex flex-col justify-between min-h-[140px] shadow-sm w-full md:w-[calc(50%-1rem)]">
+                    <div>
+                        <span class="text-sm font-bold text-gray-800">Ekstrakurikuler</span>
+                        <h3 class="text-4xl font-extrabold text-gray-900 mt-2">21</h3>
+                    </div>
+                    <!-- Siluet Person Icon in bottom right (Absolute positioned cleanly) -->
+                    <div class="absolute bottom-4 right-4 text-black">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
