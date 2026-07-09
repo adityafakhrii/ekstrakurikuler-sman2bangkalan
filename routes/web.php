@@ -134,7 +134,7 @@ Route::post('/logout', function () {
 Route::prefix('siswa')->name('siswa.')->group(function () {
     
     // 1. Home Page
-    Route::get('/home', function () {
+    Route::get('/', function () {
         return view('student.home.index');
     })->name('home');
 

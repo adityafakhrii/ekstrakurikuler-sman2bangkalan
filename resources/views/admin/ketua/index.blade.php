@@ -15,47 +15,45 @@
             <!-- Right: Tambah Button & Search Input -->
             <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
                 <!-- Tambah Ketua Button (Purple styled button) -->
-                <x-buttons.button onclick="window.location.href='{{ route('admin.ketua.create') }}'" class="h-[38px] bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-6 rounded-lg inline-flex items-center gap-1.5 transition-all shadow-sm cursor-pointer border-0 whitespace-nowrap">
-                    <!-- Plus Icon -->
+                <x-buttons.button onclick="window.location.href='{{ route('pengguna.ketua.create') }}'" class="h-[38px] bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-6 rounded-lg inline-flex items-center gap-1.5 transition-all shadow-sm cursor-pointer border-0 whitespace-nowrap">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
                     Tambah Ketua
                 </x-buttons.button>
 
-                <!-- Search Input Component (Cari Ekskul placeholder matching screenshot) -->
+                <!-- Search Input -->
                 <x-forms.search placeholder="Cari Ekskul" class="h-[38px]" />
             </div>
 
         </div>
 
         <!-- Table Component -->
-        <x-tables.table :headers="['#', 'Ekstrakurikuler', 'Nama Pembina', 'Tanggal Dibuat', 'Action']">
+        <x-tables.table :headers="['#', 'Nama Ketua', 'Ekstrakurikuler', 'Tanggal Ditambahkan', 'Action']">
             @php
-                // Dummy Data matches the provided list ketua screenshot
                 $ketuas = [
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35'],
-                    ['id' => 1, 'ekskul' => 'pramuka', 'pembina' => 'Ahmad Jihadudin Salim', 'created_at' => 'January 09, 2025 12.35']
+                    ['id' => 1, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 2, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 3, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 4, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 5, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 6, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 7, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 8, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
+                    ['id' => 9, 'nama' => 'Ahmad Jihadudin Salim', 'ekskul' => 'pramuka', 'created_at' => 'January 09, 2025 12.35'],
                 ];
             @endphp
 
             @foreach($ketuas as $index => $ketua)
                 <tr class="hover:bg-gray-50/50 transition-colors duration-150">
                     <td class="table-body-cell font-medium">{{ $index + 1 }}</td>
-                    <td class="table-body-cell font-medium text-gray-900">{{ $ketua['ekskul'] }}</td>
-                    <td class="table-body-cell text-gray-700">{{ $ketua['pembina'] }}</td>
+                    <td class="table-body-cell font-medium text-gray-900">{{ $ketua['nama'] }}</td>
+                    <td class="table-body-cell text-gray-700">{{ $ketua['ekskul'] }}</td>
                     <td class="table-body-cell text-gray-500 font-normal">{{ $ketua['created_at'] }}</td>
                     <td class="table-body-cell text-center">
                         <div class="flex items-center justify-center gap-2">
                             <!-- Ubah Button (Yellow) -->
-                            <x-buttons.button onclick="window.location.href='{{ route('admin.ketua.edit', 1) }}'" variant="edit" class="shadow-xs">
+                            <x-buttons.button onclick="window.location.href='{{ route('pengguna.ketua.edit', 1) }}'" variant="edit" class="shadow-xs">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                 </svg>

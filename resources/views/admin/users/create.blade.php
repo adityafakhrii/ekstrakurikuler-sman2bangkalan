@@ -7,16 +7,63 @@
     <x-cards.card title="Tambah Admin Baru">
         
         <!-- Create Form -->
-        <form method="POST" action="{{ route('pengguna.admin.store') }}" enctype="multipart/form-data" class="max-w-4xl mx-auto space-y-8">
+        <form method="POST" action="{{ route('pengguna.admin.store') }}" class="max-w-4xl mx-auto space-y-8">
             @csrf
 
-            <!-- Section 1: Informasi Umum -->
-            <div>
-                <x-forms.section-title title="Bagian 1: Informasi Umum" />
-                <x-forms.ekskul-fields />
+            <!-- Form Fields -->
+            <div class="space-y-6 pl-6">
+
+                <!-- Nama Lengkap -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="nama_lengkap" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Nama Lengkap
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input 
+                            name="nama_lengkap" 
+                            placeholder="Masukkan Nama Admin" 
+                            value="{{ old('nama_lengkap') }}" 
+                            required 
+                        />
+                    </div>
+                </div>
+
+                <!-- Username -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="username" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Username
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input 
+                            name="username" 
+                            placeholder="Masukkan Username" 
+                            value="{{ old('username') }}" 
+                            required 
+                        />
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="password" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Password
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input 
+                            type="password"
+                            name="password" 
+                            placeholder="Masukkan Password" 
+                            required 
+                        />
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Action Buttons (Right Aligned matching screenshot) -->
+            <!-- Action Buttons (Right Aligned) -->
             <div class="flex justify-end gap-3 pt-6 border-t border-[#f2eaea]">
                 <!-- Simpan Button -->
                 <x-buttons.button type="submit" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white py-2.5 px-6 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm">
@@ -28,7 +75,7 @@
                 </x-buttons.button>
 
                 <!-- Batal Button (Grey) -->
-                <x-buttons.button variant="secondary" type="button" onclick="window.location.href='{{ route('admin.admin.index') }}'" class="text-xs font-semibold py-2.5 px-6 rounded-lg shadow-sm">
+                <x-buttons.button variant="secondary" type="button" onclick="window.location.href='{{ route('pengguna.admin.index') }}'" class="text-xs font-semibold py-2.5 px-6 rounded-lg shadow-sm">
                     Batal
                 </x-buttons.button>
             </div>

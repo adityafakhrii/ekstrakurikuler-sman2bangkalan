@@ -1,50 +1,124 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Ketua - EKSIS SMAN 2 Bangkalan')
+@section('title', 'Ubah Ketua - EKSIS SMAN 2 Bangkalan')
 
 @section('content')
     <!-- Main Card Wrapper -->
-    <x-cards.card title="Edit Ketua Baru">
-        
-        <!-- Dummy data definitions (Matches Ketua context) -->
+    <x-cards.card title="Ubah Ketua">
+
         @php
+            // Dummy data
             $ketua = [
-                'name' => 'Pramuka',
-                'pembina' => 'Ahmad Jihaduddin Salim',
-                'description' => 'Pramuka adalah kegiatan ekstrakurikuler yang melatih kemandirian, disiplin, kerja sama, dan kepemimpinan melalui aktivitas seru seperti baris-berbaris, tali-temali, dan perkemahan.',
-                'logo_filename' => 'Logo.jpg*'
+                'nama_ketua' => 'Ahmad Jihaduddin Salim',
+                'ekskul_id'  => 1,
+                'username'   => 'Ahmad3012',
+            ];
+            $ekskuls = [
+                ['id' => 1, 'name' => 'Pramuka'],
+                ['id' => 2, 'name' => 'OSIS'],
+                ['id' => 3, 'name' => 'PMR'],
+                ['id' => 4, 'name' => 'Basket'],
+                ['id' => 5, 'name' => 'Futsal'],
+                ['id' => 6, 'name' => 'Paduan Suara'],
             ];
         @endphp
 
         <!-- Edit Form -->
-        <form method="POST" action="{{ route('pengguna.ketua.update', 1) }}" enctype="multipart/form-data" class="max-w-4xl mx-auto space-y-8">
+        <form method="POST" action="{{ route('pengguna.ketua.update', 1) }}" class="max-w-4xl mx-auto space-y-8">
             @csrf
             @method('PUT')
 
-            <!-- Section 1: Informasi Umum -->
-            <div>
-                <x-forms.section-title title="Bagian 1: Informasi Umum" />
-                <x-forms.ekskul-fields 
-                    :name="$ketua['name']" 
-                    :pembina="$ketua['pembina']" 
-                    :description="$ketua['description']" 
-                    :logo-filename="$ketua['logo_filename']" 
-                />
+            <!-- Form Fields -->
+            <div class="space-y-6 pl-6">
+
+                <!-- Nama Ketua -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="nama_ketua" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Nama Ketua
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input
+                            name="nama_ketua"
+                            placeholder="Masukkan Nama Ketua Ekstrakurikuler"
+                            value="{{ old('nama_ketua', $ketua['nama_ketua']) }}"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Ekstrakurikuler (Dropdown) -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="ekskul_id" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Ekstrakurikuler
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <div class="relative">
+                            <select name="ekskul_id" id="ekskul_id" required
+                                class="w-full bg-white border border-[#f2eaea] rounded-xl px-4 py-2.5 pr-10 text-sm text-gray-700 font-medium shadow-xs appearance-none focus:outline-none focus:ring-2 focus:ring-[#6366F1]/30 focus:border-[#6366F1] transition-all duration-150">
+                                <option value="" disabled>Pilih Ekstrakurikuler</option>
+                                @foreach($ekskuls as $ekskul)
+                                    <option value="{{ $ekskul['id'] }}" {{ old('ekskul_id', $ketua['ekskul_id']) == $ekskul['id'] ? 'selected' : '' }}>
+                                        {{ $ekskul['name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <!-- Chevron Icon -->
+                            <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
+                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Username -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="username" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Username
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input
+                            name="username"
+                            placeholder="Masukkan Username"
+                            value="{{ old('username', $ketua['username']) }}"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Password (opsional) -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="password" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Password
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input
+                            type="password"
+                            name="password"
+                            placeholder="Kosongkan jika tidak ingin mengubah password"
+                        />
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Action Buttons (Right Aligned matching screenshot) -->
+            <!-- Action Buttons (Right Aligned) -->
             <div class="flex justify-end gap-3 pt-6 border-t border-[#f2eaea]">
-                <!-- Simpan Perubahan Button -->
+                <!-- Simpan Button -->
                 <x-buttons.button type="submit" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white py-2.5 px-6 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm">
-                    <!-- Save/Disk Icon -->
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                     </svg>
-                    Simpan Perubahan
+                    Simpan
                 </x-buttons.button>
 
                 <!-- Batal Button (Grey) -->
-                <x-buttons.button variant="secondary" type="button" onclick="window.location.href='{{ route('admin.ketua.index') }}'" class="text-xs font-semibold py-2.5 px-6 rounded-lg shadow-sm">
+                <x-buttons.button variant="secondary" type="button" onclick="window.location.href='{{ route('pengguna.ketua.index') }}'" class="text-xs font-semibold py-2.5 px-6 rounded-lg shadow-sm">
                     Batal
                 </x-buttons.button>
             </div>
