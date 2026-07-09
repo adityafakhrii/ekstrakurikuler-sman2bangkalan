@@ -4,18 +4,20 @@
     'currentEntries' => 10
 ])
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-4 text-xs font-semibold text-gray-700">
+<!-- Pagination Container conforming to the screenshot layout -->
+<div class="flex flex-col gap-2 py-2 text-xs font-semibold text-gray-700 text-left">
     
-    <!-- Left: Entries Count & Page Selector -->
-    <div class="flex items-center gap-3">
-        <span>Showing 1 to 3 of 3 Entries</span>
-        
+    <!-- Top Row: Showing Entries Info -->
+    <span class="text-xs font-semibold text-gray-800">Showing 1 to 3 of 3 Entries</span>
+    
+    <!-- Bottom Row: Dropdown and Prev/Next Navigation horizontally aligned -->
+    <div class="flex items-center gap-1.5">
         <!-- Entries Dropdown -->
         <div class="relative" x-data="{ open: false, selected: {{ $currentEntries }} }">
             <button @click="open = !open" 
-                    class="flex items-center gap-1 bg-white border border-gray-300 rounded px-2.5 py-1 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-brand-accent cursor-pointer">
+                    class="flex items-center gap-1.5 bg-white border border-gray-300 rounded-md px-2.5 py-1 text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-brand-accent cursor-pointer">
                 <span x-text="selected"></span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <svg class="w-3.5 h-3.5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
             </button>
@@ -33,11 +35,11 @@
         </div>
 
         <!-- Buttons Prev & Next -->
-        <div class="inline-flex rounded-md shadow-sm">
-            <button class="bg-[#1f2937] hover:bg-black text-white px-3 py-1 rounded-l text-xs transition-colors cursor-pointer">
+        <div class="inline-flex rounded-md shadow-xs overflow-hidden">
+            <button class="bg-[#111827] hover:bg-black text-white px-3.5 py-1.5 text-xs font-semibold transition-colors cursor-pointer border-0">
                 Prev
             </button>
-            <button class="bg-[#1f2937] hover:bg-black text-white px-3 py-1 rounded-r text-xs transition-colors border-l border-gray-700 cursor-pointer">
+            <button class="bg-[#111827] hover:bg-black text-white px-3.5 py-1.5 text-xs font-semibold transition-colors border-l border-gray-700 cursor-pointer border-0">
                 Next
             </button>
         </div>

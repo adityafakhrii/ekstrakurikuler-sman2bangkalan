@@ -7,15 +7,15 @@
     <x-cards.card title="List Ketua">
         
         <!-- Table Controls -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
             
             <!-- Left: Pagination Entries Controller -->
             <x-pagination.pagination />
 
             <!-- Right: Tambah Button & Search Input -->
-            <div class="flex items-center gap-3 self-end md:self-auto">
+            <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
                 <!-- Tambah Ketua Button (Purple styled button) -->
-                <x-buttons.button onclick="window.location.href='{{ route('admin.ketua.create') }}'" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold py-2.5 px-4 rounded-lg inline-flex items-center gap-1.5 transition-all shadow-sm">
+                <x-buttons.button onclick="window.location.href='{{ route('admin.ketua.create') }}'" class="h-[38px] bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-6 rounded-lg inline-flex items-center gap-1.5 transition-all shadow-sm cursor-pointer border-0 whitespace-nowrap">
                     <!-- Plus Icon -->
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -24,7 +24,7 @@
                 </x-buttons.button>
 
                 <!-- Search Input Component (Cari Ekskul placeholder matching screenshot) -->
-                <x-forms.search placeholder="Cari Ekskul" />
+                <x-forms.search placeholder="Cari Ekskul" class="h-[38px]" />
             </div>
 
         </div>
