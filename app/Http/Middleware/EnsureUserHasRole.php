@@ -20,6 +20,15 @@ class EnsureUserHasRole
         }
 
         if (! $request->user()->hasRole($roles)) {
+            $user = $request->user();
+            if ($user->isSiswa()) {
+                return redirect()->route('siswa.home')->with('error', 'Silakan logout terlebih dahulu untuk mengakses halaman tersebut.');
+            } elseif ($user->isAdmin()) {
+                return redirect()->route('dashboard')->with('error', 'Silakan logout terlebih dahulu untuk mengakses halaman tersebut.');
+            } elseif ($user->isKetua()) {
+                return redirect()->route('ketua.dashboard')->with('error', 'Silakan logout terlebih dahulu untuk mengakses halaman tersebut.');
+            }
+
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
 

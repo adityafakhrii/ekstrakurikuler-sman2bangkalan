@@ -22,6 +22,9 @@ class AdminAuthController extends Controller
             if (Auth::user()->isKetua()) {
                 return redirect()->route('ketua.dashboard');
             }
+            if (Auth::user()->isSiswa()) {
+                return redirect()->route('siswa.home')->with('error', 'Silakan logout terlebih dahulu untuk masuk sebagai Admin/Ketua.');
+            }
         }
         return view('auth.admin.login');
     }

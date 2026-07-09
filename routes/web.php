@@ -29,18 +29,16 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 // --- Entry siswa ---
 Route::get('/siswa', function () {
-    \Log::debug('Siswa Route Access', [
-        'check' => auth()->check(),
-        'user_id' => auth()->id(),
-        'role' => auth()->check() ? auth()->user()->role : null,
-        'session_id' => session()->getId(),
-    ]);
-
-    if (auth()->check() && auth()->user()->isSiswa()) {
-        return view('student.home.index');
+    if (auth()->check()) {
+        if (auth()->user()->isSiswa()) {
+            return view('student.home.index');
+        }
+        
+        $redirectRoute = auth()->user()->isAdmin() ? 'dashboard' : 'ketua.dashboard';
+        return redirect()->route($redirectRoute)->with('error', 'Silakan logout terlebih dahulu untuk masuk sebagai Siswa.');
     }
 
-    return redirect()->route('siswa.login')->with('error', 'Sesi Anda telah berakhir atau Anda tidak memiliki akses.');
+    return redirect()->route('siswa.login');
 })->name('siswa.home');
 
 // =======================
