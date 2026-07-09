@@ -35,11 +35,12 @@
             <!-- Form Row Grid Fields -->
             <div class="space-y-6 max-w-3xl mx-auto">
                 <!-- Nisn -->
-                <div class="flex flex-col md:flex-row md:items-center gap-4">
-                    <label for="nisn" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                        Nisn :
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="nisn" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Nisn
                     </label>
-                    <div class="flex-grow">
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-1 md:col-span-8">
                         <x-forms.input 
                             name="nisn" 
                             placeholder="Masukkan Nisn" 
@@ -50,11 +51,12 @@
                 </div>
 
                 <!-- Nama Lengkap -->
-                <div class="flex flex-col md:flex-row md:items-center gap-4">
-                    <label for="name" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                        Nama Lengkap :
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="name" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Nama Lengkap
                     </label>
-                    <div class="flex-grow">
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-1 md:col-span-8">
                         <x-forms.input 
                             name="name" 
                             placeholder="Masukkan Nama Lengkap" 
@@ -65,11 +67,12 @@
                 </div>
 
                 <!-- Jenis Kelamin -->
-                <div class="flex flex-col md:flex-row md:items-center gap-4">
-                    <label class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                        Jenis Kelamin :
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Jenis Kelamin
                     </label>
-                    <div class="flex-grow flex items-center gap-6">
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-1 md:col-span-8 flex items-center gap-6">
                         <x-forms.radio 
                             label="Laki - Laki" 
                             name="gender" 
@@ -86,11 +89,12 @@
                 </div>
 
                 <!-- Kelas-Jurusan -->
-                <div class="flex flex-col md:flex-row md:items-center gap-4">
-                    <label for="class_major" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                        Kelas-Jurusan :
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="class_major" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Kelas-Jurusan
                     </label>
-                    <div class="flex-grow">
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-1 md:col-span-8">
                         <x-forms.input 
                             name="class_major" 
                             placeholder="Masukkan Kelas-Jurusan" 
@@ -101,11 +105,12 @@
                 </div>
 
                 <!-- Email -->
-                <div class="flex flex-col md:flex-row md:items-center gap-4">
-                    <label for="email" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                        Email :
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="email" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Email
                     </label>
-                    <div class="flex-grow">
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-1 md:col-span-8">
                         <x-forms.input 
                             type="email"
                             name="email" 
@@ -117,12 +122,14 @@
                 </div>
 
                 <!-- No.Whatsapp -->
-                <div class="flex flex-col md:flex-row md:items-center gap-4">
-                    <label for="whatsapp" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                        No.Whatsapp :
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="whatsapp" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        No.Whatsapp
                     </label>
-                    <div class="flex-grow">
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-1 md:col-span-8">
                         <x-forms.input 
+                            type="number"
                             name="whatsapp" 
                             placeholder="Masukkan No.Whatsapp" 
                             value="{{ old('whatsapp') }}" 
@@ -132,11 +139,12 @@
                 </div>
 
                 <!-- Alamat -->
-                <div class="flex flex-col md:flex-row md:items-center gap-4">
-                    <label for="address" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
-                        Alamat :
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="address" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Alamat
                     </label>
-                    <div class="flex-grow">
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-1 md:col-span-8">
                         <x-forms.input 
                             name="address" 
                             placeholder="Masukkan Alamat" 
@@ -146,19 +154,23 @@
                     </div>
                 </div>
 
-                <!-- Alasan Mengikuti (Textarea below label) -->
-                <div class="flex flex-col gap-2 pt-2">
-                    <span class="text-sm font-semibold text-gray-800">
-                        Alasan Mengikuti :
-                    </span>
-                    <x-forms.textarea 
-                        name="reason" 
-                        placeholder="Masukkan Alasan Mengikuti Ekskul" 
-                        value="{{ old('reason') }}" 
-                        rows="5" 
-                        required 
-                    />
+                <!-- Alasan Mengikuti -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+                    <label for="reason" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left pt-2.5">
+                        Alasan Mengikuti
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center pt-2.5">:</span>
+                    <div class="col-span-1 md:col-span-8">
+                        <x-forms.textarea 
+                            name="reason" 
+                            placeholder="Masukkan Alasan Mengikuti Ekskul" 
+                            value="{{ old('reason') }}" 
+                            rows="5" 
+                            required 
+                        />
+                    </div>
                 </div>
+            </div>
             </div>
 
             <!-- Action Buttons matching screenshot style inside the card -->

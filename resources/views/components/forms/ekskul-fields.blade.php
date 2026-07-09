@@ -7,11 +7,11 @@
 
 <div class="space-y-6">
     <!-- Nama Ekstrakurikuler -->
-    <div class="flex flex-col md:flex-row md:items-center gap-4">
-        <label for="name" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+        <label for="name" class="md:col-span-1 text-sm font-semibold text-gray-800 md:text-right">
             Nama Ekstrakurikuler :
         </label>
-        <div class="flex-grow">
+        <div class="md:col-span-3">
             <x-forms.input 
                 name="name" 
                 placeholder="Masukkan nama Ekstrakurikuler" 
@@ -22,11 +22,11 @@
     </div>
 
     <!-- Nama Pembina -->
-    <div class="flex flex-col md:flex-row md:items-center gap-4">
-        <label for="pembina" class="w-full md:w-1/4 text-sm font-semibold text-gray-800 md:text-right">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+        <label for="pembina" class="md:col-span-1 text-sm font-semibold text-gray-800 md:text-right">
             Nama Pembina :
         </label>
-        <div class="flex-grow">
+        <div class="md:col-span-3">
             <x-forms.input 
                 name="pembina" 
                 placeholder="Masukkan nama Pembina" 
