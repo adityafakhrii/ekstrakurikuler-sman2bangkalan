@@ -21,14 +21,17 @@ class DatabaseSeeder extends Seeder
         $this->command->newLine();
         $this->command->info('🎉 Database seeding selesai!');
         $this->command->table(
-            ['Akun', 'Email', 'Password'],
+            ['Akun', 'Username / NISN', 'Role', 'Password'],
             [
-                ['Admin',              'admin@sman2bangkalan.sch.id',     'password'],
-                ['Ketua OSIS',         'ketua.osis@sman2bangkalan.sch.id','password'],
-                ['Ketua Pramuka',      'ketua.pramuka@sman2bangkalan.sch.id','password'],
-                ['Ketua Basket',       'ketua.basket@sman2bangkalan.sch.id','password'],
-                ['Ketua PMR',          'ketua.pmr@sman2bangkalan.sch.id','password'],
-                ['Ketua Paduan Suara', 'ketua.paduan@sman2bangkalan.sch.id','password'],
+                ['Administrator',    'admin',          'Admin',  'password'],
+                ['Ketua OSIS',       'ketua.osis',     'Ketua',  'password'],
+                ['Ketua Pramuka',    'ketua.pramuka',  'Ketua',  'password'],
+                ['Ketua Basket',     'ketua.basket',   'Ketua',  'password'],
+                ['Ketua PMR',        'ketua.pmr',      'Ketua',  'password'],
+                ['Ketua Paduan Suara','ketua.paduan',  'Ketua',  'password'],
+                ['Ahmad Jihaduddin', '2120202',        'Siswa',  'password'],
+                ['Saiful Bahri',     '2120203',        'Siswa',  'password'],
+                ['Dewi Sartika',     '2120204',        'Siswa',  'password'],
             ]
         );
     }

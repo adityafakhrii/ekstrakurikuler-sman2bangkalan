@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\HandleAppearance;
+use App\Http\Middleware\EnsureUserHasRole;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -22,6 +23,14 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+        $middleware->alias([
+            'role' => EnsureUserHasRole::class,
+        ]);
+
+        $middleware->redirectGuestsTo(function ($request) {
+            return $request->is('siswa*') ? route('siswa.login') : route('login');
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

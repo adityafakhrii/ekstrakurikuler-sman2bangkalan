@@ -1,148 +1,161 @@
 <?php
 
+use App\Http\Controllers\Admin\SiswaController;
+use App\Http\Controllers\Auth\AdminAuthController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\StudentAuthController;
+use App\Http\Controllers\Student\PendaftaranController;
 use Illuminate\Support\Facades\Route;
 
-// Rute Root redirect ke Login
+// =======================
+// RUTE AUTENTIKASI
+// =======================
+
+// Root redirect ke login admin
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Tampilan Login Admin (Dummy)
-Route::get('/login', function () {
-    return view('auth.admin.login');
-})->name('login');
+// --- Login Admin & Ketua ---
+Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AdminAuthController::class, 'login']);
 
-// Aksi Login POST Admin (Dummy - Bypass ke Dashboard Admin)
-Route::post('/login', function () {
-    return redirect()->route('dashboard');
-});
+// --- Login Siswa ---
+Route::get('/siswa/login', [StudentAuthController::class, 'showLoginForm'])->name('siswa.login');
+Route::post('/siswa/login', [StudentAuthController::class, 'login']);
 
-// Tampilan Login Siswa (Dummy)
-Route::get('/siswa/login', function () {
-    return view('auth.student.login');
-})->name('siswa.login');
+// --- Logout ---
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-// Aksi Login POST Siswa (Dummy - Bypass ke Home Siswa)
-Route::post('/siswa/login', function () {
-    return redirect()->route('siswa.home');
-});
+// --- Entry siswa ---
+Route::get('/siswa', function () {
+    \Log::debug('Siswa Route Access', [
+        'check' => auth()->check(),
+        'user_id' => auth()->id(),
+        'role' => auth()->check() ? auth()->user()->role : null,
+        'session_id' => session()->getId(),
+    ]);
 
-// Rute Dashboard (Bypass Middleware Auth sementara untuk status Dummy)
-Route::get('/dashboard', function () {
-    return view('admin.dashboard.index');
-})->name('dashboard');
-
-// Rute Ekstrakurikuler (Dummy)
-Route::get('/ekskul', function () {
-    return view('admin.ekstrakurikuler.index');
-})->name('ekskul.index');
-
-Route::get('/ekskul/create', function () {
-    return view('admin.ekstrakurikuler.create');
-})->name('ekskul.create');
-
-Route::get('/ekskul/{id}', function () {
-    return view('admin.ekstrakurikuler.show');
-})->name('ekskul.show');
-
-Route::get('/ekskul/{id}/edit', function () {
-    return view('admin.ekstrakurikuler.edit');
-})->name('ekskul.edit');
-
-Route::post('/ekskul', function () {
-    return redirect()->route('ekskul.index');
-})->name('ekskul.store');
-
-Route::put('/ekskul/{id}', function () {
-    return redirect()->route('ekskul.index');
-})->name('ekskul.update');
-
-// Rute CRUD Ketua Pengguna (Dummy)
-Route::get('/pengguna/ketua', function () {
-    return view('admin.ketua.index');
-})->name('pengguna.ketua.index');
-
-Route::get('/pengguna/ketua/create', function () {
-    return view('admin.ketua.create');
-})->name('pengguna.ketua.create');
-
-Route::get('/pengguna/ketua/{id}/edit', function () {
-    return view('admin.ketua.edit');
-})->name('pengguna.ketua.edit');
-
-Route::post('/pengguna/ketua', function () {
-    return redirect()->route('pengguna.ketua.index');
-})->name('pengguna.ketua.store');
-
-Route::put('/pengguna/ketua/{id}', function () {
-    return redirect()->route('pengguna.ketua.index');
-})->name('pengguna.ketua.update');
-
-// Rute CRUD Siswa Pengguna (Dummy)
-Route::get('/pengguna/siswa', function () {
-    return view('admin.siswa.index');
-})->name('pengguna.siswa.index');
-
-Route::get('/pengguna/siswa/create', function () {
-    return view('admin.siswa.create');
-})->name('pengguna.siswa.create');
-
-Route::get('/pengguna/siswa/{id}/edit', function () {
-    return view('admin.siswa.edit');
-})->name('pengguna.siswa.edit');
-
-Route::post('/pengguna/siswa', function () {
-    return redirect()->route('pengguna.siswa.index');
-})->name('pengguna.siswa.store');
-
-Route::put('/pengguna/siswa/{id}', function () {
-    return redirect()->route('pengguna.siswa.index');
-})->name('pengguna.siswa.update');
-
-// Rute CRUD Admin Pengguna (Dummy)
-Route::get('/pengguna/admin', function () {
-    return view('admin.users.index');
-})->name('pengguna.admin.index');
-
-Route::get('/pengguna/admin/create', function () {
-    return view('admin.users.create');
-})->name('pengguna.admin.create');
-
-Route::get('/pengguna/admin/{id}/edit', function () {
-    return view('admin.users.edit');
-})->name('pengguna.admin.edit');
-
-Route::post('/pengguna/admin', function () {
-    return redirect()->route('pengguna.admin.index');
-})->name('pengguna.admin.store');
-
-Route::put('/pengguna/admin/{id}', function () {
-    return redirect()->route('pengguna.admin.index');
-})->name('pengguna.admin.update');
-
-// Rute Profil/Kelola Akun (Dummy)
-Route::get('/settings/profile', function () {
-    return view('admin.profile.edit');
-})->name('profile.edit');
-
-Route::patch('/settings/profile', function () {
-    return redirect()->route('dashboard');
-})->name('profile.update');
-
-// Logout (Dummy - arahkan kembali ke Login)
-Route::post('/logout', function () {
-    return redirect()->route('login');
-})->name('logout');
-
-// Rute Modul Siswa (Student Frontend Rutes)
-Route::prefix('siswa')->name('siswa.')->group(function () {
-    
-    // 1. Home Page
-    Route::get('/', function () {
+    if (auth()->check() && auth()->user()->isSiswa()) {
         return view('student.home.index');
-    })->name('home');
+    }
 
-    // 2. Rekomendasi (Form Aspek Penilaian)
+    return redirect()->route('siswa.login')->with('error', 'Sesi Anda telah berakhir atau Anda tidak memiliki akses.');
+})->name('siswa.home');
+
+// =======================
+// RUTE ADMIN (Dashboard, Ekskul, Pengguna)
+// =======================
+Route::middleware(['auth', 'role:admin'])->group(function () {
+
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard.index');
+    })->name('dashboard');
+
+    // CRUD Ekstrakurikuler
+    Route::get('/ekskul', function () {
+        return view('admin.ekstrakurikuler.index');
+    })->name('ekskul.index');
+
+    Route::get('/ekskul/create', function () {
+        return view('admin.ekstrakurikuler.create');
+    })->name('ekskul.create');
+
+    Route::get('/ekskul/{id}', function () {
+        return view('admin.ekstrakurikuler.show');
+    })->name('ekskul.show');
+
+    Route::get('/ekskul/{id}/edit', function () {
+        return view('admin.ekstrakurikuler.edit');
+    })->name('ekskul.edit');
+
+    Route::post('/ekskul', function () {
+        return redirect()->route('ekskul.index');
+    })->name('ekskul.store');
+
+    Route::put('/ekskul/{id}', function () {
+        return redirect()->route('ekskul.index');
+    })->name('ekskul.update');
+
+    // CRUD Ketua
+    Route::get('/pengguna/ketua', function () {
+        return view('admin.ketua.index');
+    })->name('pengguna.ketua.index');
+
+    Route::get('/pengguna/ketua/create', function () {
+        return view('admin.ketua.create');
+    })->name('pengguna.ketua.create');
+
+    Route::get('/pengguna/ketua/{id}/edit', function () {
+        return view('admin.ketua.edit');
+    })->name('pengguna.ketua.edit');
+
+    Route::post('/pengguna/ketua', function () {
+        return redirect()->route('pengguna.ketua.index');
+    })->name('pengguna.ketua.store');
+
+    Route::put('/pengguna/ketua/{id}', function () {
+        return redirect()->route('pengguna.ketua.index');
+    })->name('pengguna.ketua.update');
+
+    // CRUD Siswa
+    Route::get('/pengguna/siswa', [SiswaController::class, 'index'])->name('pengguna.siswa.index');
+
+    Route::get('/pengguna/siswa/create', [SiswaController::class, 'create'])->name('pengguna.siswa.create');
+
+    Route::get('/pengguna/siswa/{id}/edit', [SiswaController::class, 'edit'])->name('pengguna.siswa.edit');
+
+    Route::post('/pengguna/siswa', [SiswaController::class, 'store'])->name('pengguna.siswa.store');
+
+    Route::put('/pengguna/siswa/{id}', [SiswaController::class, 'update'])->name('pengguna.siswa.update');
+
+    // CRUD Admin
+    Route::get('/pengguna/admin', function () {
+        return view('admin.users.index');
+    })->name('pengguna.admin.index');
+
+    Route::get('/pengguna/admin/create', function () {
+        return view('admin.users.create');
+    })->name('pengguna.admin.create');
+
+    Route::get('/pengguna/admin/{id}/edit', function () {
+        return view('admin.users.edit');
+    })->name('pengguna.admin.edit');
+
+    Route::post('/pengguna/admin', function () {
+        return redirect()->route('pengguna.admin.index');
+    })->name('pengguna.admin.store');
+
+    Route::put('/pengguna/admin/{id}', function () {
+        return redirect()->route('pengguna.admin.index');
+    })->name('pengguna.admin.update');
+
+    // Profil/Manage Akun
+    Route::get('/settings/profile', function () {
+        return view('admin.profile.edit');
+    })->name('profile.edit');
+
+    Route::patch('/settings/profile', function () {
+        return redirect()->route('dashboard');
+    })->name('profile.update');
+});
+
+// =======================
+// RUTE KETUA
+// =======================
+Route::prefix('ketua')->name('ketua.')->middleware(['auth', 'role:ketua'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('ketua.dashboard.index');
+    })->name('dashboard');
+});
+
+// =======================
+// RUTE SISWA
+// =======================
+Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:siswa'])->group(function () {
+
+    // Rekomendasi
     Route::get('/rekomendasi', function () {
         return view('student.rekomendasi.create');
     })->name('rekomendasi.create');
@@ -151,31 +164,25 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
         return redirect()->route('siswa.rekomendasi.results');
     })->name('rekomendasi.store');
 
-    // 3. Hasil Rekomendasi (Persentase Cocok)
     Route::get('/rekomendasi/hasil', function () {
         return view('student.rekomendasi.results');
     })->name('rekomendasi.results');
 
-    // 4. Daftar Semua Ekskul (Umum)
+    // Daftar & Detail Ekskul
     Route::get('/ekskul', function () {
         return view('student.ekstrakurikuler.index');
     })->name('ekskul.index');
 
-    // 5. Detail Ekskul
     Route::get('/ekskul/{id}', function () {
         return view('student.ekstrakurikuler.show');
     })->name('ekskul.show');
 
-    // 6. Formulir Pendaftaran Ekskul
-    Route::get('/ekskul/{id}/daftar', function () {
-        return view('student.pendaftaran.create');
-    })->name('register.create');
+    // Pendaftaran
+    Route::get('/ekskul/{id}/daftar', [PendaftaranController::class, 'create'])->name('register.create');
 
-    Route::post('/ekskul/{id}/daftar', function () {
-        return redirect()->route('siswa.register.history');
-    })->name('register.store');
+    Route::post('/ekskul/{id}/daftar', [PendaftaranController::class, 'store'])->name('register.store');
 
-    // 7. Riwayat Pendaftaran
+    // Riwayat
     Route::get('/riwayat', function () {
         return view('student.riwayat.index');
     })->name('register.history');
@@ -183,11 +190,4 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     Route::get('/riwayat/{id}', function () {
         return view('student.riwayat.show');
     })->name('register.history.show');
-});
-
-// Rute Modul Ketua (Ketua Frontend Rutes)
-Route::prefix('ketua')->name('ketua.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('ketua.dashboard.index');
-    })->name('dashboard');
 });
