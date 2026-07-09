@@ -41,6 +41,10 @@ Route::get('/ekskul/create', function () {
     return view('admin.ekstrakurikuler.create');
 })->name('ekskul.create');
 
+Route::get('/ekskul/{id}', function () {
+    return view('admin.ekstrakurikuler.show');
+})->name('ekskul.show');
+
 Route::get('/ekskul/{id}/edit', function () {
     return view('admin.ekstrakurikuler.edit');
 })->name('ekskul.edit');
