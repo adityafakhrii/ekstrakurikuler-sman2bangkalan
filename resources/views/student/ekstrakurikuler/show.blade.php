@@ -2,15 +2,17 @@
 
 @section('title', 'Detail Ekstrakurikuler - EKSIS')
 
-@section('hero')
-    <x-hero />
-@endsection
-
 @section('content')
-    <x-cards.card title="Detail Ekstrakurikuler">
-        <p class="text-sm text-gray-500 font-light text-center max-w-2xl mx-auto -mt-4 mb-10 leading-relaxed">
-            Lihat Detail Ekstrakurikuler untuk mengenal lebih sebelum mendaftar, dan pastikan jadwal kegiatan ekstrakurikuler tidak bentrok dengan jadwal lain kamu.
-        </p>
+    <div class="space-y-12 pt-12 pb-16 px-4 sm:px-6 lg:px-8">
+        <!-- Header Page Titles matching screenshot -->
+        <div class="text-center space-y-4">
+            <h1 class="text-3xl sm:text-4xl font-semibold text-[#2A1B60] tracking-tight">
+                Detail Ekstrakurikuler
+            </h1>
+            <p class="text-xs sm:text-sm text-gray-500 font-medium max-w-2xl mx-auto leading-relaxed">
+                Lihat Detail Ekstrakurikuler untuk mengenal lebih sebelum mendaftar, dan pastikan jadwal kegiatan ekstrakurikuler tidak bentrok dengan jadwal lain kamu.
+            </p>
+        </div>
 
         @php
             // Mock dynamic details based on ID
@@ -47,80 +49,78 @@
             $ekskul = $details[$id] ?? $details[1];
         @endphp
 
-        <!-- Detail Box Content Grid -->
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 bg-[#FCFBFB] border border-[#f2eaea] rounded-3xl p-6 md:p-8 shadow-xs">
+        <!-- Large Content Card Wrapper matching screenshot bg-color -->
+        <div class="bg-[#F3F4F6]/50 rounded-[2.5rem] p-6 sm:p-12 max-w-5xl mx-auto shadow-2xs border border-gray-100/50">
             
-            <!-- Left Side: Image with gradient curved border matching screenshot -->
-            <div class="w-full md:w-2/5 flex items-center justify-center">
-                <div class="relative w-full max-w-xs">
-                    <div class="aspect-square w-full rounded-[2.5rem] overflow-hidden bg-white p-1.5 border-2 border-[#f2eaea] shadow-md relative">
-                        <div class="w-full h-full rounded-[2.3rem] overflow-hidden relative p-1 bg-gradient-to-tr from-[#10b981] via-[#eab308] to-[#ef4444]">
-                            <div class="w-full h-full rounded-[2.1rem] overflow-hidden">
-                                <img src="{{ $ekskul['image'] }}" alt="{{ $ekskul['name'] }}" class="w-full h-full object-cover">
-                            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                <!-- Left Side: Image with shadow/gradient offset box matching screenshot -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="bg-gradient-to-br from-[#86EFAC] via-[#93C5FD] to-[#A5B4FC] rounded-[2.5rem] p-5 shadow-lg max-w-sm w-full">
+                        <div class="aspect-square rounded-[2rem] overflow-hidden shadow-md">
+                            <img src="{{ $ekskul['image'] }}" alt="{{ $ekskul['name'] }}" class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Right Side: Details Information -->
-            <div class="w-full md:w-3/5 space-y-6">
-                <!-- Title -->
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                    {{ $ekskul['name'] }}
-                </h2>
-                
-                <!-- Description Paragraph -->
-                <p class="text-sm text-gray-500 font-light leading-relaxed">
-                    {{ $ekskul['description'] }}
-                </p>
-
-                <!-- Information Table List -->
-                <div class="space-y-3.5 border-t border-b border-gray-100 py-5">
-                    <!-- Pembina -->
-                    <div class="flex items-center text-sm">
-                        <span class="w-1/3 font-semibold text-gray-800">Nama Pembina</span>
-                        <span class="w-8 text-center text-gray-400">:</span>
-                        <span class="w-2/3 text-gray-600 font-medium">{{ $ekskul['pembina'] }}</span>
+                <!-- Right Side: Detail Info Fields with colon alignment matching screenshot -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Title & Desc -->
+                    <div class="space-y-3">
+                        <h2 class="text-3xl font-extrabold text-gray-900 leading-tight">
+                            {{ $ekskul['name'] }}
+                        </h2>
+                        <p class="text-xs text-gray-500 font-light leading-relaxed">
+                            {{ $ekskul['description'] }}
+                        </p>
                     </div>
-                    <!-- Ketua -->
-                    <div class="flex items-center text-sm">
-                        <span class="w-1/3 font-semibold text-gray-800">Nama Ketua</span>
-                        <span class="w-8 text-center text-gray-400">:</span>
-                        <span class="w-2/3 text-gray-600 font-medium">{{ $ekskul['ketua'] }}</span>
-                    </div>
-                    <!-- Jadwal -->
-                    <div class="flex items-center text-sm">
-                        <span class="w-1/3 font-semibold text-gray-800">Jadwal Ekskul</span>
-                        <span class="w-8 text-center text-gray-400">:</span>
-                        <span class="w-2/3 text-gray-600 font-medium">{{ $ekskul['jadwal'] }}</span>
-                    </div>
-                </div>
 
-                <!-- Action Button Actions (Pushed to bottom right) -->
-                <div class="flex items-center justify-start md:justify-end gap-3 pt-4 w-full">
-                    <!-- Daftar Button (Yellow styled, rounded-full) -->
-                    <x-buttons.button 
-                        onclick="window.location.href='{{ route('siswa.register.create', $id) }}'"
-                        class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] px-8 py-3 rounded-full text-xs font-bold shadow-xs cursor-pointer border-0"
-                    >
-                        Daftar
-                    </x-buttons.button>
+                    <!-- Info Grid (Rata Kiri, Titik dua sejajar vertikal) -->
+                    <div class="space-y-4 text-xs font-semibold text-gray-800">
+                        <!-- Pembina -->
+                        <div class="grid grid-cols-12 gap-1 items-center">
+                            <span class="col-span-4 text-left">Nama Pembina</span>
+                            <span class="col-span-1 text-center">:</span>
+                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul['pembina'] }}</span>
+                        </div>
+                        <!-- Ketua -->
+                        <div class="grid grid-cols-12 gap-1 items-center">
+                            <span class="col-span-4 text-left">Nama Ketua</span>
+                            <span class="col-span-1 text-center">:</span>
+                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul['ketua'] }}</span>
+                        </div>
+                        <!-- Jadwal -->
+                        <div class="grid grid-cols-12 gap-1 items-center">
+                            <span class="col-span-4 text-left">Jadwal Ekskul</span>
+                            <span class="col-span-1 text-center">:</span>
+                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul['jadwal'] }}</span>
+                        </div>
+                    </div>
 
-                    <!-- Kembali Button (Dark Gray/Navy with arrow, rounded-full) -->
-                    <x-buttons.button 
-                        onclick="window.history.back()"
-                        class="bg-[#2D3748] hover:bg-[#1A202C] text-white px-6 py-3 rounded-full text-xs font-bold shadow-xs flex items-center gap-1.5 cursor-pointer border-0"
-                    >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                        </svg>
-                        Kembali
-                    </x-buttons.button>
+                    <!-- Action Buttons matching screenshot 2 (Right aligned bottom) -->
+                    <div class="flex justify-end gap-3 pt-6">
+                        <!-- Daftar Button (Yellow styled, rounded-full) -->
+                        <x-buttons.button 
+                            onclick="window.location.href='{{ route('siswa.register.create', $id) }}'"
+                            class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] py-3 px-8 rounded-full text-xs font-bold border-0 cursor-pointer shadow-3xs"
+                        >
+                            Daftar
+                        </x-buttons.button>
+
+                        <!-- Kembali Button (Dark Slate matching screenshot) -->
+                        <x-buttons.button 
+                            onclick="window.history.back()"
+                            class="bg-[#1E293B] hover:bg-[#0F172A] text-white py-3 px-8 rounded-full text-xs font-bold border-0 cursor-pointer shadow-3xs flex items-center gap-1.5"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                            Kembali
+                        </x-buttons.button>
+                    </div>
+
                 </div>
             </div>
 
         </div>
-
-    </x-cards.card>
+    </div>
 @endsection

@@ -7,18 +7,19 @@
     'gradient' => null
 ])
 
-<div class="bg-white border border-[#f2eaea] rounded-3xl p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col gap-4">
-    <!-- Image wrapper matching mockup style -->
-    <div class="w-full aspect-[16/10] overflow-hidden rounded-2xl bg-gray-100 border border-gray-100 @if($gradient) p-1 bg-gradient-to-tr {{ $gradient }} @endif">
-        <div class="w-full h-full @if($gradient) rounded-[0.9rem] @else rounded-[1.2rem] @endif overflow-hidden relative">
-            <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" onerror="this.src='https://placehold.co/600x375?text={{ urlencode($name) }}'">
+<!-- Clean layout without card wrapper border/shadow matching screenshot exactly (rounded-none borders) -->
+<div class="flex flex-col gap-4">
+    <!-- Image wrapper with thick gradient borders and sharp sharp siku corners (rounded-none) -->
+    <div class="w-full aspect-[16/10] overflow-hidden bg-gradient-to-tr {{ $gradient ?? 'from-[#567BB3] to-[#B1C2D4]' }} p-6 sm:p-8 flex items-center justify-center">
+        <div class="w-full h-full overflow-hidden shadow-2xs">
+            <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x375?text={{ urlencode($name) }}'">
         </div>
     </div>
 
-    <!-- Content -->
-    <div class="flex-grow flex flex-col gap-2">
-        <!-- Title & Match Ratio directly beside it -->
-        <h3 class="text-xl font-bold text-gray-900 leading-tight">
+    <!-- Content info directly on page background -->
+    <div class="flex-grow flex flex-col gap-2 text-left">
+        <!-- Title & Match Ratio -->
+        <h3 class="text-2xl font-bold text-gray-900 tracking-tight leading-none">
             {{ $name }}
             @if($match)
                 <span class="text-sm font-normal text-gray-500 ml-2">
@@ -28,16 +29,16 @@
         </h3>
         
         <!-- Description -->
-        <p class="text-xs text-gray-500 font-normal leading-relaxed line-clamp-3">
+        <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-3">
             {{ $description }}
         </p>
     </div>
 
-    <!-- Action Link -->
-    <div class="pt-2 border-t border-[#f8f1f1]">
-        <a href="{{ $route }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-800 hover:text-brand-accent transition-colors duration-150 group">
-            Detail Ekskul
-            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <!-- Action Link without top border line -->
+    <div class="pt-1">
+        <a href="{{ $route }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-gray-800 hover:text-black transition-colors duration-150 cursor-pointer">
+            <span>Detail Ekskul</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
         </a>

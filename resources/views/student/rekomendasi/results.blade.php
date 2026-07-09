@@ -2,66 +2,68 @@
 
 @section('title', 'Hasil Rekomendasi Ekstrakurikuler - EKSIS')
 
-@section('hero')
-    <x-hero />
-@endsection
-
 @section('content')
-    <x-cards.card title="Daftar Ekstrakurikuler">
-        <p class="text-sm text-gray-500 font-light text-center max-w-2xl mx-auto -mt-4 mb-12 leading-relaxed">
-            Kamu sudah merekomendasikan sesuai preferensimu untuk memilih Ekstrakurikuler, berikut Daftar Ekstrakurikuler yang sudah diurutkan dari yang paling cocok untukmu.
-        </p>
+    <div class="space-y-12 pt-12 pb-16 px-4 sm:px-6 lg:px-8">
+        <!-- Header Page Titles matching screenshot 2 (After recommendation results) -->
+        <div class="text-center space-y-4">
+            <h1 class="text-3xl sm:text-4xl font-semibold text-[#2A1B60] tracking-tight">
+                Daftar Ekstrakurikuler
+            </h1>
+            <p class="text-xs sm:text-sm text-gray-500 font-medium max-w-2xl mx-auto leading-relaxed">
+                Kamu sudah me-rekomendasikan sesuai preferensimu untuk memilih Ekstrakurikuler, berikut Daftar Ekstrakurikuler yang sudah diurutkan dari yang paling cocok untukmu.
+            </p>
+        </div>
 
         @php
-            // Mock recommended extracurricular list sorted from highest matching percentage to lowest
+            // Mock recommended extracurricular list sorted from highest matching percentage to lowest matching screenshot 2
             $ekskuls = [
                 [
                     'name' => 'Pramuka',
                     'match' => '97% Cocok',
-                    'gradient' => 'from-[#eab308] to-[#ca8a04]', // Gold/Bronze
+                    'gradient' => 'from-[#8A827B] to-[#C3BDB9]', // Clay/Sand
                     'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
                 ],
                 [
                     'name' => 'Pramuka',
                     'match' => '97% Cocok',
-                    'gradient' => 'from-[#10b981] to-[#047857]', // Emerald Green
+                    'gradient' => 'from-[#3B7A81] to-[#98B5B4]', // Muted Ocean/Teal
                     'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
                 ],
                 [
                     'name' => 'Pramuka',
                     'match' => '97% Cocok',
-                    'gradient' => 'from-[#a3e635] to-[#65a30d]', // Lime/Yellow-Green
+                    'gradient' => 'from-[#D6E35C] to-[#BDC199]', // Lime Green/Khaki
                     'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
                 ],
                 [
                     'name' => 'Pramuka',
                     'match' => '97% Cocok',
-                    'gradient' => 'from-[#84cc16] to-[#4d7c0f]', // Olive Green
+                    'gradient' => 'from-[#508C1B] to-[#A4B67F]', // Olive/Sage Green
                     'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
                 ],
                 [
                     'name' => 'Pramuka',
                     'match' => '97% Cocok',
-                    'gradient' => 'from-[#06b6d4] to-[#0369a1]', // Cyan/Blue
+                    'gradient' => 'from-[#00A3A6] to-[#81B5BD]', // Muted Cyan/Slate Blue
                     'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
                 ],
                 [
                     'name' => 'Pramuka',
                     'match' => '97% Cocok',
-                    'gradient' => 'from-[#a855f7] to-[#7e22ce]', // Purple/Indigo
+                    'gradient' => 'from-[#68357B] to-[#A19BA8]', // Muted Plum/Lavender
                     'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
                 ]
             ];
         @endphp
 
-        <!-- Grid Layout: 2 Columns Desktop, 1 Column Mobile matching screenshot exactly -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <!-- Grid Layout: 2 Columns Desktop, 1 Column Mobile matching screenshot exactly (with wider vertical spacing) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-16 max-w-5xl mx-auto">
             @foreach($ekskuls as $index => $ekskul)
                 <x-cards.ekskul-card 
                     name="{{ $ekskul['name'] }}"
@@ -73,6 +75,5 @@
                 />
             @endforeach
         </div>
-
-    </x-cards.card>
+    </div>
 @endsection

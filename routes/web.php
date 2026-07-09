@@ -175,6 +175,10 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     Route::get('/riwayat', function () {
         return view('student.riwayat.index');
     })->name('register.history');
+
+    Route::get('/riwayat/{id}', function () {
+        return view('student.riwayat.show');
+    })->name('register.history.show');
 });
 
 // Rute Modul Ketua (Ketua Frontend Rutes)
