@@ -15,7 +15,11 @@ class StorePendaftaranRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'catatan_siswa' => ['nullable', 'string', 'max:1000'],
+            'kelas_jurusan' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'no_whatsapp' => ['required', 'string', 'max:20'],
+            'alamat' => ['required', 'string', 'max:255'],
+            'catatan_siswa' => ['required', 'string', 'max:1000'],
         ];
     }
 

@@ -1,74 +1,136 @@
 @extends('layouts.student')
 
-@section('title', 'Formulir Daftar Ekstrakurikuler - EKSIS')
+@section('title', 'Formulir Daftar Ekstrakurikuler - EKSIS SMAN 2 Bangkalan')
 
 @section('content')
-    <div class="space-y-12 pt-12 pb-16 px-4 sm:px-6 lg:px-8">
-        <div class="text-center space-y-4">
-            <h1 class="text-3xl sm:text-4xl font-semibold text-[#2A1B60] tracking-tight">
+<div class="py-12 bg-[#F9F9FB] min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header Section matching screenshot -->
+        <div class="text-center mb-10 max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold text-[#1E1B4B] tracking-tight">
                 Formulir Daftar Ekstrakurikuler
             </h1>
-            <p class="text-xs sm:text-sm text-gray-500 font-medium max-w-2xl mx-auto leading-relaxed">
-                Periksa data dirimu dan isi alasan mengikuti ekstrakurikuler sebelum mengirim pendaftaran.
+            <p class="mt-3 text-xs text-gray-500 leading-relaxed">
+                Isi Formulir pendaftaran ini dengan benar sesuai data pribadi kamu, dan berikan alasan mengikuti Ekstrakurikuler agar membantu dalam proses konfirmasi pendaftaranmu.
             </p>
         </div>
 
-        <form method="POST" action="{{ route('siswa.register.store', $ekskul->id) }}" class="max-w-5xl mx-auto bg-[#F3F4F6]/50 border border-gray-150/70 rounded-[2.5rem] p-6 sm:p-12 shadow-2xs space-y-8">
-            @csrf
+        <!-- Box Container matching screenshot -->
+        <div class="bg-white rounded-3xl border border-gray-150 shadow-xs p-8 sm:p-12 max-w-4xl mx-auto">
+            
+            <form method="POST" action="{{ route('siswa.register.store', $ekskul->id) }}" class="space-y-6">
+                @csrf
 
-            @if ($errors->any())
-                <div class="bg-red-50 border border-red-200 text-red-700 text-xs px-4 py-3 rounded-xl font-medium max-w-3xl mx-auto">
-                    {{ $errors->first() }}
-                </div>
-            @endif
-
-            <div class="space-y-6 max-w-3xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">NISN</label>
-                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
-                    <div class="col-span-1 md:col-span-8">
-                        <x-forms.input name="nisn_display" value="{{ auth()->user()->siswa->nisn }}" readonly />
+                @if ($errors->any())
+                    <div class="bg-rose-50 border border-rose-200 text-rose-800 text-xs px-4 py-3 rounded-xl font-semibold mb-6">
+                        {{ $errors->first() }}
                     </div>
-                </div>
+                @endif
 
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">Nama Lengkap</label>
-                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
-                    <div class="col-span-1 md:col-span-8">
-                        <x-forms.input name="name_display" value="{{ auth()->user()->name }}" readonly />
+                <!-- Details List styled exactly matching screenshot layout -->
+                <div class="space-y-5 text-xs font-semibold text-gray-800">
+                    
+                    <!-- Nisn -->
+                    <div class="grid grid-cols-12 gap-x-2 items-center">
+                        <label class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Nisn</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
+                        <div class="col-span-8 sm:col-span-8.5">
+                            <x-forms.input name="nisn" value="{{ auth()->user()->siswa->nisn }}" class="bg-gray-50 border-gray-200 text-gray-600 font-semibold" readonly />
+                        </div>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label class="md:col-span-3 text-sm font-semibold text-gray-800 text-left">Ekstrakurikuler</label>
-                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
-                    <div class="col-span-1 md:col-span-8">
-                        <x-forms.input name="ekskul_display" value="{{ $ekskul->nama }}" readonly />
+                    <!-- Nama Lengkap -->
+                    <div class="grid grid-cols-12 gap-x-2 items-center">
+                        <label class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Nama Lengkap</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
+                        <div class="col-span-8 sm:col-span-8.5">
+                            <x-forms.input name="nama" value="{{ auth()->user()->name }}" class="bg-gray-50 border-gray-200 text-gray-600 font-semibold" readonly />
+                        </div>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
-                    <label for="catatan_siswa" class="md:col-span-3 text-sm font-semibold text-gray-800 text-left pt-2.5">Alasan Mengikuti</label>
-                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center pt-2.5">:</span>
-                    <div class="col-span-1 md:col-span-8">
-                        <x-forms.textarea name="catatan_siswa" placeholder="Masukkan alasan mengikuti ekskul" value="{{ old('catatan_siswa') }}" rows="5" required />
+                    <!-- Jenis Kelamin matching screenshot styled radio buttons -->
+                    <div class="grid grid-cols-12 gap-x-2 items-center">
+                        <label class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Jenis Kelamin</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
+                        <div class="col-span-8 sm:col-span-8.5 flex items-center gap-6 py-2">
+                            <label class="inline-flex items-center gap-2 cursor-not-allowed">
+                                <input type="radio" name="jk_dummy" value="L" class="w-4 h-4 text-gray-800 border-gray-300 focus:ring-0 cursor-not-allowed" 
+                                    {{ auth()->user()->siswa->jenis_kelamin === 'L' ? 'checked' : '' }} disabled>
+                                <span class="text-sm font-semibold text-gray-700">Laki - Laki</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-not-allowed">
+                                <input type="radio" name="jk_dummy" value="P" class="w-4 h-4 text-gray-800 border-gray-300 focus:ring-0 cursor-not-allowed" 
+                                    {{ auth()->user()->siswa->jenis_kelamin === 'P' ? 'checked' : '' }} disabled>
+                                <span class="text-sm font-semibold text-gray-700">Perempuan</span>
+                            </label>
+                        </div>
                     </div>
+
+                    <!-- Kelas-Jurusan -->
+                    <div class="grid grid-cols-12 gap-x-2 items-center">
+                        <label for="kelas_jurusan" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Kelas-Jurusan</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
+                        <div class="col-span-8 sm:col-span-8.5">
+                            <x-forms.input name="kelas_jurusan" value="{{ old('kelas_jurusan', auth()->user()->siswa->kelas . ' ' . auth()->user()->siswa->rombel) }}" placeholder="Masukkan Kelas-Jurusan" class="bg-white border-gray-200" required />
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="grid grid-cols-12 gap-x-2 items-center">
+                        <label for="email" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Email</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
+                        <div class="col-span-8 sm:col-span-8.5">
+                            <x-forms.input type="email" name="email" value="{{ old('email', auth()->user()->email) }}" placeholder="Masukkan Email" class="bg-white border-gray-200" required />
+                        </div>
+                    </div>
+
+                    <!-- No.Whatsapp -->
+                    <div class="grid grid-cols-12 gap-x-2 items-center">
+                        <label for="no_whatsapp" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">No.Whatsapp</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
+                        <div class="col-span-8 sm:col-span-8.5">
+                            <x-forms.input name="no_whatsapp" value="{{ old('no_whatsapp', auth()->user()->siswa->no_telp) }}" placeholder="Masukkan No.Whatsapp" class="bg-white border-gray-200" required />
+                        </div>
+                    </div>
+
+                    <!-- Alamat -->
+                    <div class="grid grid-cols-12 gap-x-2 items-center">
+                        <label for="alamat" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Alamat</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
+                        <div class="col-span-8 sm:col-span-8.5">
+                            <x-forms.input name="alamat" value="{{ old('alamat') }}" placeholder="Masukkan Alamat" class="bg-white border-gray-200" required />
+                        </div>
+                    </div>
+
+                    <!-- Alasan Mengikuti (Textarea) -->
+                    <div class="grid grid-cols-12 gap-x-2 items-start pt-2">
+                        <label for="catatan_siswa" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm pt-2">Alasan Mengikuti</label>
+                        <span class="col-span-1 text-center text-gray-800 text-sm pt-2">:</span>
+                        <div class="col-span-8 sm:col-span-8.5">
+                            <x-forms.textarea name="catatan_siswa" placeholder="Masukkan Alasan Mengikuti Ekskul" rows="4" class="bg-white border-gray-200" required>{{ old('catatan_siswa') }}</x-forms.textarea>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800 font-medium">
-                    Setiap siswa hanya dapat mendaftar maksimal <strong>2 ekstrakurikuler</strong> aktif.
+                <!-- Action Buttons matching screenshot layout -->
+                <div class="flex justify-end gap-3 pt-6 items-center">
+                    <!-- Yellow "Konfirmasi" button -->
+                    <x-buttons.button type="submit" class="bg-[#FCD34D] hover:bg-[#FBBF24] text-gray-900 font-bold text-xs px-8 py-2.5 rounded-xl shadow-xs border-0 cursor-pointer">
+                        Konfirmasi
+                    </x-buttons.button>
+
+                    <!-- Red "Batal" button -->
+                    <x-buttons.button variant="secondary" type="button" onclick="window.history.back()" class="bg-[#B91C1C] hover:bg-[#991B1B] text-white font-bold text-xs px-8 py-2.5 rounded-xl shadow-xs border-0 cursor-pointer">
+                        Batal
+                    </x-buttons.button>
                 </div>
-            </div>
 
-            <div class="flex justify-end gap-3 pt-6 border-t border-gray-200 max-w-3xl mx-auto">
-                <x-buttons.button type="submit" class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] py-3 px-8 rounded-full text-xs font-bold shadow-3xs cursor-pointer border-0">
-                    Konfirmasi
-                </x-buttons.button>
+            </form>
 
-                <x-buttons.button variant="secondary" type="button" onclick="window.history.back()" class="bg-[#E11D48] hover:bg-[#BE123C] text-white py-3 px-8 rounded-full text-xs font-bold shadow-3xs cursor-pointer border-0">
-                    Batal
-                </x-buttons.button>
-            </div>
-        </form>
+        </div>
+
     </div>
+</div>
 @endsection
