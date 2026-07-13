@@ -12,16 +12,25 @@ class DashboardTest extends TestCase
 
     public function test_guests_are_redirected_to_the_login_page()
     {
-        $response = $this->get(route('dashboard'));
+        $response = $this->get('/');
         $response->assertRedirect(route('login'));
     }
 
-    public function test_authenticated_users_can_visit_the_dashboard()
+    public function test_admin_can_visit_admin_dashboard()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->admin()->create();
         $this->actingAs($user);
 
-        $response = $this->get(route('dashboard'));
+        $response = $this->get(route('admin.dashboard'));
+        $response->assertOk();
+    }
+
+    public function test_ketua_can_visit_ketua_dashboard()
+    {
+        $user = User::factory()->ketua()->create();
+        $this->actingAs($user);
+
+        $response = $this->get(route('ketua.dashboard'));
         $response->assertOk();
     }
 }
