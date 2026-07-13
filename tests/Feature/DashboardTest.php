@@ -21,7 +21,7 @@ class DashboardTest extends TestCase
         $user = User::factory()->admin()->create();
         $this->actingAs($user);
 
-        $response = $this->get(route('admin.dashboard'));
+        $response = $this->get(route('dashboard'));
         $response->assertOk();
     }
 

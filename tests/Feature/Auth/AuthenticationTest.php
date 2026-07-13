@@ -27,7 +27,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('admin.dashboard'));
+        $response->assertRedirect(route('dashboard'));
     }
 
     public function test_ketua_can_authenticate_using_the_login_screen()
@@ -61,7 +61,7 @@ class AuthenticationTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('logout'));
 
-        $response->assertRedirect('/');
+        $response->assertRedirect(route('login'));
 
         $this->assertGuest();
     }
