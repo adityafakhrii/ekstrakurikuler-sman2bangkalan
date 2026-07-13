@@ -20,12 +20,12 @@
 
             @php
                 $criteria = [
-                    ['label' => 'Fisik & Ketangkasan', 'name' => 'fisik', 'value' => 2],
-                    ['label' => 'Intelektual & Strategi', 'name' => 'intelektual', 'value' => 4],
-                    ['label' => 'Kreativitas & Seni', 'name' => 'kreativitas', 'value' => 1],
-                    ['label' => 'Sosial & Kepemimpinan', 'name' => 'sosial', 'value' => 3],
-                    ['label' => 'Mental & Kedisiplinan', 'name' => 'mental', 'value' => 4],
-                    ['label' => 'Komunikasi & Bahasa', 'name' => 'komunikasi', 'value' => 2]
+                    ['label' => 'Fisik & Ketangkasan', 'name' => 'fisik', 'value' => 0],
+                    ['label' => 'Intelektual & Strategi', 'name' => 'intelektual', 'value' => 0],
+                    ['label' => 'Kreativitas & Seni', 'name' => 'kreativitas', 'value' => 0],
+                    ['label' => 'Sosial & Kepemimpinan', 'name' => 'sosial', 'value' => 0],
+                    ['label' => 'Mental & Kedisiplinan', 'name' => 'mental', 'value' => 0],
+                    ['label' => 'Komunikasi & Bahasa', 'name' => 'komunikasi', 'value' => 0]
                 ];
             @endphp
 
@@ -36,14 +36,14 @@
                         <span class="sm:col-span-4 text-sm font-semibold text-gray-800 text-left">
                             {{ $criterion['label'] }}
                         </span>
-                        
+
                         <span class="hidden sm:inline sm:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
-                        
+
                         <!-- Star rating inside custom white rounded box wrapper -->
                         <div class="col-span-1 sm:col-span-7 bg-white border border-gray-150/70 rounded-xl p-3 flex justify-start shadow-3xs">
-                            <x-forms.star-rating 
-                                name="{{ $criterion['name'] }}" 
-                                value="{{ old($criterion['name'], $criterion['value']) }}" 
+                            <x-forms.star-rating
+                                name="{{ $criterion['name'] }}"
+                                value="{{ old($criterion['name'], $criterion['value']) }}"
                             />
                         </div>
                     </div>

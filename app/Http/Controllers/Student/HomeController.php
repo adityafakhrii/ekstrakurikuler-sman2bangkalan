@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pendaftaran;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -29,16 +30,37 @@ class HomeController extends Controller
     /**
      * Tampilkan riwayat pendaftaran siswa.
      */
-    public function history(): View
+    public function history(): View|RedirectResponse
     {
-        return view('student.riwayat.index');
+        $siswa = auth()->user()->siswa;
+
+        if (!$siswa) {
+            return redirect()->route('siswa.home')->with('error', 'Data siswa tidak ditemukan.');
+        }
+
+        $registrations = Pendaftaran::with('ekstrakurikuler')
+            ->where('siswa_id', $siswa->id)
+            ->latest()
+            ->get();
+
+        return view('student.riwayat.index', compact('registrations'));
     }
 
     /**
      * Tampilkan detail riwayat pendaftaran.
      */
-    public function historyShow(int $id): View
+    public function historyShow(int $id): View|RedirectResponse
     {
-        return view('student.riwayat.show');
+        $siswa = auth()->user()->siswa;
+
+        if (!$siswa) {
+            return redirect()->route('siswa.home')->with('error', 'Data siswa tidak ditemukan.');
+        }
+
+        $pendaftaran = Pendaftaran::with(['ekstrakurikuler.ketua', 'siswa.user'])
+            ->where('siswa_id', $siswa->id)
+            ->findOrFail($id);
+
+        return view('student.riwayat.show', compact('pendaftaran'));
     }
 }
