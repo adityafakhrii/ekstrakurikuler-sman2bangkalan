@@ -77,4 +77,9 @@ class User extends Authenticatable implements PasskeyUser
     {
         return $this->hasOne(Siswa::class);
     }
+
+    public function ekstrakurikuler(): HasOne
+    {
+        return $this->hasOne(Ekstrakurikuler::class, 'ketua_id');
+    }
 }

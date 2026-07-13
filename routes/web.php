@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\KetuaController;
 use App\Http\Controllers\Admin\SiswaController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\StudentAuthController;
@@ -78,25 +80,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('ekskul.update');
 
     // CRUD Ketua
-    Route::get('/pengguna/ketua', function () {
-        return view('admin.ketua.index');
-    })->name('pengguna.ketua.index');
-
-    Route::get('/pengguna/ketua/create', function () {
-        return view('admin.ketua.create');
-    })->name('pengguna.ketua.create');
-
-    Route::get('/pengguna/ketua/{id}/edit', function () {
-        return view('admin.ketua.edit');
-    })->name('pengguna.ketua.edit');
-
-    Route::post('/pengguna/ketua', function () {
-        return redirect()->route('pengguna.ketua.index');
-    })->name('pengguna.ketua.store');
-
-    Route::put('/pengguna/ketua/{id}', function () {
-        return redirect()->route('pengguna.ketua.index');
-    })->name('pengguna.ketua.update');
+    Route::get('/pengguna/ketua', [KetuaController::class, 'index'])->name('pengguna.ketua.index');
+    Route::get('/pengguna/ketua/create', [KetuaController::class, 'create'])->name('pengguna.ketua.create');
+    Route::get('/pengguna/ketua/{id}/edit', [KetuaController::class, 'edit'])->name('pengguna.ketua.edit');
+    Route::post('/pengguna/ketua', [KetuaController::class, 'store'])->name('pengguna.ketua.store');
+    Route::put('/pengguna/ketua/{id}', [KetuaController::class, 'update'])->name('pengguna.ketua.update');
+    Route::delete('/pengguna/ketua/{id}', [KetuaController::class, 'destroy'])->name('pengguna.ketua.destroy');
 
     // CRUD Siswa
     Route::get('/pengguna/siswa', [SiswaController::class, 'index'])->name('pengguna.siswa.index');
@@ -110,25 +99,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/pengguna/siswa/{id}', [SiswaController::class, 'update'])->name('pengguna.siswa.update');
 
     // CRUD Admin
-    Route::get('/pengguna/admin', function () {
-        return view('admin.users.index');
-    })->name('pengguna.admin.index');
-
-    Route::get('/pengguna/admin/create', function () {
-        return view('admin.users.create');
-    })->name('pengguna.admin.create');
-
-    Route::get('/pengguna/admin/{id}/edit', function () {
-        return view('admin.users.edit');
-    })->name('pengguna.admin.edit');
-
-    Route::post('/pengguna/admin', function () {
-        return redirect()->route('pengguna.admin.index');
-    })->name('pengguna.admin.store');
-
-    Route::put('/pengguna/admin/{id}', function () {
-        return redirect()->route('pengguna.admin.index');
-    })->name('pengguna.admin.update');
+    Route::get('/pengguna/admin', [UserController::class, 'index'])->name('pengguna.admin.index');
+    Route::get('/pengguna/admin/create', [UserController::class, 'create'])->name('pengguna.admin.create');
+    Route::get('/pengguna/admin/{id}/edit', [UserController::class, 'edit'])->name('pengguna.admin.edit');
+    Route::post('/pengguna/admin', [UserController::class, 'store'])->name('pengguna.admin.store');
+    Route::put('/pengguna/admin/{id}', [UserController::class, 'update'])->name('pengguna.admin.update');
+    Route::delete('/pengguna/admin/{id}', [UserController::class, 'destroy'])->name('pengguna.admin.destroy');
 
     // Profil/Manage Akun
     Route::get('/settings/profile', function () {

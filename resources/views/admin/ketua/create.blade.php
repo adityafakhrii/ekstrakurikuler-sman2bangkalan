@@ -15,15 +15,32 @@
 
                 <!-- Nama Ketua -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label for="nama_ketua" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                    <label for="name" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Nama Ketua
                     </label>
                     <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
                     <div class="col-span-12 md:col-span-8">
                         <x-forms.input 
-                            name="nama_ketua" 
+                            name="name" 
                             placeholder="Masukkan Nama Ketua Ekstrakurikuler" 
-                            value="{{ old('nama_ketua') }}" 
+                            value="{{ old('name') }}" 
+                            required 
+                        />
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="email" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Email
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input 
+                            type="email"
+                            name="email" 
+                            placeholder="Masukkan Email Ketua" 
+                            value="{{ old('email') }}" 
                             required 
                         />
                     </div>
@@ -31,21 +48,20 @@
 
                 <!-- Ekstrakurikuler (Dropdown) -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label for="ekskul_id" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                    <label for="ekstrakurikuler_id" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Ekstrakurikuler
                     </label>
                     <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
                     <div class="col-span-12 md:col-span-8">
                         <div class="relative">
-                            <select name="ekskul_id" id="ekskul_id" required
+                            <select name="ekstrakurikuler_id" id="ekstrakurikuler_id"
                                 class="w-full bg-white border border-[#f2eaea] rounded-xl px-4 py-2.5 pr-10 text-sm text-gray-700 font-medium shadow-xs appearance-none focus:outline-none focus:ring-2 focus:ring-[#6366F1]/30 focus:border-[#6366F1] transition-all duration-150">
-                                <option value="" disabled selected>Pilih Ekstrakurikuler</option>
-                                <option value="1">Pramuka</option>
-                                <option value="2">OSIS</option>
-                                <option value="3">PMR</option>
-                                <option value="4">Basket</option>
-                                <option value="5">Futsal</option>
-                                <option value="6">Paduan Suara</option>
+                                <option value="">Pilih Ekstrakurikuler (Opsional)</option>
+                                @foreach($ekskuls as $ekskul)
+                                    <option value="{{ $ekskul->id }}" {{ old('ekstrakurikuler_id') == $ekskul->id ? 'selected' : '' }}>
+                                        {{ $ekskul->nama }}
+                                    </option>
+                                @endforeach
                             </select>
                             <!-- Chevron Icon -->
                             <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
