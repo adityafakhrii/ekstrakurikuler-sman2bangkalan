@@ -18,10 +18,18 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label for="nisn" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">Nomor Induk Siswa</label>
+                    <label for="nis" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">NIS</label>
                     <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
                     <div class="col-span-12 md:col-span-8">
-                        <x-forms.input name="nisn" placeholder="Masukkan Nomor Induk Siswa" value="{{ old('nisn', $siswa->nisn) }}" required />
+                        <x-forms.input name="nis" placeholder="Masukkan NIS" value="{{ old('nis', $siswa->nis) }}" required />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="nisn" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">NISN</label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input name="nisn" placeholder="Masukkan NISN" value="{{ old('nisn', $siswa->nisn) }}" required />
                     </div>
                 </div>
 

@@ -15,6 +15,7 @@ class StoreSiswaRequest extends FormRequest
     {
         return [
             'nama_siswa' => ['required', 'string', 'max:255'],
+            'nis' => ['required', 'string', 'max:20', 'unique:siswa,nis'],
             'nisn' => ['required', 'string', 'max:20', 'unique:siswa,nisn'],
             'no_hp' => ['required', 'string', 'max:20'],
             'kelas' => ['required', 'in:X,XI,XII'],

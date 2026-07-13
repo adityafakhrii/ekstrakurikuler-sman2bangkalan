@@ -42,7 +42,7 @@ class SiswaController extends Controller
 
             Siswa::create([
                 'user_id' => $user->id,
-                'nis' => $validated['nisn'],
+                'nis' => $validated['nis'],
                 'nisn' => $validated['nisn'],
                 'kelas' => $validated['kelas'],
                 'rombel' => $validated['rombel'],
@@ -71,7 +71,7 @@ class SiswaController extends Controller
             $validated = $request->validated();
 
             $siswa->update([
-                'nis' => $validated['nisn'],
+                'nis' => $validated['nis'],
                 'nisn' => $validated['nisn'],
                 'kelas' => $validated['kelas'],
                 'rombel' => $validated['rombel'],
@@ -88,5 +88,24 @@ class SiswaController extends Controller
         });
 
         return redirect()->route('pengguna.siswa.index')->with('success', 'Siswa berhasil diperbarui.');
+    }
+
+    public function destroy(int $id): RedirectResponse
+    {
+        DB::transaction(function () use ($id) {
+            $siswa = Siswa::with('user')->findOrFail($id);
+            $userId = $siswa->user_id;
+
+            // Hapus pendaftaran siswa
+            $siswa->pendaftarans()->delete();
+
+            // Hapus data siswa
+            $siswa->delete();
+
+            // Hapus user
+            User::where('id', $userId)->delete();
+        });
+
+        return redirect()->route('pengguna.siswa.index')->with('success', 'Siswa beserta data terkait berhasil dihapus.');
     }
 }
