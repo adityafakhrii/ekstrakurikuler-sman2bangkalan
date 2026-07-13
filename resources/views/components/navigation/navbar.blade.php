@@ -51,7 +51,8 @@
                        class="transition-colors duration-200 {{ request()->routeIs('ketua.dashboard') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Dashboard
                     </a>
-                    <a href="#" class="transition-colors duration-200 text-gray-300 hover:text-white">
+                    <a href="{{ route('ketua.pendaftaran.index') }}" 
+                       class="transition-colors duration-200 {{ request()->routeIs('ketua.pendaftaran.index') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Pendaftaran
                     </a>
                     <a href="#" class="transition-colors duration-200 text-gray-300 hover:text-white">

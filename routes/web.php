@@ -7,7 +7,10 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\StudentAuthController;
+use App\Http\Controllers\Ketua\KetuaDashboardController;
+use App\Http\Controllers\Student\EkskulController as StudentEkskulController;
 use App\Http\Controllers\Student\PendaftaranController;
+use App\Http\Controllers\Student\RekomendasiController;
 use Illuminate\Support\Facades\Route;
 
 // =======================
@@ -105,9 +108,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // RUTE KETUA
 // =======================
 Route::prefix('ketua')->name('ketua.')->middleware(['auth', 'role:ketua'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('ketua.dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [KetuaDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/pendaftaran', [KetuaDashboardController::class, 'pendaftaran'])->name('pendaftaran.index');
+    Route::post('/pendaftaran/{id}/approve', [KetuaDashboardController::class, 'approve'])->name('pendaftaran.approve');
+    Route::post('/pendaftaran/{id}/reject', [KetuaDashboardController::class, 'reject'])->name('pendaftaran.reject');
 });
 
 // =======================
@@ -116,26 +120,13 @@ Route::prefix('ketua')->name('ketua.')->middleware(['auth', 'role:ketua'])->grou
 Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:siswa'])->group(function () {
 
     // Rekomendasi
-    Route::get('/rekomendasi', function () {
-        return view('student.rekomendasi.create');
-    })->name('rekomendasi.create');
-
-    Route::post('/rekomendasi', function () {
-        return redirect()->route('siswa.rekomendasi.results');
-    })->name('rekomendasi.store');
-
-    Route::get('/rekomendasi/hasil', function () {
-        return view('student.rekomendasi.results');
-    })->name('rekomendasi.results');
+    Route::get('/rekomendasi', [RekomendasiController::class, 'create'])->name('rekomendasi.create');
+    Route::post('/rekomendasi', [RekomendasiController::class, 'store'])->name('rekomendasi.store');
+    Route::get('/rekomendasi/hasil', [RekomendasiController::class, 'results'])->name('rekomendasi.results');
 
     // Daftar & Detail Ekskul
-    Route::get('/ekskul', function () {
-        return view('student.ekstrakurikuler.index');
-    })->name('ekskul.index');
-
-    Route::get('/ekskul/{id}', function () {
-        return view('student.ekstrakurikuler.show');
-    })->name('ekskul.show');
+    Route::get('/ekskul', [StudentEkskulController::class, 'index'])->name('ekskul.index');
+    Route::get('/ekskul/{id}', [StudentEkskulController::class, 'show'])->name('ekskul.show');
 
     // Pendaftaran
     Route::get('/ekskul/{id}/daftar', [PendaftaranController::class, 'create'])->name('register.create');
