@@ -25,10 +25,17 @@ class KetuaDashboardController extends Controller
 
         if ($ekskul) {
             $ekskulNama = $ekskul->nama;
-            $stats['menunggu'] = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)->where('status', 'menunggu')->count();
-            $stats['disetujui'] = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)->where('status', 'disetujui')->count();
-            $stats['ditolak'] = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)->where('status', 'ditolak')->count();
-            $stats['total'] = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)->count();
+            $counts = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)
+                ->selectRaw("count(*) as total")
+                ->selectRaw("sum(status = 'menunggu') as menunggu")
+                ->selectRaw("sum(status = 'disetujui') as disetujui")
+                ->selectRaw("sum(status = 'ditolak') as ditolak")
+                ->first();
+
+            $stats['menunggu'] = (int) $counts->menunggu;
+            $stats['disetujui'] = (int) $counts->disetujui;
+            $stats['ditolak'] = (int) $counts->ditolak;
+            $stats['total'] = (int) $counts->total;
         }
 
         return view('ketua.dashboard.index', compact('stats', 'ekskulNama'));
