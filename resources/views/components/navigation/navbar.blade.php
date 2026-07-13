@@ -138,7 +138,13 @@
                         <div x-show="openProfile"
                              class="absolute right-0 mt-3 w-48 rounded-xl bg-white text-gray-800 shadow-xl border border-[#f2eaea] py-2 z-50"
                              style="display: none;">
-                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Profil Saya</a>
+                            @auth
+                                @if(Auth::user()->isAdmin())
+                                    <a href="{{ route('admin.profile.edit') }}" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Profil Saya</a>
+                                @else
+                                    <span class="block px-4 py-2 text-sm text-gray-400">Profil Saya</span>
+                                @endif
+                            @endauth
                             <hr class="border-gray-100 my-1">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

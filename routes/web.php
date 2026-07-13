@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\StudentAuthController;
@@ -70,6 +71,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/pengguna/siswa/{id}/edit', [SiswaController::class, 'edit'])->name('pengguna.siswa.edit');
     Route::post('/pengguna/siswa', [SiswaController::class, 'store'])->name('pengguna.siswa.store');
     Route::put('/pengguna/siswa/{id}', [SiswaController::class, 'update'])->name('pengguna.siswa.update');
+    Route::delete('/pengguna/siswa/{id}', [SiswaController::class, 'destroy'])->name('pengguna.siswa.destroy');
 
     // CRUD Admin
     Route::get('/pengguna/admin', [UserController::class, 'index'])->name('pengguna.admin.index');
@@ -82,6 +84,12 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     // Profil/Manage Akun Admin
     Route::get('/settings/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::patch('/settings/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+
+    // Export Data
+    Route::get('/export/siswa', [ExportController::class, 'exportSiswa'])->name('export.siswa');
+    Route::get('/export/ketua', [ExportController::class, 'exportKetua'])->name('export.ketua');
+    Route::get('/export/pendaftaran', [ExportController::class, 'exportPendaftaran'])->name('export.pendaftaran');
+    Route::get('/export/ekskul', [ExportController::class, 'exportEkskul'])->name('export.ekskul');
 });
 
 // =======================
