@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,            // 1. Users (admin, ketua)
             EkstrakurikulerSeeder::class, // 2. Ekskul (FK ke users)
             AspekPenilaianSeeder::class,  // 3. Aspek & bobot (FK ke ekskul)
+            PendaftaranSeeder::class,
+            RekomendasiSeeder::class,
+            PengumumanSeeder::class,
         ]);
 
         $this->command->newLine();

@@ -65,8 +65,7 @@ class RekomendasiController extends Controller
         $rekomendasiId = session('last_rekomendasi_id');
 
         if (! $rekomendasiId) {
-            $latest = DB::table('rekomendasi')
-                ->where('siswa_id', $siswa->id)
+            $latest = Rekomendasi::where('siswa_id', $siswa->id)
                 ->latest()
                 ->first();
 

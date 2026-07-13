@@ -23,6 +23,8 @@ return new class extends Migration
                 ->constrained('ekstrakurikuler')
                 ->cascadeOnDelete();
 
+            $table->string('tahun_ajaran', 10)->comment('Tahun Ajaran aktif saat mendaftar');
+
             $table->enum('status', [
                 'menunggu',    // Menunggu persetujuan ketua
                 'disetujui',   // Diterima menjadi anggota

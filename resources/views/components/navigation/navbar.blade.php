@@ -266,7 +266,7 @@
                     </div>
                 </div>
                 
-                <a href="{{ route('profile.edit') }}" class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+                <a href="{{ route('admin.profile.edit') }}" class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Profil Saya
                 </a>
                 <form method="POST" action="{{ route('logout') }}">

@@ -7,7 +7,7 @@
     <x-cards.card title="Kelola Akun">
         
         <!-- Profile Form (Centered vertical layout matching screenshot) -->
-        <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="max-w-xl mx-auto space-y-6">
+        <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data" class="max-w-xl mx-auto space-y-6">
             @csrf
             @method('PATCH')
 

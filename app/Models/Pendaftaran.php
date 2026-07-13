@@ -15,6 +15,7 @@ class Pendaftaran extends Model
     protected $fillable = [
         'siswa_id',
         'ekstrakurikuler_id',
+        'tahun_ajaran',
         'status',
         'catatan_siswa',
         'catatan_ketua',

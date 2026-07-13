@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Administrator',
                 'email' => 'admin@sman2bangkalan.sch.id',
-                'password' => Hash::make('password'),
+                'password' => Hash::make(config('ekskul.password_default_siswa')),
                 'role' => 'admin',
                 'username' => 'admin',
                 'email_verified_at' => now(),
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => $ketua['name'],
                     'email' => $ketua['email'],
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make(config('ekskul.password_default_siswa')),
                     'role' => 'ketua',
                     'username' => $ketua['username'],
                     'email_verified_at' => now(),
@@ -62,11 +62,9 @@ class UserSeeder extends Seeder
 
         foreach ($siswaData as $data) {
             $user = User::firstOrCreate(
-                ['nisn' => $data['nisn']],
+                ['username' => $data['nisn']],
                 [
                     'name' => $data['name'],
-                    'nisn' => $data['nisn'],
-                    'no_hp' => $data['no_telp'],
                     'password' => Hash::make('password'),
                     'role' => 'siswa',
                     'email_verified_at' => now(),

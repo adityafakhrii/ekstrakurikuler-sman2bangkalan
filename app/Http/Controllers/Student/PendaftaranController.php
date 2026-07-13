@@ -26,6 +26,7 @@ class PendaftaranController extends Controller
         Pendaftaran::create([
             'siswa_id' => $siswa->id,
             'ekstrakurikuler_id' => $ekskul->id,
+            'tahun_ajaran' => config('ekskul.tahun_ajaran'),
             'status' => 'menunggu',
             'catatan_siswa' => $request->validated('catatan_siswa'),
         ]);

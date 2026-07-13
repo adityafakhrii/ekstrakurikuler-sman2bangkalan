@@ -31,7 +31,7 @@
 
             const toast = document.createElement('div');
             toast.className = `flex items-center gap-3 p-4 rounded-2xl shadow-lg border text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto cursor-pointer`;
-            
+
             if (type === 'success') {
                 toast.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-800');
                 toast.innerHTML = `
@@ -79,13 +79,13 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             @if(session('success'))
-                showToast("{{ session('success') }}", 'success');
+                showToast(@json(session('success')), 'success');
             @endif
             @if(session('error'))
-                showToast("{{ session('error') }}", 'error');
+                showToast(@json(session('error')), 'error');
             @endif
             @if($errors->any())
-                showToast("{{ $errors->first() }}", 'error');
+                showToast(@json($errors->first()), 'error');
             @endif
         });
     </script>

@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreEkskulRequest;
 use App\Http\Requests\Admin\UpdateEkskulRequest;
+use App\Helpers\AspekHelper;
 use App\Models\Ekstrakurikuler;
+use App\Models\AspekPenilaian;
+use App\Models\EkskulAspek;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -46,9 +49,9 @@ class EkskulController extends Controller
                 'whatsapp_group' => $validated['whatsapp_group'],
                 'jadwal' => $validated['jadwal'],
                 'logo' => $logoPath,
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'status' => 'aktif',
-                'kuota' => 30,
+                'kuota' => config('ekskul.kuota_default'),
             ]);
 
             $mapping = [
@@ -61,9 +64,9 @@ class EkskulController extends Controller
             ];
 
             foreach ($mapping as $formField => $dbKode) {
-                $aspek = DB::table('aspek_penilaian')->where('kode', $dbKode)->first();
+                $aspek = AspekPenilaian::where('kode', $dbKode)->first();
                 if ($aspek) {
-                    DB::table('ekskul_aspek')->updateOrInsert(
+                    EkskulAspek::updateOrInsert(
                         [
                             'ekstrakurikuler_id' => $ekskul->id,
                             'aspek_penilaian_id' => $aspek->id,

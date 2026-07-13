@@ -33,9 +33,10 @@ class SiswaController extends Controller
 
             $user = User::create([
                 'name' => $validated['nama_siswa'],
+                'username' => $validated['nisn'],
                 'nisn' => $validated['nisn'],
                 'no_hp' => $validated['no_hp'],
-                'password' => Hash::make('password'),
+                'password' => Hash::make(config('ekskul.password_default_siswa')),
                 'role' => 'siswa',
             ]);
 
@@ -82,8 +83,7 @@ class SiswaController extends Controller
 
             $siswa->user->update([
                 'name' => $validated['nama_siswa'],
-                'nisn' => $validated['nisn'],
-                'no_hp' => $validated['no_hp'],
+                'username' => $validated['nisn'],
             ]);
         });
 

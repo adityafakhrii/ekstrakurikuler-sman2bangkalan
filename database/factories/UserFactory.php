@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends Factory<User>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
  */
 class UserFactory extends Factory
 {
@@ -30,10 +30,42 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'two_factor_secret' => null,
-            'two_factor_recovery_codes' => null,
-            'two_factor_confirmed_at' => null,
+            'role' => 'siswa',
+            'username' => fake()->unique()->userName(),
         ];
+    }
+
+    /**
+     * State for admin user.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'admin',
+            'username' => 'admin_' . fake()->unique()->userName(),
+        ]);
+    }
+
+    /**
+     * State for ketua user.
+     */
+    public function ketua(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'ketua',
+            'username' => 'ketua_' . fake()->unique()->userName(),
+        ]);
+    }
+
+    /**
+     * State for siswa user.
+     */
+    public function siswa(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'siswa',
+            'username' => fake()->unique()->numerify('##########'), // NISN 10 digit
+        ]);
     }
 
     /**
@@ -43,18 +75,6 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
-        ]);
-    }
-
-    /**
-     * Indicate that the model has two-factor authentication configured.
-     */
-    public function withTwoFactor(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'two_factor_secret' => encrypt('secret'),
-            'two_factor_recovery_codes' => encrypt(json_encode(['recovery-code-1'])),
-            'two_factor_confirmed_at' => now(),
         ]);
     }
 }

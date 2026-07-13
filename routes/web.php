@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\EkskulController;
 use App\Http\Controllers\Admin\KetuaController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\StudentAuthController;
@@ -11,6 +13,7 @@ use App\Http\Controllers\Ketua\KetuaDashboardController;
 use App\Http\Controllers\Student\EkskulController as StudentEkskulController;
 use App\Http\Controllers\Student\PendaftaranController;
 use App\Http\Controllers\Student\RekomendasiController;
+use App\Http\Controllers\Student\HomeController;
 use Illuminate\Support\Facades\Route;
 
 // =======================
@@ -34,29 +37,15 @@ Route::post('/siswa/login', [StudentAuthController::class, 'login']);
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 // --- Entry siswa ---
-Route::get('/siswa', function () {
-    if (auth()->check()) {
-        if (auth()->user()->isSiswa()) {
-            return view('student.home.index');
-        }
-
-        $redirectRoute = auth()->user()->isAdmin() ? 'dashboard' : 'ketua.dashboard';
-
-        return redirect()->route($redirectRoute)->with('error', 'Silakan logout terlebih dahulu untuk masuk sebagai Siswa.');
-    }
-
-    return redirect()->route('siswa.login');
-})->name('siswa.home');
+Route::get('/siswa', [HomeController::class, 'index'])->name('siswa.home');
 
 // =======================
 // RUTE ADMIN (Dashboard, Ekskul, Pengguna)
 // =======================
-Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 
     // Dashboard
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard.index');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // CRUD Ekstrakurikuler
     Route::get('/ekskul', [EkskulController::class, 'index'])->name('ekskul.index');
@@ -77,13 +66,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // CRUD Siswa
     Route::get('/pengguna/siswa', [SiswaController::class, 'index'])->name('pengguna.siswa.index');
-
     Route::get('/pengguna/siswa/create', [SiswaController::class, 'create'])->name('pengguna.siswa.create');
-
     Route::get('/pengguna/siswa/{id}/edit', [SiswaController::class, 'edit'])->name('pengguna.siswa.edit');
-
     Route::post('/pengguna/siswa', [SiswaController::class, 'store'])->name('pengguna.siswa.store');
-
     Route::put('/pengguna/siswa/{id}', [SiswaController::class, 'update'])->name('pengguna.siswa.update');
 
     // CRUD Admin
@@ -94,14 +79,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/pengguna/admin/{id}', [UserController::class, 'update'])->name('pengguna.admin.update');
     Route::delete('/pengguna/admin/{id}', [UserController::class, 'destroy'])->name('pengguna.admin.destroy');
 
-    // Profil/Manage Akun
-    Route::get('/settings/profile', function () {
-        return view('admin.profile.edit');
-    })->name('profile.edit');
-
-    Route::patch('/settings/profile', function () {
-        return redirect()->route('dashboard');
-    })->name('profile.update');
+    // Profil/Manage Akun Admin
+    Route::get('/settings/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('/settings/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
 });
 
 // =======================
@@ -130,15 +110,9 @@ Route::prefix('siswa')->name('siswa.')->middleware(['auth', 'role:siswa'])->grou
 
     // Pendaftaran
     Route::get('/ekskul/{id}/daftar', [PendaftaranController::class, 'create'])->name('register.create');
-
     Route::post('/ekskul/{id}/daftar', [PendaftaranController::class, 'store'])->name('register.store');
 
     // Riwayat
-    Route::get('/riwayat', function () {
-        return view('student.riwayat.index');
-    })->name('register.history');
-
-    Route::get('/riwayat/{id}', function () {
-        return view('student.riwayat.show');
-    })->name('register.history.show');
+    Route::get('/riwayat', [HomeController::class, 'history'])->name('register.history');
+    Route::get('/riwayat/{id}', [HomeController::class, 'historyShow'])->name('register.history.show');
 });

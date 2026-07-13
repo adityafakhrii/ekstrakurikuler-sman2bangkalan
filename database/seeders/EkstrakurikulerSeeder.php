@@ -29,7 +29,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'jam_mulai' => '14:00:00',
                 'jam_selesai' => '16:00:00',
                 'lokasi' => 'Ruang OSIS',
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'persyaratan' => 'Siswa aktif kelas X-XII, nilai rata-rata minimal 75, tidak sedang dalam proses sanksi.',
             ],
             [
@@ -44,7 +44,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'jam_mulai' => '07:30:00',
                 'jam_selesai' => '11:00:00',
                 'lokasi' => 'Lapangan Upacara',
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'persyaratan' => 'Wajib bagi kelas X, terbuka untuk semua siswa.',
             ],
             [
@@ -59,7 +59,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'jam_mulai' => '15:30:00',
                 'jam_selesai' => '17:30:00',
                 'lokasi' => 'Lapangan Basket',
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'persyaratan' => 'Tinggi badan minimal 160cm untuk putra, 155cm untuk putri. Sehat jasmani.',
             ],
             [
@@ -74,7 +74,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'jam_mulai' => '14:00:00',
                 'jam_selesai' => '16:00:00',
                 'lokasi' => 'Ruang UKS',
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'persyaratan' => 'Tidak takut darah, bersedia mengikuti pelatihan P3K.',
             ],
             [
@@ -89,7 +89,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'jam_mulai' => '14:30:00',
                 'jam_selesai' => '16:30:00',
                 'lokasi' => 'Aula Sekolah',
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'persyaratan' => 'Memiliki kemampuan vokal dasar, bersedia hadir rutin setiap latihan.',
             ],
             [
@@ -104,7 +104,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'jam_mulai' => '08:00:00',
                 'jam_selesai' => '11:00:00',
                 'lokasi' => 'Lab Komputer',
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'persyaratan' => 'Minat di bidang teknologi dan pemrograman.',
             ],
             [
@@ -119,7 +119,7 @@ class EkstrakurikulerSeeder extends Seeder
                 'jam_mulai' => '14:00:00',
                 'jam_selesai' => '16:00:00',
                 'lokasi' => 'Ruang Kelas XII-A',
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'persyaratan' => 'Nilai bahasa Inggris minimal 75, berani berbicara di depan umum.',
             ],
         ];

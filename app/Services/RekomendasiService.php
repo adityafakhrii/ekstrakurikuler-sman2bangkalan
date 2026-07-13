@@ -4,6 +4,10 @@ namespace App\Services;
 
 use App\Models\Ekstrakurikuler;
 use App\Models\Siswa;
+use App\Models\Rekomendasi;
+use App\Models\RekomendasiHasil;
+use App\Models\EkskulAspek;
+use App\Models\AspekPenilaian;
 use Illuminate\Support\Facades\DB;
 
 class RekomendasiService
@@ -19,7 +23,7 @@ class RekomendasiService
             $rekomendasiId = DB::table('rekomendasi')->insertGetId([
                 'siswa_id' => $siswa->id,
                 'jawaban' => json_encode($jawaban),
-                'tahun_ajaran' => '2024/2025',
+                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -141,6 +145,6 @@ class RekomendasiService
             ];
         }
 
-        DB::table('rekomendasi_hasil')->insert($rows);
+        RekomendasiHasil::insert($rows);
     }
 }

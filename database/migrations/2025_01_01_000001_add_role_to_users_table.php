@@ -32,8 +32,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropUnique(['username']);
-            $table->dropUnique(['nisn']);
-            $table->dropColumn(['role', 'username', 'nisn', 'no_hp']);
+            $table->dropColumn(['role', 'username']);
         });
 
         Schema::table('users', function (Blueprint $table) {
