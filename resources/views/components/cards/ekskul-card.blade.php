@@ -19,15 +19,16 @@
     <!-- Content info directly on page background -->
     <div class="flex-grow flex flex-col gap-2 text-left">
         <!-- Title & Match Ratio -->
-        <h3 class="text-2xl font-bold text-gray-900 tracking-tight leading-none">
+        <h3 class="text-2xl font-bold text-gray-900 tracking-tight leading-none flex items-center flex-wrap gap-2">
             {{ $name }}
             @if($match)
-                <span class="text-sm font-normal text-gray-500 ml-2">
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700 border border-emerald-200/60 shadow-3xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     {{ $match }}
                 </span>
             @endif
         </h3>
-        
+
         <!-- Description -->
         <p class="text-xs text-gray-400 font-light leading-relaxed line-clamp-3">
             {{ $description }}
