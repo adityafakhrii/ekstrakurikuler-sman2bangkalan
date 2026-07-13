@@ -15,50 +15,13 @@
         </div>
 
         @php
-            // Mock recommended extracurricular list sorted from highest matching percentage to lowest matching screenshot 2
-            $ekskuls = [
-                [
-                    'name' => 'Pramuka',
-                    'match' => '97% Cocok',
-                    'gradient' => 'from-[#8A827B] to-[#C3BDB9]', // Clay/Sand
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
-                ],
-                [
-                    'name' => 'Pramuka',
-                    'match' => '97% Cocok',
-                    'gradient' => 'from-[#3B7A81] to-[#98B5B4]', // Muted Ocean/Teal
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
-                ],
-                [
-                    'name' => 'Pramuka',
-                    'match' => '97% Cocok',
-                    'gradient' => 'from-[#D6E35C] to-[#BDC199]', // Lime Green/Khaki
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
-                ],
-                [
-                    'name' => 'Pramuka',
-                    'match' => '97% Cocok',
-                    'gradient' => 'from-[#508C1B] to-[#A4B67F]', // Olive/Sage Green
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
-                ],
-                [
-                    'name' => 'Pramuka',
-                    'match' => '97% Cocok',
-                    'gradient' => 'from-[#00A3A6] to-[#81B5BD]', // Muted Cyan/Slate Blue
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
-                ],
-                [
-                    'name' => 'Pramuka',
-                    'match' => '97% Cocok',
-                    'gradient' => 'from-[#68357B] to-[#A19BA8]', // Muted Plum/Lavender
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
-                ]
+            $gradients = [
+                'from-[#8A827B] to-[#C3BDB9]',
+                'from-[#3B7A81] to-[#98B5B4]',
+                'from-[#D6E35C] to-[#BDC199]',
+                'from-[#508C1B] to-[#A4B67F]',
+                'from-[#00A3A6] to-[#81B5BD]',
+                'from-[#68357B] to-[#A19BA8]'
             ];
         @endphp
 
@@ -66,12 +29,12 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-16 max-w-5xl mx-auto">
             @foreach($ekskuls as $index => $ekskul)
                 <x-cards.ekskul-card 
-                    name="{{ $ekskul['name'] }}"
-                    match="{{ $ekskul['match'] }}"
-                    gradient="{{ $ekskul['gradient'] }}"
-                    description="{{ $ekskul['description'] }}"
-                    image="{{ $ekskul['image'] }}"
-                    route="{{ route('siswa.ekskul.show', $index + 1) }}"
+                    name="{{ $ekskul->nama }}"
+                    match="{{ round($ekskul->skor) }}% Cocok"
+                    gradient="{{ $gradients[$index % count($gradients)] }}"
+                    description="{{ $ekskul->deskripsi }}"
+                    image="{{ $ekskul->logo ? asset('storage/' . $ekskul->logo) : 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop' }}"
+                    route="{{ route('siswa.ekskul.show', $ekskul->id) }}"
                 />
             @endforeach
         </div>

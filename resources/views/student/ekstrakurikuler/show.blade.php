@@ -14,41 +14,6 @@
             </p>
         </div>
 
-        @php
-            // Mock dynamic details based on ID
-            $id = request()->route('id', 1);
-            
-            $details = [
-                1 => [
-                    'name' => 'Pramuka',
-                    'pembina' => 'Sugeng Priyatno',
-                    'ketua' => 'Fuad Sasmita',
-                    'jadwal' => 'Jum’at, Jam 12.30 - 15.30',
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop'
-                ],
-                2 => [
-                    'name' => 'Paskibra',
-                    'pembina' => 'Sugeng Priyatno',
-                    'ketua' => 'Fuad Sasmita',
-                    'jadwal' => 'Sabtu, Jam 08.00 - 11.00',
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=600&auto=format&fit=crop'
-                ],
-                3 => [
-                    'name' => 'Futsal',
-                    'pembina' => 'Sugeng Priyatno',
-                    'ketua' => 'Fuad Sasmita',
-                    'jadwal' => 'Rabu, Jam 15.30 - 17.30',
-                    'description' => 'Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle. Apparently we had reached a great height in the atmosphere, for the sky was a dead black, and the stars had ceased to twinkle.',
-                    'image' => 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=600&auto=format&fit=crop'
-                ]
-            ];
-
-            // Default fallback if ID doesn't exist in dummy list
-            $ekskul = $details[$id] ?? $details[1];
-        @endphp
-
         <!-- Large Content Card Wrapper matching screenshot bg-color -->
         <div class="bg-[#F3F4F6]/50 rounded-[2.5rem] p-6 sm:p-12 max-w-5xl mx-auto shadow-2xs border border-gray-100/50">
             
@@ -57,7 +22,7 @@
                 <div class="lg:col-span-5 flex justify-center">
                     <div class="bg-gradient-to-br from-[#86EFAC] via-[#93C5FD] to-[#A5B4FC] rounded-[2.5rem] p-5 shadow-lg max-w-sm w-full">
                         <div class="aspect-square rounded-[2rem] overflow-hidden shadow-md">
-                            <img src="{{ $ekskul['image'] }}" alt="{{ $ekskul['name'] }}" class="w-full h-full object-cover">
+                            <img src="{{ $ekskul->logo ? asset('storage/' . $ekskul->logo) : 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop' }}" alt="{{ $ekskul->nama }}" class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>
@@ -67,10 +32,10 @@
                     <!-- Title & Desc -->
                     <div class="space-y-3">
                         <h2 class="text-3xl font-extrabold text-gray-900 leading-tight">
-                            {{ $ekskul['name'] }}
+                            {{ $ekskul->nama }}
                         </h2>
                         <p class="text-xs text-gray-500 font-light leading-relaxed">
-                            {{ $ekskul['description'] }}
+                            {{ $ekskul->deskripsi }}
                         </p>
                     </div>
 
@@ -80,19 +45,19 @@
                         <div class="grid grid-cols-12 gap-1 items-center">
                             <span class="col-span-4 text-left">Nama Pembina</span>
                             <span class="col-span-1 text-center">:</span>
-                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul['pembina'] }}</span>
+                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul->pembina }}</span>
                         </div>
                         <!-- Ketua -->
                         <div class="grid grid-cols-12 gap-1 items-center">
                             <span class="col-span-4 text-left">Nama Ketua</span>
                             <span class="col-span-1 text-center">:</span>
-                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul['ketua'] }}</span>
+                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul->ketua?->name ?? '-' }}</span>
                         </div>
                         <!-- Jadwal -->
                         <div class="grid grid-cols-12 gap-1 items-center">
                             <span class="col-span-4 text-left">Jadwal Ekskul</span>
                             <span class="col-span-1 text-center">:</span>
-                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul['jadwal'] }}</span>
+                            <span class="col-span-7 text-left text-gray-600 font-medium">{{ $ekskul->jadwal }}</span>
                         </div>
                     </div>
 
@@ -100,7 +65,7 @@
                     <div class="flex justify-end gap-3 pt-6">
                         <!-- Daftar Button (Yellow styled, rounded-full) -->
                         <x-buttons.button 
-                            onclick="window.location.href='{{ route('siswa.register.create', $id) }}'"
+                            onclick="window.location.href='{{ route('siswa.register.create', $ekskul->id) }}'"
                             class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] py-3 px-8 rounded-full text-xs font-bold border-0 cursor-pointer shadow-3xs"
                         >
                             Daftar
