@@ -6,24 +6,8 @@
     <!-- Main Card Wrapper -->
     <x-cards.card title="Edit Ekstrakurikuler Baru">
         
-        <!-- Dummy data definitions (Exactly matching screenshot 5) -->
-        @php
-            $ekskul = [
-                'name' => 'Pramuka',
-                'pembina' => 'Ahmad Jihaduddin Salim',
-                'description' => 'Pramuka adalah kegiatan ekstrakurikuler yang melatih kemandirian, disiplin, kerja sama, dan kepemimpinan melalui aktivitas seru seperti baris-berbaris, tali-temali, dan perkemahan.',
-                'logo_filename' => 'Logo.jpg*',
-                'fisik' => 1,
-                'intelektual' => 3,
-                'kreativitas' => 2,
-                'sosial' => 5,
-                'mental' => 2,
-                'komunikasi' => 4
-            ];
-        @endphp
-
         <!-- Edit Form -->
-        <form method="POST" action="{{ route('ekskul.update', 1) }}" enctype="multipart/form-data" class="max-w-4xl mx-auto space-y-8">
+        <form method="POST" action="{{ route('ekskul.update', $ekskul->id) }}" enctype="multipart/form-data" class="max-w-4xl mx-auto space-y-8">
             @csrf
             @method('PUT')
 
@@ -32,10 +16,13 @@
                 <x-forms.section-title title="Bagian 1: Informasi Umum" />
                 <div class="pl-6">
                     <x-forms.ekskul-fields 
-                        :name="$ekskul['name']" 
-                        :pembina="$ekskul['pembina']" 
-                        :description="$ekskul['description']" 
-                        :logo-filename="$ekskul['logo_filename']" 
+                        :name="$ekskul->nama" 
+                        :pembina="$ekskul->pembina" 
+                        :ketua="$ekskul->ketua?->name"
+                        :jadwal="$ekskul->jadwal"
+                        :whatsapp-group="$ekskul->whatsapp_group"
+                        :description="$ekskul->deskripsi" 
+                        :logo-filename="$ekskul->logo ? basename($ekskul->logo) : null" 
                     />
                 </div>
             </div>
@@ -44,17 +31,17 @@
             <div>
                 <x-forms.section-title title="Bagian 2: Penilaian Aspek Pendukung (Untuk Rekomendasi)" />
                 
-                <!-- Criteria List (Exactly matching screenshot values) -->
+                <!-- Criteria List (Exactly matching database values) -->
                 <div class="space-y-4 pl-6">
                     @php
-                        // 6 Recommendation Criteria with preset values from screenshot
+                        // 6 Recommendation Criteria with preset values from database
                         $criteria = [
-                            ['label' => 'Fisik & Ketangkasan', 'name' => 'fisik', 'value' => $ekskul['fisik']],
-                            ['label' => 'Intelektual & Strategi', 'name' => 'intelektual', 'value' => $ekskul['intelektual']],
-                            ['label' => 'Kreativitas & Seni', 'name' => 'kreativitas', 'value' => $ekskul['kreativitas']],
-                            ['label' => 'Sosial & Kepemimpinan', 'name' => 'sosial', 'value' => $ekskul['sosial']],
-                            ['label' => 'Mental & Kedisiplinan', 'name' => 'mental', 'value' => $ekskul['mental']],
-                            ['label' => 'Komunikasi & Bahasa', 'name' => 'komunikasi', 'value' => $ekskul['komunikasi']]
+                            ['label' => 'Fisik & Ketangkasan', 'name' => 'fisik', 'value' => $aspekValues['fisik']],
+                            ['label' => 'Intelektual & Strategi', 'name' => 'intelektual', 'value' => $aspekValues['intelektual']],
+                            ['label' => 'Kreativitas & Seni', 'name' => 'kreativitas', 'value' => $aspekValues['kreativitas']],
+                            ['label' => 'Sosial & Kepemimpinan', 'name' => 'sosial', 'value' => $aspekValues['sosial']],
+                            ['label' => 'Mental & Kedisiplinan', 'name' => 'mental', 'value' => $aspekValues['mental']],
+                            ['label' => 'Komunikasi & Bahasa', 'name' => 'komunikasi', 'value' => $aspekValues['komunikasi']]
                         ];
                     @endphp
 

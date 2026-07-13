@@ -30,6 +30,9 @@ class Ekstrakurikuler extends Model
         'tahun_ajaran',
         'persyaratan',
         'prestasi',
+        'pembina',
+        'whatsapp_group',
+        'jadwal',
     ];
 
     public function ketua(): BelongsTo

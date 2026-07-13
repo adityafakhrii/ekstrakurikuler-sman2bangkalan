@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\EkskulController;
 use App\Http\Controllers\Admin\KetuaController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\UserController;
@@ -55,29 +56,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('dashboard');
 
     // CRUD Ekstrakurikuler
-    Route::get('/ekskul', function () {
-        return view('admin.ekstrakurikuler.index');
-    })->name('ekskul.index');
-
-    Route::get('/ekskul/create', function () {
-        return view('admin.ekstrakurikuler.create');
-    })->name('ekskul.create');
-
-    Route::get('/ekskul/{id}', function () {
-        return view('admin.ekstrakurikuler.show');
-    })->name('ekskul.show');
-
-    Route::get('/ekskul/{id}/edit', function () {
-        return view('admin.ekstrakurikuler.edit');
-    })->name('ekskul.edit');
-
-    Route::post('/ekskul', function () {
-        return redirect()->route('ekskul.index');
-    })->name('ekskul.store');
-
-    Route::put('/ekskul/{id}', function () {
-        return redirect()->route('ekskul.index');
-    })->name('ekskul.update');
+    Route::get('/ekskul', [EkskulController::class, 'index'])->name('ekskul.index');
+    Route::get('/ekskul/create', [EkskulController::class, 'create'])->name('ekskul.create');
+    Route::get('/ekskul/{id}', [EkskulController::class, 'show'])->name('ekskul.show');
+    Route::get('/ekskul/{id}/edit', [EkskulController::class, 'edit'])->name('ekskul.edit');
+    Route::post('/ekskul', [EkskulController::class, 'store'])->name('ekskul.store');
+    Route::put('/ekskul/{id}', [EkskulController::class, 'update'])->name('ekskul.update');
+    Route::delete('/ekskul/{id}', [EkskulController::class, 'destroy'])->name('ekskul.destroy');
 
     // CRUD Ketua
     Route::get('/pengguna/ketua', [KetuaController::class, 'index'])->name('pengguna.ketua.index');

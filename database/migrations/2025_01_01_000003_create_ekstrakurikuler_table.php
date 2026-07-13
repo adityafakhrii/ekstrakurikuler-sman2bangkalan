@@ -23,6 +23,9 @@ return new class extends Migration
             $table->text('deskripsi')->nullable();
             $table->string('logo')->nullable()->comment('Path logo/gambar ekskul');
             $table->string('banner')->nullable()->comment('Path banner/foto kegiatan');
+            $table->string('pembina')->nullable()->comment('Nama Pembina');
+            $table->string('whatsapp_group')->nullable()->comment('Link grup Whatsapp');
+            $table->string('jadwal')->nullable()->comment('Jadwal Latihan (string)');
 
             $table->unsignedInteger('kuota')->default(30)->comment('Batas maksimal anggota');
             $table->enum('status', ['aktif', 'tidak_aktif', 'penuh'])->default('aktif');
