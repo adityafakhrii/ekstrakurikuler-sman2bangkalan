@@ -9,9 +9,11 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\View\View;
+
 class StudentAuthController extends Controller
 {
-    public function showLoginForm()
+    public function showLoginForm(): View|RedirectResponse
     {
         if (Auth::check()) {
             $user = Auth::user();
@@ -48,16 +50,19 @@ class StudentAuthController extends Controller
                     ->withErrors(['nisn' => 'NISN tidak terdaftar. Silakan hubungi Administrator.']);
             }
 
-            if (! $siswa->user->isSiswa()) {
+            /** @var \App\Models\User $user */
+            $user = $siswa->user;
+
+            if (! $user->isSiswa()) {
                 return back()
                     ->withInput($request->only('nisn'))
                     ->withErrors(['nisn' => 'Akun Anda tidak terdaftar sebagai Siswa.']);
             }
 
             $request->session()->regenerate();
-            Auth::login($siswa->user, $request->boolean('remember'));
+            Auth::login($user, $request->boolean('remember'));
 
-            session()->flash('success', 'Selamat datang, '.$siswa->user->name.'!');
+            session()->flash('success', 'Selamat datang, '.$user->name.'!');
 
             return redirect()->intended(route('siswa.home'));
 

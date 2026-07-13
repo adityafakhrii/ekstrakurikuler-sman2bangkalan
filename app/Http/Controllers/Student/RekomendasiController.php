@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ekstrakurikuler;
+use App\Models\Rekomendasi;
 use App\Services\RekomendasiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,9 @@ class RekomendasiController extends Controller
             return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
         }
 
+        /** @var \App\Models\Siswa $siswa */
+        $siswa = $siswa;
+
         $jawaban = [
             'fisik' => (int) $request->input('fisik'),
             'intelektual' => (int) $request->input('intelektual'),
@@ -61,6 +65,9 @@ class RekomendasiController extends Controller
         if (! $siswa) {
             return redirect()->route('siswa.home')->with('error', 'Data siswa tidak ditemukan.');
         }
+
+        /** @var \App\Models\Siswa $siswa */
+        $siswa = $siswa;
 
         $rekomendasiId = session('last_rekomendasi_id');
 
