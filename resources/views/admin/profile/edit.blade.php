@@ -15,10 +15,14 @@
             <div class="flex flex-col items-center gap-3">
                 <!-- Red Background Photo Container matching screenshot -->
                 <div class="w-28 h-36 bg-[#E11D48] rounded-xl overflow-hidden border-2 border-[#E11D48] shadow-md flex items-center justify-center relative">
-                    <!-- Pas foto dummy placeholder (Avatar SVG representing student) -->
-                    <svg class="w-20 h-20 text-white/90 mt-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
+                    @if(Auth::user()->foto)
+                        <img src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                    @else
+                        <!-- Pas foto dummy placeholder (Avatar SVG representing student) -->
+                        <svg class="w-20 h-20 text-white/90 mt-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    @endif
                 </div>
                 
                 <!-- Choose Img Button matching screenshot -->
@@ -47,7 +51,7 @@
                     <x-forms.input 
                         name="name" 
                         placeholder="Masukkan Nama Lengkap" 
-                        value="{{ old('name', Auth::user()->name ?? 'Ahmad Jihaduddin Salim') }}" 
+                        value="{{ old('name', Auth::user()->name) }}" 
                         class="bg-gray-100/80 border-gray-200"
                         required 
                     />
@@ -61,7 +65,7 @@
                     <x-forms.input 
                         name="username" 
                         placeholder="Masukkan Username" 
-                        value="{{ old('username', Auth::user()->username ?? 'ahmad_jihad') }}" 
+                        value="{{ old('username', Auth::user()->username) }}" 
                         class="bg-gray-100/80 border-gray-200"
                         required 
                     />
@@ -75,9 +79,13 @@
                     <x-forms.input 
                         type="password" 
                         name="password" 
-                        placeholder="" 
+                        placeholder="Masukkan password baru jika ingin mengubah" 
                         class="bg-gray-100/80 border-gray-200"
                     />
+                    <p class="text-xs text-gray-500 font-normal mt-0.5">💡 Abaikan atau kosongkan jika tidak ingin mengubah password.</p>
+                    @error('password')
+                        <p class="text-xs text-red-600 font-medium mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <!-- Konfirmasi Password Baru -->
@@ -88,7 +96,7 @@
                     <x-forms.input 
                         type="password" 
                         name="password_confirmation" 
-                        placeholder="" 
+                        placeholder="Masukkan kembali password baru" 
                         class="bg-gray-100/80 border-gray-200"
                     />
                 </div>
