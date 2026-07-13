@@ -56,15 +56,6 @@ class RekomendasiController extends Controller
                 ->where('status', 'aktif')
                 ->get();
 
-            $mapping = [
-                'fisik' => 'FISIK',
-                'intelektual' => 'AKADEMIK',
-                'kreativitas' => 'SENI',
-                'sosial' => 'SOSIAL',
-                'mental' => 'SOSIAL_HUMANIORA',
-                'komunikasi' => 'BAHASA',
-            ];
-
             $results = [];
 
             foreach ($ekskuls as $ekskul) {
@@ -74,15 +65,47 @@ class RekomendasiController extends Controller
                     ->pluck('bobot', 'kode')
                     ->toArray();
 
-                $totalSimilarity = 0;
-                foreach ($mapping as $formField => $dbKode) {
-                    $studentVal = (int) $request->input($formField) * 20; // Scale 1-5 to 0-100
-                    $ekskulVal = isset($aspekBobot[$dbKode]) ? (float) $aspekBobot[$dbKode] : 0.0;
-                    $diff = abs($studentVal - $ekskulVal);
-                    $totalSimilarity += (100 - $diff);
+                // Vektor preferensi siswa (skala 1-5)
+                $studentVector = [
+                    (int) $request->input('fisik'),
+                    (int) $request->input('intelektual'),
+                    (int) $request->input('kreativitas'),
+                    (int) $request->input('sosial'),
+                    (int) $request->input('mental'),
+                    (int) $request->input('komunikasi'),
+                ];
+
+                // Vektor profil ekskul (konversi bobot 0-100 → 1-5)
+                $ekskulVector = [
+                    isset($aspekBobot['FISIK']) ? (float) $aspekBobot['FISIK'] / 20 : 0,
+                    isset($aspekBobot['AKADEMIK']) ? (float) $aspekBobot['AKADEMIK'] / 20 : 0,
+                    isset($aspekBobot['SENI']) ? (float) $aspekBobot['SENI'] / 20 : 0,
+                    isset($aspekBobot['SOSIAL']) ? (float) $aspekBobot['SOSIAL'] / 20 : 0,
+                    isset($aspekBobot['SOSIAL_HUMANIORA']) ? (float) $aspekBobot['SOSIAL_HUMANIORA'] / 20 : 0,
+                    isset($aspekBobot['BAHASA']) ? (float) $aspekBobot['BAHASA'] / 20 : 0,
+                ];
+
+                // Cosine Similarity: cos(θ) = (A·B) / (||A|| × ||B||)
+                $dotProduct = 0;
+                $normStudent = 0;
+                $normEkskul = 0;
+
+                for ($i = 0; $i < 6; $i++) {
+                    $dotProduct += $studentVector[$i] * $ekskulVector[$i];
+                    $normStudent += $studentVector[$i] * $studentVector[$i];
+                    $normEkskul += $ekskulVector[$i] * $ekskulVector[$i];
                 }
 
-                $score = $totalSimilarity / 6;
+                $normStudent = sqrt($normStudent);
+                $normEkskul = sqrt($normEkskul);
+
+                // Hindari pembagian dengan nol
+                $cosineSimilarity = ($normStudent > 0 && $normEkskul > 0)
+                    ? $dotProduct / ($normStudent * $normEkskul)
+                    : 0;
+
+                // Konversi ke persentase (0 - 100)
+                $score = round($cosineSimilarity * 100, 2);
 
                 $results[] = [
                     'rekomendasi_id' => $rekomendasiId,
