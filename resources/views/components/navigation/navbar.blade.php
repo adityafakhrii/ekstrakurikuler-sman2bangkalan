@@ -1,8 +1,8 @@
-<header class="bg-[#2A1B60] text-white sticky top-0 z-50 shadow-md" 
+<header class="bg-[#2A1B60] text-white sticky top-0 z-50 shadow-md"
         x-data="{ mobileMenuOpen: false, openPengguna: false, openProfile: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-            
+
             <!-- Logo & Brand (EKSIS) - Clickable, menuju ke index sesuai role -->
             @if(request()->is('siswa*'))
                 <a href="{{ route('siswa.home') }}" class="flex items-center gap-3">
@@ -25,33 +25,33 @@
             <nav class="hidden md:flex items-center gap-8 text-sm font-normal">
                 @if(request()->is('siswa*'))
                     <!-- Student Menu Items -->
-                    <a href="{{ route('siswa.home') }}" 
+                    <a href="{{ route('siswa.home') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('siswa.home') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Home
                     </a>
-                    <a href="#about" 
+                    <a href="#about"
                        class="transition-colors duration-200 text-gray-300 hover:text-white">
                         About
                     </a>
-                    <a href="{{ route('siswa.ekskul.index') }}" 
+                    <a href="{{ route('siswa.ekskul.index') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('siswa.ekskul.index') || request()->routeIs('siswa.ekskul.show') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Ekstrakurikuler
                     </a>
-                    <a href="{{ route('siswa.rekomendasi.create') }}" 
+                    <a href="{{ route('siswa.rekomendasi.create') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('siswa.rekomendasi.create') || request()->routeIs('siswa.rekomendasi.results') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Rekom Ekskul
                     </a>
-                    <a href="{{ route('siswa.register.history') }}" 
+                    <a href="{{ route('siswa.register.history') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('siswa.register.history') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Riwayat Daftar
                     </a>
                 @elseif(request()->is('ketua*'))
                     <!-- Ketua Menu Items -->
-                    <a href="{{ route('ketua.dashboard') }}" 
+                    <a href="{{ route('ketua.dashboard') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('ketua.dashboard') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Dashboard
                     </a>
-                    <a href="{{ route('ketua.pendaftaran.index') }}" 
+                    <a href="{{ route('ketua.pendaftaran.index') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('ketua.pendaftaran.index') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Pendaftaran
                     </a>
@@ -64,13 +64,13 @@
                 @else
                     <!-- Admin Menu Items -->
                     <!-- Dashboard (Active) -->
-                    <a href="{{ route('dashboard') }}" 
+                    <a href="{{ route('dashboard') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('dashboard') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Dashboard
                     </a>
-                    
+
                     <!-- Data Ekstrakurikuler -->
-                    <a href="{{ route('ekskul.index') }}" 
+                    <a href="{{ route('ekskul.index') }}"
                        class="transition-colors duration-200 {{ request()->routeIs('ekskul.index') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Data Ekstrakurikuler
                     </a>
@@ -88,7 +88,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </button>
-                        <div x-show="openPengguna" 
+                        <div x-show="openPengguna"
                              class="absolute left-0 mt-3 w-48 rounded-xl bg-white text-gray-800 shadow-xl border border-[#f2eaea] py-2 z-50"
                              style="display: none;">
                             <a href="{{ route('pengguna.admin.index') }}" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Admin</a>
@@ -101,8 +101,12 @@
 
             <!-- User Profile / Logout Action Button -->
             <div class="flex items-center gap-4">
-                
+
                 @if(request()->is('siswa*'))
+                    <!-- Welcome greeting "Hi, [nama siswa]" -->
+                    <span class="hidden md:inline text-sm font-semibold text-gray-200">
+                        Hi, {{ Auth::user()->name }}
+                    </span>
                     <!-- Student Yellow Logout Button matching screenshot -->
                     <form method="POST" action="{{ route('logout') }}" class="hidden md:block">
                         @csrf
@@ -131,7 +135,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </button>
-                        <div x-show="openProfile" 
+                        <div x-show="openProfile"
                              class="absolute right-0 mt-3 w-48 rounded-xl bg-white text-gray-800 shadow-xl border border-[#f2eaea] py-2 z-50"
                              style="display: none;">
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 hover:bg-brand-primary/10 hover:text-brand-primary transition-colors duration-150 text-sm">Profil Saya</a>
@@ -147,7 +151,7 @@
                 @endif
 
                 <!-- Hamburger Mobile Menu Toggle Button -->
-                <button @click="mobileMenuOpen = !mobileMenuOpen" 
+                <button @click="mobileMenuOpen = !mobileMenuOpen"
                         class="md:hidden p-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/10 focus:outline-none transition-colors duration-200 cursor-pointer"
                         aria-label="Toggle mobile menu"
                         :aria-expanded="mobileMenuOpen">
@@ -163,7 +167,7 @@
     </div>
 
     <!-- Mobile Drawer Menu -->
-    <div x-show="mobileMenuOpen" 
+    <div x-show="mobileMenuOpen"
          x-transition:enter="transition ease-out duration-200"
          x-transition:enter-start="opacity-0 -translate-y-4"
          x-transition:enter-end="opacity-100 translate-y-0"
@@ -173,26 +177,26 @@
          class="md:hidden bg-[#2A1B60] border-t border-white/10 shadow-lg"
          style="display: none;">
         <div class="px-4 pt-2 pb-6 space-y-3 text-sm">
-            
+
             @if(request()->is('siswa*'))
                 <!-- Student Mobile Menu Items -->
-                <a href="{{ route('siswa.home') }}" 
+                <a href="{{ route('siswa.home') }}"
                    class="block py-2.5 px-3 rounded-lg text-white font-medium hover:bg-white/10 transition-colors duration-150">
                     Home
                 </a>
-                <a href="#about" 
+                <a href="#about"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     About
                 </a>
-                <a href="{{ route('siswa.ekskul.index') }}" 
+                <a href="{{ route('siswa.ekskul.index') }}"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Ekstrakurikuler
                 </a>
-                <a href="{{ route('siswa.rekomendasi.create') }}" 
+                <a href="{{ route('siswa.rekomendasi.create') }}"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Rekom Ekskul
                 </a>
-                <a href="{{ route('siswa.register.history') }}" 
+                <a href="{{ route('siswa.register.history') }}"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Riwayat Daftar
                 </a>
@@ -205,39 +209,39 @@
                 </form>
             @elseif(request()->is('ketua*'))
                 <!-- Ketua Mobile Menu Items -->
-                <a href="{{ route('ketua.dashboard') }}" 
+                <a href="{{ route('ketua.dashboard') }}"
                    class="block py-2.5 px-3 rounded-lg text-white font-medium hover:bg-white/10 transition-colors duration-150">
                     Dashboard
                 </a>
-                <a href="#" 
+                <a href="#"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Pendaftaran
                 </a>
-                <a href="#" 
+                <a href="#"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Data Anggota
                 </a>
-                <a href="#" 
+                <a href="#"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Data Absensi
                 </a>
             @else
                 <!-- Admin Mobile Menu Items -->
                 <!-- Dashboard Link -->
-                <a href="{{ route('dashboard') }}" 
+                <a href="{{ route('dashboard') }}"
                    class="block py-2.5 px-3 rounded-lg text-white font-medium hover:bg-white/10 transition-colors duration-150">
                     Dashboard
                 </a>
 
                 <!-- Data Ekstrakurikuler Link (Mobile) -->
-                <a href="{{ route('ekskul.index') }}" 
+                <a href="{{ route('ekskul.index') }}"
                    class="block py-2.5 px-3 rounded-lg {{ request()->routeIs('ekskul.index') ? 'text-white font-medium bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/10' }} transition-colors duration-150">
                     Data Ekstrakurikuler
                 </a>
 
                 <!-- Mobile Data Pengguna Dropdown -->
                 <div x-data="{ open: false }">
-                    <button @click="open = !open" 
+                    <button @click="open = !open"
                             class="w-full flex items-center justify-between py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150 focus:outline-none">
                         <span>Data Pengguna</span>
                         <svg class="w-4 h-4 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -265,7 +269,7 @@
                         <div class="text-xs text-gray-400">{{ Auth::user()->email ?? 'user@sman2bangkalan.sch.id' }}</div>
                     </div>
                 </div>
-                
+
                 <a href="{{ route('admin.profile.edit') }}" class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     Profil Saya
                 </a>
