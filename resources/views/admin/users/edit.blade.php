@@ -6,16 +6,8 @@
     <!-- Main Card Wrapper -->
     <x-cards.card title="Edit Admin">
         
-        @php
-            // Dummy data
-            $admin = [
-                'nama_lengkap' => 'Ahmad Jihadudin Salim',
-                'username'     => 'ahmad_jihadudin',
-            ];
-        @endphp
-
         <!-- Edit Form -->
-        <form method="POST" action="{{ route('pengguna.admin.update', 1) }}" class="max-w-4xl mx-auto space-y-8">
+        <form method="POST" action="{{ route('pengguna.admin.update', $user->id) }}" class="max-w-4xl mx-auto space-y-8">
             @csrf
             @method('PUT')
 
@@ -24,15 +16,32 @@
 
                 <!-- Nama Lengkap -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label for="nama_lengkap" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                    <label for="name" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Nama Lengkap
                     </label>
                     <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
                     <div class="col-span-12 md:col-span-8">
                         <x-forms.input 
-                            name="nama_lengkap" 
+                            name="name" 
                             placeholder="Masukkan Nama Admin" 
-                            value="{{ old('nama_lengkap', $admin['nama_lengkap']) }}" 
+                            value="{{ old('name', $user->name) }}" 
+                            required 
+                        />
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="email" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Email
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input 
+                            type="email"
+                            name="email" 
+                            placeholder="Masukkan Email Admin" 
+                            value="{{ old('email', $user->email) }}" 
                             required 
                         />
                     </div>
@@ -48,7 +57,7 @@
                         <x-forms.input 
                             name="username" 
                             placeholder="Masukkan Username" 
-                            value="{{ old('username', $admin['username']) }}" 
+                            value="{{ old('username', $user->username) }}" 
                             required 
                         />
                     </div>

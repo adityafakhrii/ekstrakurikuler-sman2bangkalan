@@ -17,6 +17,11 @@ class StoreSiswaRequest extends FormRequest
             'nama_siswa' => ['required', 'string', 'max:255'],
             'nisn' => ['required', 'string', 'max:20', 'unique:siswa,nisn', 'unique:users,nisn'],
             'no_hp' => ['required', 'string', 'max:20'],
+            'kelas' => ['required', 'in:X,XI,XII'],
+            'rombel' => ['required', 'string', 'max:50'],
+            'jurusan' => ['required', 'string', 'max:50'],
+            'jenis_kelamin' => ['required', 'in:L,P'],
+            'tahun_masuk' => ['required', 'integer', 'min:2000', 'max:2100'],
         ];
     }
 }

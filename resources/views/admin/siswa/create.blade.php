@@ -61,6 +61,87 @@
                     </div>
                 </div>
 
+                <!-- Jenis Kelamin -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="jenis_kelamin" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Jenis Kelamin
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.select
+                            name="jenis_kelamin"
+                            value="{{ old('jenis_kelamin') }}"
+                            :options="['L' => 'Laki-laki', 'P' => 'Perempuan']"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Kelas -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="kelas" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Kelas
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.select
+                            name="kelas"
+                            value="{{ old('kelas') }}"
+                            :options="['X' => 'Kelas X', 'XI' => 'Kelas XI', 'XII' => 'Kelas XII']"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Rombel -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="rombel" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Rombel
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input
+                            name="rombel"
+                            placeholder="Contoh: X MIPA 1"
+                            value="{{ old('rombel') }}"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Jurusan -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="jurusan" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Jurusan
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input
+                            name="jurusan"
+                            placeholder="Contoh: MIPA, IPS, Bahasa"
+                            value="{{ old('jurusan') }}"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- Tahun Masuk -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="tahun_masuk" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Tahun Masuk
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input
+                            name="tahun_masuk"
+                            type="number"
+                            placeholder="Contoh: 2025"
+                            value="{{ old('tahun_masuk', date('Y')) }}"
+                            required
+                        />
+                    </div>
+                </div>
+
             </div>
 
             <!-- Action Buttons (Right Aligned) -->

@@ -43,12 +43,12 @@ class SiswaController extends Controller
                 'user_id' => $user->id,
                 'nis' => $validated['nisn'],
                 'nisn' => $validated['nisn'],
-                'kelas' => 'X',
-                'rombel' => 'X MIPA 1',
-                'jurusan' => 'MIPA',
+                'kelas' => $validated['kelas'],
+                'rombel' => $validated['rombel'],
+                'jurusan' => $validated['jurusan'],
                 'no_telp' => $validated['no_hp'],
-                'jenis_kelamin' => 'L',
-                'tahun_masuk' => now()->format('Y'),
+                'jenis_kelamin' => $validated['jenis_kelamin'],
+                'tahun_masuk' => $validated['tahun_masuk'],
             ]);
         });
 
@@ -72,7 +72,12 @@ class SiswaController extends Controller
             $siswa->update([
                 'nis' => $validated['nisn'],
                 'nisn' => $validated['nisn'],
+                'kelas' => $validated['kelas'],
+                'rombel' => $validated['rombel'],
+                'jurusan' => $validated['jurusan'],
                 'no_telp' => $validated['no_hp'],
+                'jenis_kelamin' => $validated['jenis_kelamin'],
+                'tahun_masuk' => $validated['tahun_masuk'],
             ]);
 
             $siswa->user->update([

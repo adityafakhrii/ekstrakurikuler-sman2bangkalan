@@ -15,15 +15,32 @@
 
                 <!-- Nama Lengkap -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label for="nama_lengkap" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                    <label for="name" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Nama Lengkap
                     </label>
                     <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
                     <div class="col-span-12 md:col-span-8">
                         <x-forms.input 
-                            name="nama_lengkap" 
+                            name="name" 
                             placeholder="Masukkan Nama Admin" 
-                            value="{{ old('nama_lengkap') }}" 
+                            value="{{ old('name') }}" 
+                            required 
+                        />
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <label for="email" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
+                        Email
+                    </label>
+                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
+                    <div class="col-span-12 md:col-span-8">
+                        <x-forms.input 
+                            type="email"
+                            name="email" 
+                            placeholder="Masukkan Email Admin" 
+                            value="{{ old('email') }}" 
                             required 
                         />
                     </div>
