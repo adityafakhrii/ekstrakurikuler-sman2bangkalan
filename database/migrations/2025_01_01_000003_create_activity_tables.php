@@ -40,7 +40,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rekomendasi_id')->constrained('rekomendasi')->cascadeOnDelete();
             $table->foreignId('ekstrakurikuler_id')->constrained('ekstrakurikuler')->cascadeOnDelete();
-            $table->decimal('skor', 5, 2)->default(0.00);
+            $table->decimal('skor', 5, 2)->nullable();
             $table->unsignedTinyInteger('peringkat');
 
             $table->unique(['rekomendasi_id', 'ekstrakurikuler_id']);

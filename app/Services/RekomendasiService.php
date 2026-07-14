@@ -70,17 +70,32 @@ class RekomendasiService
                 ->pluck('bobot', 'kode')
                 ->toArray();
 
+            // Ekskul tanpa bobot ditandai null (belum dikonfigurasi)
+            if (empty($aspekBobot)) {
+                $results[] = [
+                    'ekstrakurikuler_id' => $ekskulId,
+                    'skor'               => null,
+                ];
+                continue;
+            }
+
             $ekskulVector = $this->buildEkskulVector($aspekBobot);
 
             $score = $this->cosineSimilarity($studentVector, $ekskulVector);
 
             $results[] = [
                 'ekstrakurikuler_id' => $ekskulId,
-                'skor' => round($score * 100, 2),
+                'skor'               => round($score * 100, 2),
             ];
         }
 
-        usort($results, fn ($a, $b) => $b['skor'] <=> $a['skor']);
+        // Urutkan: yang punya skor dulu (desc), yang null di bawah
+        usort($results, function ($a, $b) {
+            if (is_null($a['skor']) && is_null($b['skor'])) return 0;
+            if (is_null($a['skor'])) return 1;
+            if (is_null($b['skor'])) return -1;
+            return $b['skor'] <=> $a['skor'];
+        });
 
         return $results;
     }

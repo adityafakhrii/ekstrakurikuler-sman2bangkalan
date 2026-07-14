@@ -71,42 +71,81 @@ class AspekPenilaianSeeder extends Seeder
         $aspekIds = DB::table('aspek_penilaian')->pluck('id', 'kode');
         $ekskulIds = DB::table('ekstrakurikuler')->pluck('id', 'slug');
 
-        // Definisi bobot per ekskul (sesuai contoh gambar, skala 1-5)
+        // Definisi bobot per ekskul (skala 1-5)
         // Format: [ slug_ekskul => [ KODE_ASPEK => bobot ] ]
         $bobotEkskul = [
+            // Paduan Suara — dominan estetika & komunikasi, fisik rendah
             'paduan-suara' => [
-                'FISIK' => 2,
-                'ESTETIKA' => 5,
-                'KOMUNIKASI' => 4,
+                'FISIK'       => 2,
+                'ESTETIKA'    => 5,
+                'KOMUNIKASI'  => 4,
                 'KREATIVITAS' => 3,
-                'DISIPLIN' => 3,
-                'KEKOMPAKAN' => 4,
+                'DISIPLIN'    => 3,
+                'KEKOMPAKAN'  => 4,
             ],
+            // Pramuka — fisik & disiplin tinggi, kekompakan kuat
             'pramuka' => [
-                'FISIK' => 4,
-                'ESTETIKA' => 2,
-                'KOMUNIKASI' => 3,
+                'FISIK'       => 4,
+                'ESTETIKA'    => 2,
+                'KOMUNIKASI'  => 3,
                 'KREATIVITAS' => 2,
-                'DISIPLIN' => 5,
-                'KEKOMPAKAN' => 5,
+                'DISIPLIN'    => 5,
+                'KEKOMPAKAN'  => 5,
             ],
+            // Basket — fisik paling tinggi, kekompakan & disiplin penting
             'basket' => [
-                'FISIK' => 5,
-                'ESTETIKA' => 2,
-                'KOMUNIKASI' => 3,
+                'FISIK'       => 5,
+                'ESTETIKA'    => 2,
+                'KOMUNIKASI'  => 3,
                 'KREATIVITAS' => 2,
-                'DISIPLIN' => 4,
-                'KEKOMPAKAN' => 4,
+                'DISIPLIN'    => 4,
+                'KEKOMPAKAN'  => 4,
             ],
+            // Teater — estetika, komunikasi, kreativitas sangat tinggi
             'teater' => [
-                'FISIK' => 1,
-                'ESTETIKA' => 5,
-                'KOMUNIKASI' => 5,
+                'FISIK'       => 1,
+                'ESTETIKA'    => 5,
+                'KOMUNIKASI'  => 5,
                 'KREATIVITAS' => 5,
-                'DISIPLIN' => 3,
-                'KEKOMPAKAN' => 3,
+                'DISIPLIN'    => 3,
+                'KEKOMPAKAN'  => 3,
             ],
-            // Anda bisa tambahkan ekskul lain di sini
+            // OSIS — komunikasi & kekompakan utama, disiplin tinggi
+            'osis' => [
+                'FISIK'       => 1,
+                'ESTETIKA'    => 2,
+                'KOMUNIKASI'  => 5,
+                'KREATIVITAS' => 3,
+                'DISIPLIN'    => 4,
+                'KEKOMPAKAN'  => 5,
+            ],
+            // PMR — disiplin & kekompakan tinggi, komunikasi penting
+            'pmr' => [
+                'FISIK'       => 3,
+                'ESTETIKA'    => 1,
+                'KOMUNIKASI'  => 4,
+                'KREATIVITAS' => 2,
+                'DISIPLIN'    => 5,
+                'KEKOMPAKAN'  => 5,
+            ],
+            // Robotik — kreativitas sangat tinggi, disiplin & komunikasi penting
+            'robotik' => [
+                'FISIK'       => 1,
+                'ESTETIKA'    => 2,
+                'KOMUNIKASI'  => 3,
+                'KREATIVITAS' => 5,
+                'DISIPLIN'    => 4,
+                'KEKOMPAKAN'  => 3,
+            ],
+            // English Club — komunikasi paling utama, kreativitas tinggi
+            'english-club' => [
+                'FISIK'       => 1,
+                'ESTETIKA'    => 2,
+                'KOMUNIKASI'  => 5,
+                'KREATIVITAS' => 4,
+                'DISIPLIN'    => 3,
+                'KEKOMPAKAN'  => 3,
+            ],
         ];
 
         $inserts = [];
