@@ -133,7 +133,7 @@
 
             <!-- Bottom Buttons -->
             @if($anggotaList->count() > 0)
-                <div class="mt-6 flex gap-3 justify-center">
+                <div class="mt-6 flex gap-3 justify-end">
                     <!-- Lakukan Absensi Button (Yellow) — shown when NOT in edit mode -->
                     <button type="button" x-show="!editMode" @click="editMode = true"
                         class="bg-[#facc15] hover:bg-[#eab308] text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg inline-flex items-center gap-2 transition-all cursor-pointer border-0 shadow-xs">

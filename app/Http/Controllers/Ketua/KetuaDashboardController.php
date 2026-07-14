@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KetuaDashboardController extends Controller
 {
@@ -324,6 +325,132 @@ class KetuaDashboardController extends Controller
             'tanggal' => $tanggal,
             'topik' => $topik,
         ])->with('success', 'Absensi berhasil disimpan.');
+    }
+
+    public function absensiReport(Request $request): View|RedirectResponse
+    {
+        $ekskul = auth()->user()->ekstrakurikuler;
+
+        if (! $ekskul) {
+            return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
+        }
+
+        $absensi = Absensi::where('ekstrakurikuler_id', $ekskul->id)->get(['siswa_id', 'tanggal', 'topik', 'status']);
+        $totalPertemuan = $absensi->map(fn ($item) => $item->tanggal->format('Y-m-d').'|'.($item->topik ?? ''))->unique()->count();
+
+        $anggota = Pendaftaran::with([
+                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'rombel', 'jurusan'),
+                'siswa.user' => fn ($query) => $query->select('id', 'name'),
+            ])
+            ->where('ekstrakurikuler_id', $ekskul->id)
+            ->where('status', 'disetujui')
+            ->get();
+
+        $rows = $anggota->map(function ($member) use ($absensi, $totalPertemuan) {
+            $records = $absensi->where('siswa_id', $member->siswa_id);
+            $hadir = $records->where('status', 'hadir')->count();
+            $sakit = $records->where('status', 'sakit')->count();
+            $izin = $records->where('status', 'izin')->count();
+            $alpha = $records->where('status', 'alpha')->count();
+            $percentage = $totalPertemuan > 0 ? (($hadir + ($sakit * 0.5) + ($izin * 0.5)) / $totalPertemuan) * 100 : 0;
+            $rating = match (true) {
+                $percentage >= 90 => 'Sangat Baik',
+                $percentage >= 85 => 'Baik',
+                $percentage >= 75 => 'Cukup',
+                $percentage >= 60 => 'Kurang',
+                default => 'Sangat Kurang',
+            };
+
+            return [
+                'nisn' => $member->siswa->nisn ?? '-',
+                'nama' => $member->siswa->user->name ?? '-',
+                'tp' => $totalPertemuan,
+                'hadir' => $hadir,
+                'sakit' => $sakit,
+                'izin' => $izin,
+                'alpha' => $alpha,
+                'percentage' => round($percentage, 2),
+                'rating' => $rating,
+            ];
+        });
+
+        return view('ketua.absensi.report', [
+            'rows' => $rows,
+            'ekskul' => $ekskul,
+            'ketua' => $ekskul->ketua,
+            'totalPertemuan' => $totalPertemuan,
+            'semester' => $request->input('semester', 'Tahun Pelajaran '.($ekskul->tahun_ajaran ?? date('Y'))),
+        ]);
+    }
+
+    public function absensiExport(Request $request)
+    {
+        $ekskul = auth()->user()->ekstrakurikuler;
+
+        if (! $ekskul) {
+            return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
+        }
+
+        $absensi = Absensi::where('ekstrakurikuler_id', $ekskul->id)
+            ->get(['siswa_id', 'tanggal', 'topik', 'status']);
+
+        $totalPertemuan = $absensi
+            ->map(fn ($item) => $item->tanggal->format('Y-m-d').'|'.($item->topik ?? ''))
+            ->unique()
+            ->count();
+
+        $anggota = Pendaftaran::with([
+                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'rombel', 'jurusan'),
+                'siswa.user' => fn ($query) => $query->select('id', 'name'),
+            ])
+            ->where('ekstrakurikuler_id', $ekskul->id)
+            ->where('status', 'disetujui')
+            ->get();
+
+        $rows = $anggota->map(function ($member) use ($absensi, $totalPertemuan) {
+            $records = $absensi->where('siswa_id', $member->siswa_id);
+            $hadir = $records->where('status', 'hadir')->count();
+            $sakit = $records->where('status', 'sakit')->count();
+            $izin = $records->where('status', 'izin')->count();
+            $alpha = $records->where('status', 'alpha')->count();
+            $percentage = $totalPertemuan > 0
+                ? (($hadir + ($sakit * 0.5) + ($izin * 0.5)) / $totalPertemuan) * 100
+                : 0;
+
+            $rating = match (true) {
+                $percentage >= 90 => 'Sangat Baik',
+                $percentage >= 85 => 'Baik',
+                $percentage >= 75 => 'Cukup',
+                $percentage >= 60 => 'Kurang',
+                default => 'Sangat Kurang',
+            };
+
+            return [
+                'nisn' => $member->siswa->nisn ?? '-',
+                'nama' => $member->siswa->user->name ?? '-',
+                'kelas_jurusan' => trim(($member->siswa->rombel ?? '').' - '.($member->siswa->jurusan ?? ''), ' -'),
+                'tp' => $totalPertemuan,
+                'hadir' => $hadir,
+                'sakit' => $sakit,
+                'izin' => $izin,
+                'alpha' => $alpha,
+                'percentage' => round($percentage, 2),
+                'rating' => $rating,
+            ];
+        });
+
+        $pages = $rows->chunk(20);
+        $semester = $request->input('semester', 'Tahun Pelajaran '.($ekskul->tahun_ajaran ?? date('Y')));
+
+        $pdf = Pdf::loadView('ketua.absensi.pdf', [
+            'pages' => $pages,
+            'ekskul' => $ekskul,
+            'ketua' => $ekskul->ketua,
+            'totalPertemuan' => $totalPertemuan,
+            'semester' => $semester,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->download('laporan-absensi-'.str($ekskul->nama)->slug().'.pdf');
     }
 
     public function absensiDestroy(Request $request, string $tanggal): RedirectResponse

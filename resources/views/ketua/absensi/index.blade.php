@@ -48,13 +48,13 @@
                     Tambah Sesi
                 </button>
 
-                <!-- Export Button -->
-                <button class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg inline-flex items-center gap-1.5 transition-all cursor-pointer border-0 shadow-xs">
+                <!-- Lihat Laporan Absensi Button -->
+                <a href="{{ route('ketua.absensi.report') }}" class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg inline-flex items-center gap-1.5 transition-all cursor-pointer border-0 shadow-xs no-underline">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
-                    Export
-                </button>
+                    Lihat Laporan Absensi
+                </a>
 
                 <!-- Search -->
                 <form method="GET" action="{{ route('ketua.absensi.index') }}" class="flex items-center">
