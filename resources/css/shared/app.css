@@ -116,6 +116,11 @@
     body {
         @apply bg-[#f3f4f6] text-[#1f2937] antialiased;
     }
+
+    /* Hide x-cloak elements until Alpine.js is ready */
+    [x-cloak] {
+        display: none !important;
+    }
 }
 
 /* Custom Design System Utilities (Tailwind CSS v4 @utility syntax) */
