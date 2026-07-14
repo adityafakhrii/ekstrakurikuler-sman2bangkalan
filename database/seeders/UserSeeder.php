@@ -86,8 +86,75 @@ class UserSeeder extends Seeder
             );
         }
 
-        $siswaCount = count($siswaData);
-        $ketuaCount = count($ketuaData);
-        $this->command->info("? Users seeded: 1 admin, {$ketuaCount} ketua, {$siswaCount} siswa");
+        $namaKetuaTambahan = [
+            'Ketua Futsal', 'Ketua Voli', 'Ketua Badminton', 'Ketua Marching Band', 'Ketua Teater',
+            'Ketua Tari Tradisional', 'Ketua Jurnalistik', 'Ketua Fotografi', 'Ketua Karya Ilmiah Remaja', 'Ketua Rohis',
+            'Ketua Musik', 'Ketua Karate', 'Ketua Silat', 'Ketua Taekwondo', 'Ketua Renang',
+            'Ketua Catur', 'Ketua Desain Grafis', 'Ketua Film Pendek', 'Ketua Pecinta Alam', 'Ketua Bahasa Jepang',
+            'Ketua Bahasa Arab', 'Ketua Matematika Club', 'Ketua Sains Club', 'Ketua Coding Club', 'Ketua E-Sport',
+            'Ketua Kewirausahaan', 'Ketua Green School', 'Ketua Debate Club', 'Ketua Public Speaking', 'Ketua Kaligrafi',
+            'Ketua Hadrah', 'Ketua Drumband', 'Ketua Seni Lukis', 'Ketua Komik Digital', 'Ketua Broadcasting',
+            'Ketua Literasi', 'Ketua Paskibra', 'Ketua Dokter Remaja', 'Ketua Astronomi', 'Ketua Ekonomi Club',
+            'Ketua Geografi Club', 'Ketua Sejarah Club', 'Ketua Bulutangkis Putri', 'Ketua Basket Putri', 'Ketua Voli Putri',
+        ];
+
+        foreach ($namaKetuaTambahan as $index => $namaKetua) {
+            $nomor = $index + 6;
+            User::updateOrCreate(
+                ['username' => 'ketua.dummy'.$nomor],
+                [
+                    'name' => $namaKetua,
+                    'email' => 'ketua.dummy'.$nomor.'@sman2bangkalan.sch.id',
+                    'password' => Hash::make(config('ekskul.password_default_siswa')),
+                    'role' => 'ketua',
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
+
+        $namaSiswaTambahan = [
+            'Bagaskara Putra Temanggu', 'Jailani Mustafa Jofi', 'Rosidiq Mas Luhutorno Erdan', 'Pratama Saifuddin Walid', 'Aisyah Syana Daru',
+            'Dinda Putri Maysaroh', 'Kanato Fukudoru Mustopoh', 'Nadia Safira Ramadhani', 'Rizky Maulana Akbar', 'Putri Maharani',
+            'Muhammad Farhan', 'Salsabila Nur Aini', 'Fikri Ramadhan', 'Naufal Rizqullah', 'Nabila Zahra',
+            'Rafi Alfarizi', 'Aulia Fitriani', 'Dimas Aditya', 'Nadya Aprilia', 'Ilham Maulana',
+            'Intan Permatasari', 'Yoga Pratama', 'Siti Nurhaliza', 'Rangga Saputra', 'Dewangga Arya',
+            'Larasati Dewi', 'Bayu Nugroho', 'Anisa Rahmawati', 'Raka Wijaya', 'Citra Lestari',
+            'Farel Andika', 'Dwi Anggraini', 'Maya Salsabila', 'Arif Hidayat', 'Niken Ayu',
+            'Gilang Ramadhan', 'Vina Oktaviani', 'Reza Fahlevi', 'Tiara Maharani', 'Doni Saputra',
+            'Febriansyah Putra', 'Silvi Nuraini', 'Aditya Prakoso', 'Riska Amelia', 'Hendra Gunawan',
+            'Yuni Kartika', 'Rendi Saputra', 'Mila Karmila', 'Agus Setiawan', 'Nindy Prameswari',
+        ];
+
+        foreach ($namaSiswaTambahan as $index => $namaSiswa) {
+            $nomor = $index + 4;
+            $nisn = (string) (2120200 + $nomor);
+            $user = User::updateOrCreate(
+                ['username' => $nisn],
+                [
+                    'name' => $namaSiswa,
+                    'password' => Hash::make('password'),
+                    'role' => 'siswa',
+                    'email_verified_at' => now(),
+                ]
+            );
+
+            Siswa::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'nis' => (string) (120000 + $nomor),
+                    'nisn' => $nisn,
+                    'kelas' => ['X', 'XI', 'XII'][$index % 3],
+                    'rombel' => ['X MIPA 1', 'XI MIPA 1', 'XII MIPA 1', 'X MIPA 1', 'XI IPS 1'][$index % 5],
+                    'jurusan' => ['MIPA', 'MIPA', 'IPS', 'Bahasa'][$index % 4],
+                    'no_telp' => '08123456'.str_pad((string) $nomor, 4, '0', STR_PAD_LEFT),
+                    'jenis_kelamin' => $index % 2 === 0 ? 'L' : 'P',
+                    'tahun_masuk' => (string) (2024 - ($index % 3)),
+                ]
+            );
+        }
+
+        $siswaCount = Siswa::count();
+        $ketuaCount = User::where('role', 'ketua')->count();
+        $this->command->info("✅ Users seeded: 1 admin, {$ketuaCount} ketua, {$siswaCount} siswa");
     }
 }

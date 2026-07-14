@@ -20,7 +20,7 @@ class EkskulController extends Controller
 {
     public function index(): View
     {
-        $ekskuls = Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'slug', 'logo', 'kuota', 'status', 'kategori')
+        $ekskuls = Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'slug', 'logo', 'kuota', 'status', 'kategori', 'pembina', 'created_at')
             ->with('ketua:id,name')
             ->withCount('pendaftarans')
             ->latest()

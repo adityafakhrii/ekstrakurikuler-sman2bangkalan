@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EkstrakurikulerSeeder extends Seeder
 {
@@ -176,6 +177,60 @@ class EkstrakurikulerSeeder extends Seeder
             );
         }
 
-        $this->command->info('✅ Ekstrakurikuler seeded: '.count($ekskul).' ekskul');
+        $namaEkskulTambahan = [
+            'Futsal', 'Voli', 'Badminton', 'Marching Band', 'Teater', 'Tari Tradisional', 'Jurnalistik', 'Fotografi',
+            'Karya Ilmiah Remaja', 'Rohis', 'Musik', 'Karate', 'Silat', 'Taekwondo', 'Renang', 'Catur',
+            'Desain Grafis', 'Film Pendek', 'Pecinta Alam', 'Bahasa Jepang', 'Bahasa Arab', 'Matematika Club',
+            'Sains Club', 'Coding Club', 'E-Sport', 'Kewirausahaan', 'Green School', 'Debate Club', 'Public Speaking',
+            'Kaligrafi', 'Hadrah', 'Drumband', 'Seni Lukis', 'Komik Digital', 'Broadcasting', 'Literasi', 'Paskibra',
+            'Dokter Remaja', 'Astronomi', 'Ekonomi Club', 'Geografi Club', 'Sejarah Club', 'Bulutangkis Putri',
+            'Basket Putri', 'Voli Putri', 'Futsal Putri', 'Sinema', 'Podcast', 'Desain Produk', 'Koperasi Siswa',
+        ];
+
+        $kategoriList = ['Olahraga', 'Seni', 'Akademik', 'Teknologi', 'Organisasi', 'Kemanusiaan'];
+        $hariList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        $lokasiList = ['Aula Sekolah', 'Lapangan Utama', 'Lab Komputer', 'Ruang Kelas XI', 'Perpustakaan', 'Ruang Seni'];
+        $pembinaList = [
+            'Ahmad Jihaduddin Salim, S.Pd.', 'Siti Aminah, M.Pd.', 'Budi Santoso, S.Pd.', 'Rina Kurniawati, S.Kep.',
+            'Melati Putri, S.Sn.', 'Fajar Nugroho, S.Kom.', 'Nurul Fadilah, S.Pd.', 'Agus Maulana, M.Pd.',
+        ];
+        $ketuaTambahan = User::where('role', 'ketua')->where('username', 'like', 'ketua.dummy%')->get()->values();
+
+        foreach ($namaEkskulTambahan as $index => $nama) {
+            $slug = Str::slug($nama);
+            $hari = $hariList[$index % count($hariList)];
+            $jamMulai = sprintf('%02d:00:00', 13 + ($index % 4));
+            $jamSelesai = sprintf('%02d:30:00', 15 + ($index % 4));
+            $ketua = $ketuaTambahan->get($index);
+
+            DB::table('ekstrakurikuler')->updateOrInsert(
+                ['slug' => $slug],
+                [
+                    'ketua_id' => $ketua?->id,
+                    'nama' => $nama,
+                    'deskripsi' => 'Ekstrakurikuler '.$nama.' SMAN 2 Bangkalan sebagai wadah pengembangan minat, bakat, karakter, dan prestasi siswa secara terarah.',
+                    'logo' => '/images/logo-sman2.png',
+                    'banner' => '/images/bg-school-hero.jpg',
+                    'pembina' => $pembinaList[$index % count($pembinaList)],
+                    'whatsapp_group' => 'https://chat.whatsapp.com/'.Str::slug($nama).'-sman2bangkalan',
+                    'jadwal' => $hari.', '.substr($jamMulai, 0, 5).' - '.substr($jamSelesai, 0, 5).' WIB',
+                    'kuota' => 20 + ($index % 31),
+                    'kategori' => $kategoriList[$index % count($kategoriList)],
+                    'status' => ['aktif', 'aktif', 'aktif', 'penuh', 'tidak_aktif'][$index % 5],
+                    'hari_latihan' => $hari,
+                    'jam_mulai' => $jamMulai,
+                    'jam_selesai' => $jamSelesai,
+                    'lokasi' => $lokasiList[$index % count($lokasiList)],
+                    'tahun_ajaran' => config('ekskul.tahun_ajaran'),
+                    'persyaratan' => 'Siswa aktif SMAN 2 Bangkalan, bersedia mengikuti latihan rutin, menjaga disiplin, dan mematuhi aturan pembina.',
+                    'prestasi' => 'Aktif mengikuti kegiatan sekolah dan kompetisi tingkat kabupaten/kota pada tahun ajaran berjalan.',
+                    'created_at' => now()->subDays($index + 1),
+                    'updated_at' => now(),
+                ]
+            );
+        }
+
+        $totalEkskul = DB::table('ekstrakurikuler')->count();
+        $this->command->info('✅ Ekstrakurikuler seeded: '.$totalEkskul.' ekskul');
     }
 }
