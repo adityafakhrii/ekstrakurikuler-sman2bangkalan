@@ -35,10 +35,11 @@ class AdminDashboardController extends Controller
             ")->first();
 
             return array_merge($entityCounts, [
-                'total_pendaftar'     => (int) $pendaftaranCounts->total,
-                'pendaftar_menunggu'  => (int) $pendaftaranCounts->menunggu,
-                'pendaftar_disetujui' => (int) $pendaftaranCounts->disetujui,
-                'pendaftar_ditolak'   => (int) $pendaftaranCounts->ditolak,
+                'total_pendaftar'       => (int) $pendaftaranCounts->total,
+                'pendaftar_menunggu'    => (int) $pendaftaranCounts->menunggu,
+                'pendaftar_terkonfirmasi'=> (int) $pendaftaranCounts->disetujui,
+                'pendaftar_disetujui'   => (int) $pendaftaranCounts->disetujui,
+                'pendaftar_ditolak'     => (int) $pendaftaranCounts->ditolak,
             ]);
         });
 

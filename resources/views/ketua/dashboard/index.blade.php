@@ -3,70 +3,59 @@
 @section('title', 'Dashboard Ketua - EKSIS SMAN 2 Bangkalan')
 
 @section('content')
-    <!-- Floating Card Container matching screenshot style and admin layout structure -->
     <div class="w-full max-w-5xl bg-[#FFF5F5] rounded-[2.5rem] shadow-xl p-8 sm:p-12 mx-auto">
-        
-        <!-- Grid of 4 Stats: 2 columns matching screenshot layout -->
-        <!-- Grid of 4 Stats: 2 columns matching screenshot layout -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            <!-- Card 1: pendaftar Tertunda -->
-            <div class="bg-[#E5E3F6] rounded-3xl p-6 relative flex flex-col justify-between min-h-[140px] shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {{-- pendaftar Tertunda --}}
+            <div class="bg-[#E9E9FF] rounded-lg p-5 relative flex flex-col justify-between min-h-[120px]">
                 <div>
-                    <span class="text-sm font-bold text-gray-800">Pendaftar Tertunda</span>
-                    <h3 class="text-4xl font-extrabold text-gray-900 mt-2">{{ $stats['menunggu'] }}</h3>
+                    <p class="text-[13px] font-semibold text-[#3D2B2B]">pendaftar Tertunda</p>
+                    <p class="text-2xl font-bold text-[#3D2B2B] mt-3">{{ $stats['menunggu'] ?? 0 }}</p>
                 </div>
-                <!-- Siluet Person Icon in bottom right (Absolute positioned cleanly) -->
-                <div class="absolute bottom-4 right-4 text-black">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#E8E6DF] flex items-center justify-center">
+                    <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
                 </div>
             </div>
 
-            <!-- Card 2: pendaftar Terkonfirmasi -->
-            <div class="bg-[#E5E3F6] rounded-3xl p-6 relative flex flex-col justify-between min-h-[140px] shadow-sm">
+            {{-- pendaftar Terkonfirmasi --}}
+            <div class="bg-[#E9E9FF] rounded-lg p-5 relative flex flex-col justify-between min-h-[120px]">
                 <div>
-                    <span class="text-sm font-bold text-gray-800">Pendaftar Terkonfirmasi / Disetujui</span>
-                    <h3 class="text-4xl font-extrabold text-gray-900 mt-2">{{ $stats['disetujui'] }}</h3>
+                    <p class="text-[13px] font-semibold text-[#3D2B2B]">pendaftar Terkonfirmasi</p>
+                    <p class="text-2xl font-bold text-[#3D2B2B] mt-3">{{ $stats['terkonfirmasi'] ?? $stats['disetujui'] ?? 0 }}</p>
                 </div>
-                <!-- Siluet Person Icon in bottom right (Absolute positioned cleanly) -->
-                <div class="absolute bottom-4 right-4 text-black">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#E8E6DF] flex items-center justify-center">
+                    <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
                 </div>
             </div>
 
-            <!-- Card 3: Pendaftar Ditolak -->
-            <div class="bg-[#E5E3F6] rounded-3xl p-6 relative flex flex-col justify-between min-h-[140px] shadow-sm">
+            {{-- pendaftar Disetujui --}}
+            <div class="bg-[#E9E9FF] rounded-lg p-5 relative flex flex-col justify-between min-h-[120px]">
                 <div>
-                    <span class="text-sm font-bold text-gray-800">Pendaftar Ditolak</span>
-                    <h3 class="text-4xl font-extrabold text-gray-900 mt-2">{{ $stats['ditolak'] }}</h3>
+                    <p class="text-[13px] font-semibold text-[#3D2B2B]">pendaftar Disetujui</p>
+                    <p class="text-2xl font-bold text-[#3D2B2B] mt-3">{{ $stats['disetujui'] ?? 0 }}</p>
                 </div>
-                <!-- Siluet Person Icon in bottom right (Absolute positioned cleanly) -->
-                <div class="absolute bottom-4 right-4 text-black">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#E8E6DF] flex items-center justify-center">
+                    <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
                 </div>
             </div>
 
-            <!-- Card 4: Total Pendaftar -->
-            <div class="bg-[#E5E3F6] rounded-3xl p-6 relative flex flex-col justify-between min-h-[140px] shadow-sm">
+            {{-- Pendaftar Ditolak --}}
+            <div class="bg-[#E9E9FF] rounded-lg p-5 relative flex flex-col justify-between min-h-[120px]">
                 <div>
-                    <span class="text-sm font-bold text-gray-800">Total Seluruh Pendaftar</span>
-                    <h3 class="text-4xl font-extrabold text-gray-900 mt-2">{{ $stats['total'] }}</h3>
+                    <p class="text-[13px] font-semibold text-[#3D2B2B]">Pendaftar Ditolak</p>
+                    <p class="text-2xl font-bold text-[#3D2B2B] mt-3">{{ $stats['ditolak'] ?? 0 }}</p>
                 </div>
-                <!-- Siluet Person Icon in bottom right (Absolute positioned cleanly) -->
-                <div class="absolute bottom-4 right-4 text-black">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#E8E6DF] flex items-center justify-center">
+                    <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
                 </div>
             </div>
-
         </div>
-
     </div>
 @endsection

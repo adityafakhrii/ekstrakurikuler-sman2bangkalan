@@ -12,7 +12,7 @@
         </div>
 
         <!-- Top Controls: Pagination + Search -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6" x-data>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <x-pagination.pagination :paginator="$pendaftarans" />
             <form method="GET" action="{{ route('ketua.pendaftaran.index') }}" class="flex items-center gap-2 w-full sm:w-auto">
                 @if(request('per_page'))
@@ -49,17 +49,22 @@
                             data-id="{{ $pendaftaran->id }}"
                             data-nama="{{ $pendaftaran->siswa->user->name ?? '-' }}"
                             data-nisn="{{ $pendaftaran->siswa->nisn ?? '-' }}"
-                            data-kelas="{{ trim(($pendaftaran->siswa->kelas ?? '').' '.($pendaftaran->siswa->rombel ?? '').' - '.($pendaftaran->siswa->jurusan ?? ''), ' -') }}"
-                            data-status="{{ $pendaftaran->status }}"
-                            data-catatan-ketua="{{ $pendaftaran->catatan_ketua ?? '' }}"
-                            data-catatan-siswa="{{ $pendaftaran->catatan_siswa ?? '' }}"
-                            data-email="{{ $pendaftaran->siswa->user->email ?? '-' }}"
+                            data-kelamin="{{ ($pendaftaran->siswa->jenis_kelamin ?? 'L') === 'L' ? 'Laki-laki' : 'Perempuan' }}"
+                            data-rombel="{{ $pendaftaran->siswa->rombel ?? '-' }}"
+                            data-jurusan="{{ $pendaftaran->siswa->jurusan ?? '-' }}"
+                            data-kelas-jurusan="{{ ($pendaftaran->siswa->rombel ?? '-') . ' - ' . ($pendaftaran->siswa->jurusan ?? '-') }}"
                             data-telp="{{ $pendaftaran->siswa->no_telp ?? '-' }}"
+                            data-email="{{ $pendaftaran->siswa->user->email ?? '-' }}"
+                            data-alamat="{{ $pendaftaran->alamat ?: ($pendaftaran->siswa->alamat ?? '-') }}"
+                            data-status="{{ $pendaftaran->status }}"
+                            data-status-label="@if($pendaftaran->status === 'menunggu')Tertunda @elseif($pendaftaran->status === 'disetujui')Disetujui @elseif($pendaftaran->status === 'ditolak')Ditolak @elseif($pendaftaran->status === 'dibatalkan')Dibatalkan @else{{ ucfirst($pendaftaran->status) }}@endif"
+                            data-catatan-siswa="{{ $pendaftaran->catatan_siswa ?? '' }}"
+                            data-catatan-ketua="{{ $pendaftaran->catatan_ketua ?? '' }}"
                             data-tgl="{{ $pendaftaran->created_at ? $pendaftaran->created_at->format('d F Y') : '-' }}">
                             <td class="table-body-cell font-medium text-xs">{{ ($pendaftarans->currentPage() - 1) * $pendaftarans->perPage() + $index + 1 }}</td>
                             <td class="table-body-cell font-medium text-gray-800 text-xs">{{ $pendaftaran->siswa->user->name ?? '-' }}</td>
                             <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->nisn ?? '-' }}</td>
-                            <td class="table-body-cell text-gray-600 text-xs">{{ ($pendaftaran->siswa->rombel ?? '-') }} - {{ ($pendaftaran->siswa->jurusan ?? '-') }}</td>
+                            <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->rombel ?? '-' }} - {{ $pendaftaran->siswa->jurusan ?? '-' }}</td>
                             <td class="table-body-cell">
                                 <button type="button"
                                     class="status-trigger inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[10px] font-medium border bg-white border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
@@ -101,16 +106,14 @@
         </div>
     </div>
 
-    <!-- Modal: Perbarui Status Pendaftar (sesuai referensi screenshot 3) -->
+    <!-- Modal: Perbarui Status Pendaftar -->
     <div id="status-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
         <div id="status-modal-backdrop" class="fixed inset-0 bg-black/30 backdrop-blur-[1px]"></div>
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-md z-50 relative overflow-hidden">
-            <!-- Header -->
             <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
                 <h3 class="text-sm font-semibold text-gray-900">Perbarui Status Pendaftar</h3>
                 <button type="button" id="status-modal-close" class="w-5 h-5 flex items-center justify-center rounded bg-gray-200 hover:bg-gray-300 text-gray-600 text-xs font-bold transition-colors">X</button>
             </div>
-            <!-- Body -->
             <form id="status-form" method="POST" class="px-5 py-5 space-y-4">
                 @csrf
                 @method('PATCH')
@@ -133,7 +136,6 @@
                         class="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6C63FF] bg-white resize-y"
                         placeholder="Alasan / keterangan..."></textarea>
                 </div>
-                <!-- Footer buttons -->
                 <div class="flex items-center gap-2 justify-end pt-1">
                     <button type="submit"
                         class="inline-flex items-center gap-1 bg-[#6C63FF] hover:bg-[#5B52E8] text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors cursor-pointer border-0">
@@ -151,65 +153,53 @@
         </div>
     </div>
 
-    <!-- Modal: Detail Pendaftar -->
+    <!-- Modal: Detail Pendaftar - persis seperti screenshot referensi -->
     <div id="detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div id="detail-modal-backdrop" class="fixed inset-0 bg-black/40 backdrop-blur-[1px]"></div>
-        <div class="bg-[#FCF6F6] rounded-2xl shadow-2xl border border-[#f2eaea] w-full max-w-md z-50 relative overflow-hidden p-6">
-            <div class="flex items-center justify-between border-b border-[#f2eaea] pb-4 mb-4">
-                <h3 class="text-base font-bold text-[#2A1B60]">Detail Pendaftaran</h3>
-                <button type="button" id="detail-modal-close" class="text-gray-400 hover:text-gray-600 cursor-pointer">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        <div id="detail-modal-backdrop" class="fixed inset-0 bg-black/30 backdrop-blur-[1px]"></div>
+        <div class="bg-[#F2F2FF] rounded-2xl shadow-2xl w-full max-w-xl z-50 relative overflow-hidden p-6 sm:p-8">
+            <!-- inner content sesuai screenshot: list label : value -->
+            <div id="detail-content" class="space-y-3 text-[11px] sm:text-xs text-gray-800">
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">NISN</span><span>:</span><span id="d-nisn" class="font-semibold">-</span>
+                </div>
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">Nama Lengkap</span><span>:</span><span id="d-nama" class="font-semibold">-</span>
+                </div>
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">Jenis Kelamin</span><span>:</span><span id="d-kelamin">-</span>
+                </div>
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">Kelas-Jurusan</span><span>:</span><span id="d-kelas-jurusan" class="font-semibold">-</span>
+                </div>
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">No.Whatsapp</span><span>:</span><span id="d-telp" class="font-semibold">-</span>
+                </div>
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">Email</span><span>:</span><span id="d-email" class="font-semibold break-all">-</span>
+                </div>
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">Alamat</span><span>:</span><span id="d-alamat" class="font-semibold">-</span>
+                </div>
+                <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
+                    <span class="font-medium">Status</span><span>:</span><span id="d-status" class="font-bold">Tertunda</span>
+                </div>
+                <div class="pt-1 space-y-1.5">
+                    <div class="grid grid-cols-[100px_12px_1fr] gap-1">
+                        <span class="font-medium">Alasan Mengikuti</span><span>:</span><span></span>
+                    </div>
+                    <div id="d-alasan-box" class="ml-0 sm:ml-[112px] max-w-[360px] bg-white border border-gray-200 rounded-md px-3 py-2.5 text-[11px] leading-relaxed text-gray-700 min-h-[50px]">
+                        -
+                    </div>
+                </div>
+            </div>
+            <!-- Footer -->
+            <div class="mt-6 flex justify-end">
+                <button type="button" id="detail-modal-close"
+                    class="inline-flex items-center gap-1 bg-[#D8D0D0] hover:bg-[#C8BEBE] text-gray-700 text-[11px] font-medium px-4 py-1.5 rounded-md transition-colors cursor-pointer border border-[#C2B8B8]">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                     </svg>
-                </button>
-            </div>
-            <div class="space-y-3 text-sm">
-                <div class="flex items-center gap-4 mb-2">
-                    <div class="w-12 h-12 rounded-full bg-[#E5E3F6] flex items-center justify-center text-[#2A1B60] shrink-0">
-                        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 id="detail-nama" class="text-sm font-bold text-gray-900">-</h4>
-                        <p id="detail-email" class="text-[11px] text-gray-500">-</p>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2.5">
-                    <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
-                        <span class="text-[9px] font-semibold text-gray-400 uppercase">NISN</span>
-                        <p id="detail-nisn" class="text-xs font-semibold text-gray-800 mt-0.5">-</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
-                        <span class="text-[9px] font-semibold text-gray-400 uppercase">Kelas-Jurusan</span>
-                        <p id="detail-kelas" class="text-xs font-semibold text-gray-800 mt-0.5">-</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
-                        <span class="text-[9px] font-semibold text-gray-400 uppercase">No. Telp</span>
-                        <p id="detail-telp" class="text-xs font-semibold text-gray-800 mt-0.5">-</p>
-                    </div>
-                    <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
-                        <span class="text-[9px] font-semibold text-gray-400 uppercase">Status</span>
-                        <p id="detail-status" class="text-xs font-semibold text-gray-800 mt-0.5">-</p>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
-                    <span class="text-[9px] font-semibold text-gray-400 uppercase">Tanggal Daftar</span>
-                    <p id="detail-tgl" class="text-xs font-semibold text-gray-800 mt-0.5">-</p>
-                </div>
-                <div id="detail-catatan-siswa-wrap" class="bg-white rounded-xl p-3 border border-[#f2eaea] hidden">
-                    <span class="text-[9px] font-semibold text-gray-400 uppercase">Catatan Siswa</span>
-                    <p id="detail-catatan-siswa" class="text-xs text-gray-700 mt-0.5"></p>
-                </div>
-                <div id="detail-catatan-ketua-wrap" class="bg-white rounded-xl p-3 border border-[#f2eaea] hidden">
-                    <span class="text-[9px] font-semibold text-gray-400 uppercase">Catatan Ketua</span>
-                    <p id="detail-catatan-ketua" class="text-xs text-gray-700 mt-0.5"></p>
-                </div>
-            </div>
-            <div class="mt-5 flex justify-end">
-                <button type="button" id="detail-modal-close-2"
-                    class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-5 py-2 rounded-lg transition-all cursor-pointer border-0">
-                    Tutup
+                    Kembali Ke List
                 </button>
             </div>
         </div>
@@ -222,7 +212,6 @@
         const statusForm = document.getElementById('status-form');
         const statusSelect = document.getElementById('status-select');
         const statusCatatan = document.getElementById('status-catatan');
-
         const detailModal = document.getElementById('detail-modal');
 
         function openStatusModal(pendaftaranId, currentStatus, catatanKetua) {
@@ -233,43 +222,27 @@
             statusModal.classList.add('flex');
             document.body.style.overflow = 'hidden';
         }
-
         function closeStatusModal() {
             statusModal.classList.add('hidden');
             statusModal.classList.remove('flex');
             document.body.style.overflow = '';
         }
-
         function openDetailModal(row) {
-            document.getElementById('detail-nama').textContent = row.dataset.nama || '-';
-            document.getElementById('detail-email').textContent = row.dataset.email || '-';
-            document.getElementById('detail-nisn').textContent = row.dataset.nisn || '-';
-            document.getElementById('detail-kelas').textContent = row.dataset.kelas || '-';
-            document.getElementById('detail-telp').textContent = row.dataset.telp || '-';
-            document.getElementById('detail-tgl').textContent = row.dataset.tgl || '-';
-            const labels = { menunggu: 'Tertunda', disetujui: 'Disetujui', ditolak: 'Ditolak', dibatalkan: 'Dibatalkan' };
-            document.getElementById('detail-status').textContent = labels[row.dataset.status] || row.dataset.status;
-
-            const siswaWrap = document.getElementById('detail-catatan-siswa-wrap');
-            if (row.dataset.catatanSiswa) {
-                document.getElementById('detail-catatan-siswa').textContent = row.dataset.catatanSiswa;
-                siswaWrap.classList.remove('hidden');
-            } else {
-                siswaWrap.classList.add('hidden');
-            }
-            const ketuaWrap = document.getElementById('detail-catatan-ketua-wrap');
-            if (row.dataset.catatanKetua) {
-                document.getElementById('detail-catatan-ketua').textContent = row.dataset.catatanKetua;
-                ketuaWrap.classList.remove('hidden');
-            } else {
-                ketuaWrap.classList.add('hidden');
-            }
+            document.getElementById('d-nisn').textContent = row.dataset.nisn || '-';
+            document.getElementById('d-nama').textContent = row.dataset.nama || '-';
+            document.getElementById('d-kelamin').textContent = row.dataset.kelamin || '-';
+            document.getElementById('d-kelas-jurusan').textContent = row.dataset.kelasJurusan || (row.dataset.rombel + ' - ' + row.dataset.jurusan) || '-';
+            document.getElementById('d-telp').textContent = row.dataset.telp || '-';
+            document.getElementById('d-email').textContent = row.dataset.email || '-';
+            document.getElementById('d-alamat').textContent = row.dataset.alamat && row.dataset.alamat.trim() !== '' && row.dataset.alamat !== '-' ? row.dataset.alamat : '-';
+            document.getElementById('d-status').textContent = row.dataset.statusLabel || 'Tertunda';
+            const alasan = (row.dataset.catatanSiswa && row.dataset.catatanSiswa.trim() !== '') ? row.dataset.catatanSiswa : '';
+            document.getElementById('d-alasan-box').textContent = alasan || 'Tidak ada alasan.';
 
             detailModal.classList.remove('hidden');
             detailModal.classList.add('flex');
             document.body.style.overflow = 'hidden';
         }
-
         function closeDetailModal() {
             detailModal.classList.add('hidden');
             detailModal.classList.remove('flex');
@@ -282,7 +255,6 @@
                 if (row) openStatusModal(row.dataset.id, row.dataset.status, row.dataset.catatanKetua);
             });
         });
-
         document.querySelectorAll('.detail-trigger').forEach(btn => {
             btn.addEventListener('click', function() {
                 const row = document.querySelector(`tr[data-id="${this.dataset.id}"]`);
@@ -293,9 +265,7 @@
         document.getElementById('status-modal-close')?.addEventListener('click', closeStatusModal);
         document.getElementById('status-modal-cancel')?.addEventListener('click', closeStatusModal);
         document.getElementById('status-modal-backdrop')?.addEventListener('click', closeStatusModal);
-
         document.getElementById('detail-modal-close')?.addEventListener('click', closeDetailModal);
-        document.getElementById('detail-modal-close-2')?.addEventListener('click', closeDetailModal);
         document.getElementById('detail-modal-backdrop')?.addEventListener('click', closeDetailModal);
 
         document.addEventListener('keydown', function(e) {

@@ -21,6 +21,7 @@ class KetuaDashboardController extends Controller
         $stats = Cache::remember("ketua.dashboard.stats.{$userId}", now()->addMinutes(15), function () use ($ekskul) {
             $statsData = [
                 'menunggu' => 0,
+                'terkonfirmasi' => 0,
                 'disetujui' => 0,
                 'ditolak' => 0,
                 'total' => 0,
@@ -35,6 +36,7 @@ class KetuaDashboardController extends Controller
                     ->first();
 
                 $statsData['menunggu'] = (int) $counts->menunggu;
+                $statsData['terkonfirmasi'] = (int) $counts->disetujui;
                 $statsData['disetujui'] = (int) $counts->disetujui;
                 $statsData['ditolak'] = (int) $counts->ditolak;
                 $statsData['total'] = (int) $counts->total;
@@ -56,9 +58,9 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        $query = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'catatan_ketua', 'created_at')
+        $query = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'alamat', 'catatan_ketua', 'created_at')
             ->with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'rombel', 'jurusan', 'no_telp'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'rombel', 'jurusan', 'no_telp', 'alamat', 'jenis_kelamin'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email')
             ])
             ->where('ekstrakurikuler_id', $ekskul->id);

@@ -21,6 +21,7 @@ class Siswa extends Model
         'rombel',
         'jurusan',
         'no_telp',
+        'alamat',
         'foto',
         'jenis_kelamin',
         'tahun_masuk',

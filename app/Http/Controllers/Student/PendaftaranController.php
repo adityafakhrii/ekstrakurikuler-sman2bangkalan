@@ -35,6 +35,7 @@ class PendaftaranController extends Controller
 
         $siswa->update([
             'no_telp' => $request->validated('no_whatsapp'),
+            'alamat' => $request->validated('alamat'),
             'kelas' => $kelas,
             'rombel' => $rombel,
         ]);
@@ -44,6 +45,7 @@ class PendaftaranController extends Controller
             'ekstrakurikuler_id' => $ekskul->id,
             'tahun_ajaran' => config('ekskul.tahun_ajaran'),
             'status' => 'menunggu',
+            'alamat' => $request->validated('alamat'),
             'catatan_siswa' => $request->validated('catatan_siswa'),
         ]);
 

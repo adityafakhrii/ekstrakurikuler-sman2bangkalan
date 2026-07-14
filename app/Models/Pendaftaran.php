@@ -19,6 +19,7 @@ class Pendaftaran extends Model
         'tahun_ajaran',
         'status',
         'catatan_siswa',
+        'alamat',
         'catatan_ketua',
         'disetujui_at',
         'disetujui_oleh',
