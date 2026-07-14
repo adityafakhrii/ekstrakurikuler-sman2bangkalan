@@ -98,6 +98,7 @@ Route::prefix('ketua')->name('ketua.')->middleware(['auth', 'role:ketua'])->grou
     Route::get('/pendaftaran', [KetuaDashboardController::class, 'pendaftaran'])->name('pendaftaran.index');
     Route::post('/pendaftaran/{id}/approve', [KetuaDashboardController::class, 'approve'])->name('pendaftaran.approve');
     Route::post('/pendaftaran/{id}/reject', [KetuaDashboardController::class, 'reject'])->name('pendaftaran.reject');
+    Route::patch('/pendaftaran/{id}/status', [KetuaDashboardController::class, 'updateStatus'])->name('pendaftaran.status');
 
     // Data Anggota
     Route::get('/anggota', [KetuaDashboardController::class, 'anggota'])->name('anggota.index');

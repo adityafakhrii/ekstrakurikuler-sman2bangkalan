@@ -48,7 +48,7 @@ class KetuaDashboardController extends Controller
         return view('ketua.dashboard.index', compact('stats', 'ekskulNama'));
     }
 
-    public function pendaftaran(): View|RedirectResponse
+    public function pendaftaran(Request $request): View|RedirectResponse
     {
         $ekskul = auth()->user()->ekstrakurikuler;
 
@@ -56,17 +56,54 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        $pendaftarans = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'catatan_ketua', 'created_at')
+        $query = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'catatan_ketua', 'created_at')
             ->with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'kelas', 'rombel', 'jurusan', 'no_telp'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'rombel', 'jurusan', 'no_telp'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email')
             ])
-            ->where('ekstrakurikuler_id', $ekskul->id)
-            ->latest()
-            ->paginate($this->perPage())
-            ->withQueryString();
+            ->where('ekstrakurikuler_id', $ekskul->id);
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('siswa', function ($sq) use ($search) {
+                    $sq->where('nisn', 'like', "%{$search}%")
+                        ->orWhere('nis', 'like', "%{$search}%")
+                        ->orWhereHas('user', fn($uq) => $uq->where('name', 'like', "%{$search}%"));
+                });
+            });
+        }
+
+        $pendaftarans = $query->latest()->paginate($this->perPage())->withQueryString();
 
         return view('ketua.pendaftaran.index', compact('pendaftarans', 'ekskul'));
+    }
+
+    public function updateStatus(Request $request, int $id): RedirectResponse
+    {
+        $request->validate([
+            'status' => 'required|in:menunggu,disetujui,ditolak,dibatalkan',
+            'catatan_ketua' => 'nullable|string|max:1000',
+        ]);
+
+        $ekskul = auth()->user()->ekstrakurikuler;
+
+        if (! $ekskul) {
+            return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
+        }
+
+        $pendaftaran = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)->findOrFail($id);
+
+        $pendaftaran->update([
+            'status' => $request->input('status'),
+            'catatan_ketua' => $request->input('catatan_ketua'),
+            'disetujui_at' => now(),
+            'disetujui_oleh' => auth()->id(),
+        ]);
+
+        Cache::forget("ketua.dashboard.stats.".auth()->id());
+        Cache::forget("admin.dashboard.stats");
+
+        return redirect()->back()->with('success', 'Status pendaftaran berhasil diperbarui.');
     }
 
     public function approve(Request $request, int $id): RedirectResponse
