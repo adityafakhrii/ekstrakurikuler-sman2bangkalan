@@ -1,7 +1,7 @@
 @props([
     'paginator' => null,
-    'entries' => [10, 25, 50, 100],
-    'currentEntries' => 10,
+    'entries' => [10, 15, 25, 50, 100],
+    'currentEntries' => 15,
 ])
 
 <div class="flex flex-col gap-1.5 text-left">

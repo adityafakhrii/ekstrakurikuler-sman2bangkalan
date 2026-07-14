@@ -24,7 +24,8 @@ class EkskulController extends Controller
             ->with('ketua:id,name')
             ->withCount('pendaftarans')
             ->latest()
-            ->paginate(15);
+            ->paginate($this->perPage())
+            ->withQueryString();
 
         return view('admin.ekstrakurikuler.index', compact('ekskuls'));
     }

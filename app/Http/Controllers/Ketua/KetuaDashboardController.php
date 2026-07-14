@@ -63,7 +63,8 @@ class KetuaDashboardController extends Controller
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
             ->latest()
-            ->paginate(15);
+            ->paginate($this->perPage())
+            ->withQueryString();
 
         return view('ketua.pendaftaran.index', compact('pendaftarans', 'ekskul'));
     }
@@ -137,7 +138,7 @@ class KetuaDashboardController extends Controller
             });
         }
 
-        $anggota = $query->latest('disetujui_at')->paginate(15)->withQueryString();
+        $anggota = $query->latest('disetujui_at')->paginate($this->perPage())->withQueryString();
 
         return view('ketua.anggota.index', compact('anggota', 'ekskul'));
     }
@@ -188,7 +189,7 @@ class KetuaDashboardController extends Controller
             });
         }
 
-        $kegiatanList = $query->orderByDesc('tanggal')->paginate(10)->withQueryString();
+        $kegiatanList = $query->orderByDesc('tanggal')->paginate($this->perPage(10))->withQueryString();
 
         return view('ketua.absensi.index', compact('kegiatanList', 'ekskul'));
     }
@@ -212,7 +213,7 @@ class KetuaDashboardController extends Controller
             ->whereDate('tanggal', $tanggal)
             ->where('topik', $topik)
             ->latest('id')
-            ->paginate(10)
+            ->paginate($this->perPage(10))
             ->withQueryString();
 
         // Ambil semua anggota (status disetujui) untuk form absensi

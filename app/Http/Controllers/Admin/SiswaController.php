@@ -19,7 +19,8 @@ class SiswaController extends Controller
         $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
             ->with('user:id,name')
             ->latest()
-            ->paginate(15);
+            ->paginate($this->perPage())
+            ->withQueryString();
 
         return view('admin.siswa.index', compact('siswas'));
     }

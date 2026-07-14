@@ -20,7 +20,8 @@ class KetuaController extends Controller
             ->select('id', 'name', 'email', 'username', 'created_at')
             ->with('ekstrakurikuler:id,ketua_id,nama')
             ->latest()
-            ->paginate(15);
+            ->paginate($this->perPage())
+            ->withQueryString();
 
         return view('admin.ketua.index', compact('ketuas'));
     }
