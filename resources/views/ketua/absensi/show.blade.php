@@ -26,28 +26,7 @@
 
             <!-- Top Controls: Pagination Info -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <div class="flex flex-col gap-2">
-                    <p class="text-xs text-gray-600">
-                        Showing {{ $absensiList->firstItem() ?? 0 }} to {{ $absensiList->lastItem() ?? 0 }} of {{ $absensiList->total() }} Entries
-                    </p>
-                    <div class="flex items-center gap-2">
-                        <select class="text-xs border border-gray-300 rounded px-2 py-1 bg-white focus:outline-none">
-                            <option>10</option>
-                        </select>
-                        <div class="flex items-center gap-0.5">
-                            @if($absensiList->onFirstPage())
-                                <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Prev</span>
-                            @else
-                                <a href="{{ $absensiList->previousPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Prev</a>
-                            @endif
-                            @if($absensiList->hasMorePages())
-                                <a href="{{ $absensiList->nextPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Next</a>
-                            @else
-                                <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Next</span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
+                <x-pagination.pagination :paginator="$absensiList" />
             </div>
 
             <!-- Table with Radio Buttons -->

@@ -13,37 +13,7 @@
 
         <!-- Top Controls: Pagination Info + Search -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <!-- Showing Info + Pagination Controls -->
-            <div class="flex flex-col gap-2">
-                <p class="text-xs text-gray-600">
-                    Showing {{ $anggota->firstItem() ?? 0 }} to {{ $anggota->lastItem() ?? 0 }} of {{ $anggota->total() }} Entries
-                </p>
-                <div class="flex items-center gap-2">
-                    <form method="GET" action="{{ route('ketua.anggota.index') }}" class="flex items-center gap-2">
-                        @if(request('search'))
-                            <input type="hidden" name="search" value="{{ request('search') }}">
-                        @endif
-                        <select name="per_page" onchange="this.form.submit()"
-                            class="text-xs border border-gray-300 rounded px-2 py-1 bg-white focus:outline-none">
-                            @foreach([10, 25, 50] as $size)
-                                <option value="{{ $size }}" {{ request('per_page', 15) == $size ? 'selected' : '' }}>{{ $size }}</option>
-                            @endforeach
-                        </select>
-                    </form>
-                    <div class="flex items-center gap-0.5">
-                        @if($anggota->onFirstPage())
-                            <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Prev</span>
-                        @else
-                            <a href="{{ $anggota->previousPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Prev</a>
-                        @endif
-                        @if($anggota->hasMorePages())
-                            <a href="{{ $anggota->nextPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Next</a>
-                        @else
-                            <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Next</span>
-                        @endif
-                    </div>
-                </div>
-            </div>
+            <x-pagination.pagination :paginator="$anggota" />
 
             <!-- Search -->
             <form method="GET" action="{{ route('ketua.anggota.index') }}" class="flex items-center gap-2">
@@ -267,17 +237,6 @@
             </table>
         </div>
 
-        <!-- Load More / Pagination -->
-        @if($anggota->hasMorePages())
-            <div class="mt-6 flex justify-center">
-                <a href="{{ $anggota->nextPageUrl() }}"
-                    class="inline-flex items-center gap-2 text-xs font-semibold text-gray-600 border border-gray-300 rounded-lg px-5 py-2 bg-white hover:bg-gray-50 transition-colors">
-                    <svg class="w-3.5 h-3.5 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    Load more
-                </a>
-            </div>
-        @endif
+
     </div>
 @endsection

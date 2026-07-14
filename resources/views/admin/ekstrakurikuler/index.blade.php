@@ -35,8 +35,8 @@
                 <tr class="hover:bg-gray-50/50 transition-colors duration-150">
                     <td class="table-body-cell font-medium">{{ ($ekskuls->currentPage() - 1) * $ekskuls->perPage() + $index + 1 }}</td>
                     <td class="table-body-cell font-medium text-gray-900">{{ $ekskul->nama }}</td>
-                    <td class="table-body-cell text-gray-700">{{ $ekskul->pembina }}</td>
-                    <td class="table-body-cell text-gray-500 font-normal">{{ $ekskul->created_at?->format('F d, Y H.i') }}</td>
+                    <td class="table-body-cell text-gray-700">{{ $ekskul->pembina ?: '-' }}</td>
+                    <td class="table-body-cell text-gray-500 font-normal">{{ $ekskul->created_at ? $ekskul->created_at->format('F d, Y H.i') : '-' }}</td>
                     <td class="table-body-cell text-center">
                         <div class="flex items-center justify-center gap-2">
                             <!-- Lihat Button (Blue/Purple) -->

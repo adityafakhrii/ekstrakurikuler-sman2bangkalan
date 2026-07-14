@@ -13,29 +13,7 @@
 
         <!-- Top Controls -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <!-- Showing Info + Pagination Controls -->
-            <div class="flex flex-col gap-2">
-                <p class="text-xs text-gray-600">
-                    Showing {{ $kegiatanList->firstItem() ?? 0 }} to {{ $kegiatanList->lastItem() ?? 0 }} of {{ $kegiatanList->total() }} Entries
-                </p>
-                <div class="flex items-center gap-2">
-                    <select class="text-xs border border-gray-300 rounded px-2 py-1 bg-white focus:outline-none">
-                        <option>10</option>
-                    </select>
-                    <div class="flex items-center gap-0.5">
-                        @if($kegiatanList->onFirstPage())
-                            <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Prev</span>
-                        @else
-                            <a href="{{ $kegiatanList->previousPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Prev</a>
-                        @endif
-                        @if($kegiatanList->hasMorePages())
-                            <a href="{{ $kegiatanList->nextPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Next</a>
-                        @else
-                            <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Next</span>
-                        @endif
-                    </div>
-                </div>
-            </div>
+            <x-pagination.pagination :paginator="$kegiatanList" />
 
             <!-- Buttons + Search -->
             <div class="flex flex-wrap items-center gap-2">
@@ -123,18 +101,6 @@
             </table>
         </div>
 
-        <!-- Load More -->
-        @if($kegiatanList->hasMorePages())
-            <div class="mt-6 flex justify-center">
-                <a href="{{ $kegiatanList->nextPageUrl() }}"
-                    class="inline-flex items-center gap-2 text-xs font-semibold text-gray-600 border border-gray-300 rounded-lg px-5 py-2 bg-white hover:bg-gray-50 transition-colors no-underline">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    Load more
-                </a>
-            </div>
-        @endif
 
         <!-- Delete Confirmation Modal -->
         <div x-show="showHapus !== null" x-cloak
