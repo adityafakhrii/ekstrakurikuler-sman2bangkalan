@@ -35,14 +35,29 @@
                 </a>
 
                 <!-- Search -->
-                <form method="GET" action="{{ route('ketua.absensi.index') }}" class="flex items-center">
+                <form method="GET" action="{{ route('ketua.absensi.index') }}" class="flex flex-wrap items-center gap-2">
+                    <!-- Cari Tanggal -->
+                    <div class="relative">
+                        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <input type="date" name="search_tanggal" value="{{ request('search_tanggal') }}"
+                            class="text-xs border border-gray-300 rounded-lg pl-10 pr-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-44">
+                    </div>
+                    <!-- Cari Topik -->
                     <div class="relative">
                         <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Tanggal Kegiatan"
-                            class="text-xs border border-gray-300 rounded-lg pl-8 pr-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-52">
+                        <input type="text" name="search_topik" value="{{ request('search_topik') }}" placeholder="Cari Topik"
+                            class="text-xs border border-gray-300 rounded-lg pl-8 pr-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-44">
                     </div>
+                    <!-- Clear Button -->
+                    @if(request('search_tanggal') || request('search_topik'))
+                        <a href="{{ route('ketua.absensi.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded-lg transition-all cursor-pointer border-0">
+                            Clear
+                        </a>
+                    @endif
                 </form>
             </div>
         </div>
@@ -89,8 +104,8 @@
                     @empty
                         <tr>
                             <td colspan="4" class="table-body-cell text-center text-gray-400 py-8 font-medium">
-                                @if(request('search'))
-                                    Tidak ditemukan kegiatan dengan pencarian "{{ request('search') }}".
+                                @if(request('search_tanggal') || request('search_topik'))
+                                    Tidak ditemukan kegiatan dengan kriteria pencarian tersebut.
                                 @else
                                     Belum ada sesi kegiatan yang tercatat.
                                 @endif

@@ -214,18 +214,20 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        $search = $request->input('search');
+        $searchTanggal = $request->input('search_tanggal');
+        $searchTopik = $request->input('search_topik');
 
         // Ambil daftar sesi kegiatan (grouped by tanggal + topik)
         $query = Absensi::where('ekstrakurikuler_id', $ekskul->id)
             ->selectRaw('MIN(id) as id, tanggal, topik, COUNT(*) as jumlah_siswa')
             ->groupBy('tanggal', 'topik');
 
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('topik', 'like', "%{$search}%")
-                    ->orWhereRaw("DATE_FORMAT(tanggal, '%d %M %Y') LIKE ?", ["%{$search}%"]);
-            });
+        if ($searchTanggal) {
+            $query->whereDate('tanggal', $searchTanggal);
+        }
+
+        if ($searchTopik) {
+            $query->where('topik', 'like', "%{$searchTopik}%");
         }
 
         $kegiatanList = $query->orderByDesc('tanggal')->paginate($this->perPage(10))->withQueryString();
