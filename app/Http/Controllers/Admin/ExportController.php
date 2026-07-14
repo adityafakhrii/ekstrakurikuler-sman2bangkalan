@@ -17,14 +17,12 @@ class ExportController extends Controller
      */
     public function exportSiswa(): StreamedResponse
     {
-        $siswas = Siswa::with('user')->latest()->get();
-
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="data-siswa-' . date('Y-m-d') . '.csv"',
         ];
 
-        $callback = function () use ($siswas) {
+        $callback = function () {
             $file = fopen('php://output', 'w');
 
             // BOM untuk UTF-8
@@ -33,21 +31,26 @@ class ExportController extends Controller
             // Header
             fputcsv($file, ['No', 'NIS', 'NISN', 'Nama Siswa', 'Kelas', 'Rombel', 'Jurusan', 'JK', 'No HP', 'Tahun Masuk']);
 
-            // Data
-            foreach ($siswas as $index => $siswa) {
-                fputcsv($file, [
-                    $index + 1,
-                    $siswa->nis,
-                    $siswa->nisn,
-                    $siswa->user->name,
-                    $siswa->kelas,
-                    $siswa->rombel,
-                    $siswa->jurusan,
-                    $siswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan',
-                    $siswa->no_telp,
-                    $siswa->tahun_masuk,
-                ]);
-            }
+            // Data — lazy() stream per record, hemat memory
+            $index = 0;
+            Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
+                ->with('user:id,name')
+                ->latest()
+                ->lazy()
+                ->each(function ($siswa) use ($file, &$index) {
+                    fputcsv($file, [
+                        ++$index,
+                        $siswa->nis,
+                        $siswa->nisn,
+                        $siswa->user->name,
+                        $siswa->kelas,
+                        $siswa->rombel,
+                        $siswa->jurusan,
+                        $siswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan',
+                        $siswa->no_telp,
+                        $siswa->tahun_masuk,
+                    ]);
+                });
 
             fclose($file);
         };
@@ -60,17 +63,12 @@ class ExportController extends Controller
      */
     public function exportKetua(): StreamedResponse
     {
-        $ketuas = User::where('role', 'ketua')
-            ->with('ekstrakurikuler')
-            ->latest()
-            ->get();
-
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="data-ketua-' . date('Y-m-d') . '.csv"',
         ];
 
-        $callback = function () use ($ketuas) {
+        $callback = function () {
             $file = fopen('php://output', 'w');
 
             // BOM untuk UTF-8
@@ -79,17 +77,23 @@ class ExportController extends Controller
             // Header
             fputcsv($file, ['No', 'Nama', 'Email', 'Username', 'Ekskul', 'Terdaftar']);
 
-            // Data
-            foreach ($ketuas as $index => $ketua) {
-                fputcsv($file, [
-                    $index + 1,
-                    $ketua->name,
-                    $ketua->email,
-                    $ketua->username,
-                    $ketua->ekstrakurikuler?->nama ?? '-',
-                    $ketua->created_at->format('d/m/Y'),
-                ]);
-            }
+            // Data — lazy() stream per record
+            $index = 0;
+            User::where('role', 'ketua')
+                ->select('id', 'name', 'email', 'username', 'created_at')
+                ->with('ekstrakurikuler:id,ketua_id,nama')
+                ->latest()
+                ->lazy()
+                ->each(function ($ketua) use ($file, &$index) {
+                    fputcsv($file, [
+                        ++$index,
+                        $ketua->name,
+                        $ketua->email,
+                        $ketua->username,
+                        $ketua->ekstrakurikuler?->nama ?? '-',
+                        $ketua->created_at->format('d/m/Y'),
+                    ]);
+                });
 
             fclose($file);
         };
@@ -102,16 +106,12 @@ class ExportController extends Controller
      */
     public function exportPendaftaran(): StreamedResponse
     {
-        $pendaftarans = Pendaftaran::with(['siswa.user', 'ekstrakurikuler'])
-            ->latest()
-            ->get();
-
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="data-pendaftaran-' . date('Y-m-d') . '.csv"',
         ];
 
-        $callback = function () use ($pendaftarans) {
+        $callback = function () {
             $file = fopen('php://output', 'w');
 
             // BOM untuk UTF-8
@@ -120,18 +120,23 @@ class ExportController extends Controller
             // Header
             fputcsv($file, ['No', 'Nama Siswa', 'NISN', 'Ekskul', 'Tanggal Daftar', 'Status', 'Catatan Ketua']);
 
-            // Data
-            foreach ($pendaftarans as $index => $p) {
-                fputcsv($file, [
-                    $index + 1,
-                    $p->siswa?->user?->name ?? '-',
-                    $p->siswa?->nisn ?? '-',
-                    $p->ekstrakurikuler?->nama ?? '-',
-                    $p->created_at->format('d/m/Y H:i'),
-                    ucfirst($p->status),
-                    $p->catatan_ketua ?? '-',
-                ]);
-            }
+            // Data — lazy() stream per record
+            $index = 0;
+            Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_ketua', 'created_at')
+                ->with(['siswa:id,user_id,nisn' => ['user:id,name'], 'ekstrakurikuler:id,nama'])
+                ->latest()
+                ->lazy()
+                ->each(function ($p) use ($file, &$index) {
+                    fputcsv($file, [
+                        ++$index,
+                        $p->siswa?->user?->name ?? '-',
+                        $p->siswa?->nisn ?? '-',
+                        $p->ekstrakurikuler?->nama ?? '-',
+                        $p->created_at->format('d/m/Y H:i'),
+                        ucfirst($p->status),
+                        $p->catatan_ketua ?? '-',
+                    ]);
+                });
 
             fclose($file);
         };
@@ -144,14 +149,12 @@ class ExportController extends Controller
      */
     public function exportEkskul(): StreamedResponse
     {
-        $ekskuls = Ekstrakurikuler::with('ketua')->latest()->get();
-
         $headers = [
             'Content-Type' => 'text/csv; charset=UTF-8',
             'Content-Disposition' => 'attachment; filename="data-ekskul-' . date('Y-m-d') . '.csv"',
         ];
 
-        $callback = function () use ($ekskuls) {
+        $callback = function () {
             $file = fopen('php://output', 'w');
 
             // BOM untuk UTF-8
@@ -160,20 +163,25 @@ class ExportController extends Controller
             // Header
             fputcsv($file, ['No', 'Nama Ekskul', 'Kategori', 'Ketua', 'Kuota', 'Hari', 'Jam', 'Lokasi', 'Status']);
 
-            // Data
-            foreach ($ekskuls as $index => $e) {
-                fputcsv($file, [
-                    $index + 1,
-                    $e->nama,
-                    $e->kategori,
-                    $e->ketua?->name ?? '-',
-                    $e->kuota,
-                    $e->hari_latihan,
-                    ($e->jam_mulai ? substr($e->jam_mulai, 0, 5) : '-') . ' - ' . ($e->jam_selesai ? substr($e->jam_selesai, 0, 5) : '-'),
-                    $e->lokasi,
-                    ucfirst($e->status),
-                ]);
-            }
+            // Data — lazy() stream per record
+            $index = 0;
+            Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'kategori', 'kuota', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi', 'status')
+                ->with('ketua:id,name')
+                ->latest()
+                ->lazy()
+                ->each(function ($e) use ($file, &$index) {
+                    fputcsv($file, [
+                        ++$index,
+                        $e->nama,
+                        $e->kategori,
+                        $e->ketua?->name ?? '-',
+                        $e->kuota,
+                        $e->hari_latihan,
+                        ($e->jam_mulai ? substr($e->jam_mulai, 0, 5) : '-') . ' - ' . ($e->jam_selesai ? substr($e->jam_selesai, 0, 5) : '-'),
+                        $e->lokasi,
+                        ucfirst($e->status),
+                    ]);
+                });
 
             fclose($file);
         };

@@ -10,6 +10,7 @@ use App\Models\Ekstrakurikuler;
 use App\Models\AspekPenilaian;
 use App\Models\EkskulAspek;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,9 +20,11 @@ class EkskulController extends Controller
 {
     public function index(): View
     {
-        $ekskuls = Ekstrakurikuler::with('ketua')
+        $ekskuls = Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'slug', 'logo', 'kuota', 'status', 'kategori')
+            ->with('ketua:id,name')
+            ->withCount('pendaftarans')
             ->latest()
-            ->get();
+            ->paginate(15);
 
         return view('admin.ekstrakurikuler.index', compact('ekskuls'));
     }
@@ -54,6 +57,7 @@ class EkskulController extends Controller
                 'kuota' => config('ekskul.kuota_default'),
             ]);
 
+            // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
             $mapping = [
                 'fisik' => 'FISIK',
                 'intelektual' => 'AKADEMIK',
@@ -63,13 +67,15 @@ class EkskulController extends Controller
                 'komunikasi' => 'BAHASA',
             ];
 
+            $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))
+                ->pluck('id', 'kode');
+
             foreach ($mapping as $formField => $dbKode) {
-                $aspek = AspekPenilaian::where('kode', $dbKode)->first();
-                if ($aspek) {
+                if ($aspekId = $aspekList[$dbKode] ?? null) {
                     EkskulAspek::updateOrInsert(
                         [
                             'ekstrakurikuler_id' => $ekskul->id,
-                            'aspek_penilaian_id' => $aspek->id,
+                            'aspek_penilaian_id' => $aspekId,
                         ],
                         [
                             'bobot' => $validated[$formField] * 20,
@@ -78,6 +84,8 @@ class EkskulController extends Controller
                 }
             }
         });
+
+        Cache::forget('admin.dashboard.stats');
 
         return redirect()->route('ekskul.index')->with('success', 'Ekstrakurikuler berhasil ditambahkan.');
     }
@@ -150,6 +158,7 @@ class EkskulController extends Controller
                 'logo' => $logoPath,
             ]);
 
+            // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
             $mapping = [
                 'fisik' => 'FISIK',
                 'intelektual' => 'AKADEMIK',
@@ -159,13 +168,15 @@ class EkskulController extends Controller
                 'komunikasi' => 'BAHASA',
             ];
 
+            $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))
+                ->pluck('id', 'kode');
+
             foreach ($mapping as $formField => $dbKode) {
-                $aspek = DB::table('aspek_penilaian')->where('kode', $dbKode)->first();
-                if ($aspek) {
-                    DB::table('ekskul_aspek')->updateOrInsert(
+                if ($aspekId = $aspekList[$dbKode] ?? null) {
+                    EkskulAspek::updateOrInsert(
                         [
                             'ekstrakurikuler_id' => $ekskul->id,
-                            'aspek_penilaian_id' => $aspek->id,
+                            'aspek_penilaian_id' => $aspekId,
                         ],
                         [
                             'bobot' => $validated[$formField] * 20,
@@ -174,6 +185,8 @@ class EkskulController extends Controller
                 }
             }
         });
+
+        Cache::forget('admin.dashboard.stats');
 
         return redirect()->route('ekskul.index')->with('success', 'Ekstrakurikuler berhasil diperbarui.');
     }

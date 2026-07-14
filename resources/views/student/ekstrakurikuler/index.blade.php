@@ -25,7 +25,11 @@
                     image="{{ $ekskul->logo ? asset('storage/' . $ekskul->logo) : 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop' }}"
                     route="{{ route('siswa.ekskul.show', $ekskul->id) }}"
                 />
-            @endforeach
+        </div>
+
+        <!-- Pagination Links -->
+        <div class="mt-8 flex justify-center">
+            {{ $ekskuls->links() }}
         </div>
     </div>
 @endsection

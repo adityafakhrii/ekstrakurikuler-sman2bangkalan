@@ -22,9 +22,7 @@ use Illuminate\Support\Facades\Route;
 // =======================
 
 // Root redirect ke login admin
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::redirect('/', '/login');
 
 // --- Login Admin & Ketua ---
 Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');

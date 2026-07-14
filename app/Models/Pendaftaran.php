@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,5 +41,29 @@ class Pendaftaran extends Model
     public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'disetujui_oleh');
+    }
+
+    /**
+     * Scope: pendaftaran berstatus 'menunggu'.
+     */
+    public function scopeMenunggu(Builder $query): Builder
+    {
+        return $query->where('status', 'menunggu');
+    }
+
+    /**
+     * Scope: pendaftaran berstatus 'disetujui'.
+     */
+    public function scopeDisetujui(Builder $query): Builder
+    {
+        return $query->where('status', 'disetujui');
+    }
+
+    /**
+     * Scope: pendaftaran berstatus 'ditolak'.
+     */
+    public function scopeDitolak(Builder $query): Builder
+    {
+        return $query->where('status', 'ditolak');
     }
 }

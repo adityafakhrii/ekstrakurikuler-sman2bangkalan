@@ -38,10 +38,11 @@ class HomeController extends Controller
             return redirect()->route('siswa.home')->with('error', 'Data siswa tidak ditemukan.');
         }
 
-        $registrations = Pendaftaran::with('ekstrakurikuler')
+        $registrations = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'created_at')
+            ->with(['ekstrakurikuler' => fn($q) => $q->select('id', 'nama', 'deskripsi', 'logo')])
             ->where('siswa_id', $siswa->id)
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('student.riwayat.index', compact('registrations'));
     }
@@ -57,7 +58,13 @@ class HomeController extends Controller
             return redirect()->route('siswa.home')->with('error', 'Data siswa tidak ditemukan.');
         }
 
-        $pendaftaran = Pendaftaran::with(['ekstrakurikuler.ketua', 'siswa.user'])
+        $pendaftaran = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'tahun_ajaran', 'status', 'catatan_siswa', 'catatan_ketua', 'disetujui_at')
+            ->with([
+                'ekstrakurikuler' => fn($q) => $q->select('id', 'nama', 'deskripsi', 'logo', 'pembina', 'whatsapp_group', 'jadwal', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi', 'ketua_id'),
+                'ekstrakurikuler.ketua' => fn($q) => $q->select('id', 'name'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'no_telp'),
+                'siswa.user' => fn($q) => $q->select('id', 'name', 'email')
+            ])
             ->where('siswa_id', $siswa->id)
             ->findOrFail($id);
 

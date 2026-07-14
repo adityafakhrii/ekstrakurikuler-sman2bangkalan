@@ -13,16 +13,18 @@ class EkskulController extends Controller
 {
     public function index(): View
     {
-        $ekskuls = Ekstrakurikuler::where('status', 'aktif')
+        $ekskuls = Ekstrakurikuler::aktif()
+            ->select('id', 'nama', 'slug', 'logo', 'kuota', 'status', 'kategori', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi')
+            ->withCount(['pendaftarans as anggota_count' => fn($q) => $q->where('status', 'disetujui')])
             ->latest()
-            ->get();
+            ->paginate(12);
 
         return view('student.ekstrakurikuler.index', compact('ekskuls'));
     }
 
     public function show(int $id): View
     {
-        $ekskul = Ekstrakurikuler::with('ketua')->findOrFail($id);
+        $ekskul = Ekstrakurikuler::with('ketua:id,name')->findOrFail($id);
 
         $aspekBobot = EkskulAspek::where('ekstrakurikuler_id', $id)
             ->join('aspek_penilaian', 'ekskul_aspek.aspek_penilaian_id', '=', 'aspek_penilaian.id')

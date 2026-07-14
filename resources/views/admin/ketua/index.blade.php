@@ -10,7 +10,7 @@
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
             
             <!-- Left: Pagination Entries Controller -->
-            <x-pagination.pagination />
+            <x-pagination.pagination :paginator="$ketuas" />
 
             <!-- Right: Tambah Button & Search Input -->
             <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
@@ -32,7 +32,7 @@
         <x-tables.table :headers="['#', 'Nama Ketua', 'Ekstrakurikuler', 'Tanggal Ditambahkan', 'Action']">
             @foreach($ketuas as $index => $ketua)
                 <tr class="hover:bg-gray-50/50 transition-colors duration-150">
-                    <td class="table-body-cell font-medium">{{ $index + 1 }}</td>
+                    <td class="table-body-cell font-medium">{{ ($ketuas->currentPage() - 1) * $ketuas->perPage() + $index + 1 }}</td>
                     <td class="table-body-cell font-medium text-gray-900">{{ $ketua->name }}</td>
                     <td class="table-body-cell text-gray-700">
                         {{ $ketua->ekstrakurikuler ? $ketua->ekstrakurikuler->nama : 'Belum Memimpin' }}
@@ -66,19 +66,5 @@
                 </tr>
             @endforeach
         </x-tables.table>
-
-        <!-- Load More Button (Premium) -->
-        <div class="flex justify-center mt-6">
-            <button class="group relative flex items-center gap-3 bg-white border border-gray-200 hover:border-[#6366F1]/40 hover:bg-[#6366F1]/5 rounded-xl px-6 py-2.5 text-xs font-semibold text-gray-600 hover:text-[#6366F1] focus:outline-none transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md">
-                <!-- Bouncing dots -->
-                <span class="flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400 group-hover:bg-[#6366F1] animate-bounce" style="animation-delay: 0ms"></span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400 group-hover:bg-[#6366F1] animate-bounce" style="animation-delay: 150ms"></span>
-                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400 group-hover:bg-[#6366F1] animate-bounce" style="animation-delay: 300ms"></span>
-                </span>
-                Load more
-            </button>
-        </div>
-
     </x-cards.card>
 @endsection

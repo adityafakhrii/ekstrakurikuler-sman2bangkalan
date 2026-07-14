@@ -15,8 +15,9 @@ class UserController extends Controller
     public function index(): View
     {
         $users = User::where('role', 'admin')
+            ->select('id', 'name', 'username', 'email', 'created_at')
             ->latest()
-            ->get();
+            ->paginate(15);
 
         return view('admin.users.index', compact('users'));
     }

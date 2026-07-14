@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,5 +45,13 @@ class Ekstrakurikuler extends Model
     public function pendaftarans(): HasMany
     {
         return $this->hasMany(Pendaftaran::class, 'ekstrakurikuler_id');
+    }
+
+    /**
+     * Scope: hanya ekskul dengan status 'aktif'.
+     */
+    public function scopeAktif(Builder $query): Builder
+    {
+        return $query->where('status', 'aktif');
     }
 }

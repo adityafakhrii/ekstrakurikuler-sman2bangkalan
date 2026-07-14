@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Pendaftaran;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class KetuaDashboardController extends Controller
@@ -13,30 +14,34 @@ class KetuaDashboardController extends Controller
     public function index(): View
     {
         $ekskul = auth()->user()->ekstrakurikuler;
+        $userId = auth()->id();
 
-        $stats = [
-            'menunggu' => 0,
-            'disetujui' => 0,
-            'ditolak' => 0,
-            'total' => 0,
-        ];
+        $stats = Cache::remember("ketua.dashboard.stats.{$userId}", now()->addMinutes(15), function () use ($ekskul) {
+            $statsData = [
+                'menunggu' => 0,
+                'disetujui' => 0,
+                'ditolak' => 0,
+                'total' => 0,
+            ];
 
-        $ekskulNama = 'Tidak ada Ekstrakurikuler yang dipimpin';
+            if ($ekskul) {
+                $counts = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)
+                    ->selectRaw("count(*) as total")
+                    ->selectRaw("sum(status = 'menunggu') as menunggu")
+                    ->selectRaw("sum(status = 'disetujui') as disetujui")
+                    ->selectRaw("sum(status = 'ditolak') as ditolak")
+                    ->first();
 
-        if ($ekskul) {
-            $ekskulNama = $ekskul->nama;
-            $counts = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)
-                ->selectRaw("count(*) as total")
-                ->selectRaw("sum(status = 'menunggu') as menunggu")
-                ->selectRaw("sum(status = 'disetujui') as disetujui")
-                ->selectRaw("sum(status = 'ditolak') as ditolak")
-                ->first();
+                $statsData['menunggu'] = (int) $counts->menunggu;
+                $statsData['disetujui'] = (int) $counts->disetujui;
+                $statsData['ditolak'] = (int) $counts->ditolak;
+                $statsData['total'] = (int) $counts->total;
+            }
 
-            $stats['menunggu'] = (int) $counts->menunggu;
-            $stats['disetujui'] = (int) $counts->disetujui;
-            $stats['ditolak'] = (int) $counts->ditolak;
-            $stats['total'] = (int) $counts->total;
-        }
+            return $statsData;
+        });
+
+        $ekskulNama = $ekskul ? $ekskul->nama : 'Tidak ada Ekstrakurikuler yang dipimpin';
 
         return view('ketua.dashboard.index', compact('stats', 'ekskulNama'));
     }
@@ -49,10 +54,14 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        $pendaftarans = Pendaftaran::with('siswa.user')
+        $pendaftarans = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'catatan_ketua', 'created_at')
+            ->with([
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'kelas', 'rombel', 'jurusan', 'no_telp'),
+                'siswa.user' => fn($q) => $q->select('id', 'name', 'email')
+            ])
             ->where('ekstrakurikuler_id', $ekskul->id)
             ->latest()
-            ->get();
+            ->paginate(15);
 
         return view('ketua.pendaftaran.index', compact('pendaftarans', 'ekskul'));
     }
@@ -69,6 +78,10 @@ class KetuaDashboardController extends Controller
             'disetujui_oleh' => auth()->id(),
         ]);
 
+        // Invalidate stats cache
+        Cache::forget("ketua.dashboard.stats." . auth()->id());
+        Cache::forget("admin.dashboard.stats");
+
         return redirect()->back()->with('success', 'Pendaftaran berhasil disetujui.');
     }
 
@@ -83,6 +96,10 @@ class KetuaDashboardController extends Controller
             'disetujui_at' => now(),
             'disetujui_oleh' => auth()->id(),
         ]);
+
+        // Invalidate stats cache
+        Cache::forget("ketua.dashboard.stats." . auth()->id());
+        Cache::forget("admin.dashboard.stats");
 
         return redirect()->back()->with('success', 'Pendaftaran berhasil ditolak.');
     }

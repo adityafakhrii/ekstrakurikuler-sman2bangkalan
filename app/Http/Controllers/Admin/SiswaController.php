@@ -16,7 +16,10 @@ class SiswaController extends Controller
 {
     public function index(): View
     {
-        $siswas = Siswa::with('user')->latest()->get();
+        $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
+            ->with('user:id,name')
+            ->latest()
+            ->paginate(15);
 
         return view('admin.siswa.index', compact('siswas'));
     }

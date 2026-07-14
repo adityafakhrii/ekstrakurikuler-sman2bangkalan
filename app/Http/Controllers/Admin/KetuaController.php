@@ -17,16 +17,19 @@ class KetuaController extends Controller
     public function index(): View
     {
         $ketuas = User::where('role', 'ketua')
-            ->with('ekstrakurikuler')
+            ->select('id', 'name', 'email', 'username', 'created_at')
+            ->with('ekstrakurikuler:id,ketua_id,nama')
             ->latest()
-            ->get();
+            ->paginate(15);
 
         return view('admin.ketua.index', compact('ketuas'));
     }
 
     public function create(): View
     {
-        $ekskuls = Ekstrakurikuler::whereNull('ketua_id')->get();
+        $ekskuls = Ekstrakurikuler::whereNull('ketua_id')
+            ->select('id', 'nama')
+            ->get();
 
         return view('admin.ketua.create', compact('ekskuls'));
     }
@@ -55,11 +58,12 @@ class KetuaController extends Controller
 
     public function edit(int $id): View
     {
-        $ketua = User::where('role', 'ketua')->with('ekstrakurikuler')->findOrFail($id);
+        $ketua = User::where('role', 'ketua')->with('ekstrakurikuler:id,ketua_id,nama')->findOrFail($id);
 
         // Ekskul yang tidak punya ketua, ditambah ekskul yang saat ini dipimpin oleh ketua ini
         $ekskuls = Ekstrakurikuler::whereNull('ketua_id')
             ->orWhere('ketua_id', $ketua->id)
+            ->select('id', 'nama', 'ketua_id')
             ->get();
 
         return view('admin.ketua.edit', compact('ketua', 'ekskuls'));

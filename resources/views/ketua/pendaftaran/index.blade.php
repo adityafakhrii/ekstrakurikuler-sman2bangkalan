@@ -33,7 +33,7 @@
         <x-tables.table :headers="['#', 'NISN', 'Nama Siswa', 'Catatan Siswa', 'Status', 'Catatan Ketua', 'Action']">
             @forelse($pendaftarans as $index => $pendaftaran)
                 <tr class="hover:bg-gray-50/50 transition-colors duration-150" x-data="{ openAction: false }">
-                    <td class="table-body-cell font-medium">{{ $index + 1 }}</td>
+                    <td class="table-body-cell font-medium">{{ ($pendaftarans->currentPage() - 1) * $pendaftarans->perPage() + $index + 1 }}</td>
                     <td class="table-body-cell text-gray-700 font-medium">{{ $pendaftaran->siswa->nisn }}</td>
                     <td class="table-body-cell font-semibold text-gray-900">{{ $pendaftaran->siswa->user->name }}</td>
                     <td class="table-body-cell text-gray-500 font-normal max-w-xs truncate" title="{{ $pendaftaran->catatan_siswa }}">
@@ -108,5 +108,10 @@
                 </tr>
             @endforelse
         </x-tables.table>
+
+        <!-- Pagination Links -->
+        <div class="mt-8 flex justify-center">
+            {{ $pendaftarans->links() }}
+        </div>
     </div>
 @endsection

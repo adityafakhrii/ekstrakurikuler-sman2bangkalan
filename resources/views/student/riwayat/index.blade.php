@@ -103,6 +103,11 @@
             @endforelse
         </div>
 
+        <!-- Pagination Links -->
+        <div class="mt-8 flex justify-center">
+            {{ $registrations->links() }}
+        </div>
+
     </div>
 </div>
 @endsection

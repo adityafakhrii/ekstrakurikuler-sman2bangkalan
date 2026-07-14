@@ -88,7 +88,7 @@ class RekomendasiController extends Controller
         $ekskuls = Ekstrakurikuler::join('rekomendasi_hasil', 'ekstrakurikuler.id', '=', 'rekomendasi_hasil.ekstrakurikuler_id')
             ->where('rekomendasi_hasil.rekomendasi_id', $rekomendasiId)
             ->orderBy('rekomendasi_hasil.peringkat', 'asc')
-            ->select('ekstrakurikuler.*', 'rekomendasi_hasil.skor')
+            ->select('ekstrakurikuler.id', 'ekstrakurikuler.nama', 'ekstrakurikuler.deskripsi', 'ekstrakurikuler.logo', 'rekomendasi_hasil.skor')
             ->get();
 
         return view('student.rekomendasi.results', compact('ekskuls'));
