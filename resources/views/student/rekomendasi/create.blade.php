@@ -20,12 +20,12 @@
 
             @php
                 $criteria = [
-                    ['label' => 'Fisik & Ketangkasan', 'name' => 'fisik', 'value' => 0],
-                    ['label' => 'Intelektual & Strategi', 'name' => 'intelektual', 'value' => 0],
-                    ['label' => 'Kreativitas & Seni', 'name' => 'kreativitas', 'value' => 0],
-                    ['label' => 'Sosial & Kepemimpinan', 'name' => 'sosial', 'value' => 0],
-                    ['label' => 'Mental & Kedisiplinan', 'name' => 'mental', 'value' => 0],
-                    ['label' => 'Komunikasi & Bahasa', 'name' => 'komunikasi', 'value' => 0]
+                    ['label' => 'Fisik', 'name' => 'fisik', 'value' => 0],
+                    ['label' => 'Estetika', 'name' => 'estetika', 'value' => 0],
+                    ['label' => 'Komunikasi', 'name' => 'komunikasi', 'value' => 0],
+                    ['label' => 'Kreativitas', 'name' => 'kreativitas', 'value' => 0],
+                    ['label' => 'Disiplin', 'name' => 'disiplin', 'value' => 0],
+                    ['label' => 'Kekompakan', 'name' => 'kekompakan', 'value' => 0]
                 ];
             @endphp
 

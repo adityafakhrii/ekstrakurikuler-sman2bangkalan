@@ -27,12 +27,12 @@
                     @php
                         // 6 Recommendation Criteria from screenshot
                         $criteria = [
-                            ['label' => 'Fisik & Ketangkasan', 'name' => 'fisik'],
-                            ['label' => 'Intelektual & Strategi', 'name' => 'intelektual'],
-                            ['label' => 'Kreativitas & Seni', 'name' => 'kreativitas'],
-                            ['label' => 'Sosial & Kepemimpinan', 'name' => 'sosial'],
-                            ['label' => 'Mental & Kedisiplinan', 'name' => 'mental'],
-                            ['label' => 'Komunikasi & Bahasa', 'name' => 'komunikasi']
+                            ['label' => 'Fisik', 'name' => 'fisik'],
+                            ['label' => 'Estetika', 'name' => 'estetika'],
+                            ['label' => 'Komunikasi', 'name' => 'komunikasi'],
+                            ['label' => 'Kreativitas', 'name' => 'kreativitas'],
+                            ['label' => 'Disiplin', 'name' => 'disiplin'],
+                            ['label' => 'Kekompakan', 'name' => 'kekompakan']
                         ];
                     @endphp
 

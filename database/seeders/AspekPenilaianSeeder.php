@@ -12,45 +12,39 @@ class AspekPenilaianSeeder extends Seeder
         $aspek = [
             [
                 'kode' => 'FISIK',
-                'nama' => 'Kemampuan Fisik',
-                'deskripsi' => 'Seberapa baik kemampuan fisik dan kebugaran tubuh Anda (kekuatan, kecepatan, daya tahan).',
+                'nama' => 'Fisik',
+                'deskripsi' => 'Kemampuan fisik dan ketangkasan.',
                 'urutan' => 1,
             ],
             [
-                'kode' => 'SENI',
-                'nama' => 'Minat Seni & Kreativitas',
-                'deskripsi' => 'Seberapa besar minat Anda di bidang seni, musik, suara, atau ekspresi kreatif.',
+                'kode' => 'ESTETIKA',
+                'nama' => 'Estetika',
+                'deskripsi' => 'Kemampuan seni dan estetika.',
                 'urutan' => 2,
             ],
             [
-                'kode' => 'SOSIAL',
-                'nama' => 'Kemampuan Sosial & Kepemimpinan',
-                'deskripsi' => 'Seberapa nyaman Anda berinteraksi dengan banyak orang, memimpin, dan berorganisasi.',
+                'kode' => 'KOMUNIKASI',
+                'nama' => 'Komunikasi',
+                'deskripsi' => 'Kemampuan berkomunikasi.',
                 'urutan' => 3,
             ],
             [
-                'kode' => 'AKADEMIK',
-                'nama' => 'Kemampuan Akademik & Intelektual',
-                'deskripsi' => 'Seberapa besar minat Anda terhadap ilmu pengetahuan, riset, dan belajar hal baru.',
+                'kode' => 'KREATIVITAS',
+                'nama' => 'Kreativitas',
+                'deskripsi' => 'Kemampuan kreativitas dan ide baru.',
                 'urutan' => 4,
             ],
             [
-                'kode' => 'TEKNOLOGI',
-                'nama' => 'Minat Teknologi',
-                'deskripsi' => 'Seberapa besar ketertarikan Anda dengan teknologi, komputer, elektronika, atau robotika.',
+                'kode' => 'DISIPLIN',
+                'nama' => 'Disiplin',
+                'deskripsi' => 'Kedisiplinan dan mental.',
                 'urutan' => 5,
             ],
             [
-                'kode' => 'BAHASA',
-                'nama' => 'Kemampuan Bahasa',
-                'deskripsi' => 'Seberapa baik kemampuan berbahasa Anda, terutama bahasa asing dan komunikasi verbal.',
+                'kode' => 'KEKOMPAKAN',
+                'nama' => 'Kekompakan',
+                'deskripsi' => 'Kerja sama dan kekompakan tim.',
                 'urutan' => 6,
-            ],
-            [
-                'kode' => 'SOSIAL_HUMANIORA',
-                'nama' => 'Kepedulian Sosial & Kemanusiaan',
-                'deskripsi' => 'Seberapa besar kepedulian Anda terhadap sesama, lingkungan, dan kegiatan sosial.',
-                'urutan' => 7,
             ],
         ];
 
@@ -77,72 +71,42 @@ class AspekPenilaianSeeder extends Seeder
         $aspekIds = DB::table('aspek_penilaian')->pluck('id', 'kode');
         $ekskulIds = DB::table('ekstrakurikuler')->pluck('id', 'slug');
 
-        // Definisi bobot per ekskul (total bobot sebaiknya = 100)
+        // Definisi bobot per ekskul (sesuai contoh gambar, skala 1-5)
         // Format: [ slug_ekskul => [ KODE_ASPEK => bobot ] ]
         $bobotEkskul = [
-            'osis' => [
-                'SOSIAL' => 40,
-                'AKADEMIK' => 25,
-                'BAHASA' => 20,
-                'FISIK' => 5,
-                'SENI' => 5,
-                'TEKNOLOGI' => 3,
-                'SOSIAL_HUMANIORA' => 2,
+            'paduan-suara' => [
+                'FISIK' => 2,
+                'ESTETIKA' => 5,
+                'KOMUNIKASI' => 4,
+                'KREATIVITAS' => 3,
+                'DISIPLIN' => 3,
+                'KEKOMPAKAN' => 4,
             ],
             'pramuka' => [
-                'FISIK' => 35,
-                'SOSIAL' => 25,
-                'SOSIAL_HUMANIORA' => 20,
-                'AKADEMIK' => 10,
-                'SENI' => 5,
-                'BAHASA' => 3,
-                'TEKNOLOGI' => 2,
+                'FISIK' => 4,
+                'ESTETIKA' => 2,
+                'KOMUNIKASI' => 3,
+                'KREATIVITAS' => 2,
+                'DISIPLIN' => 5,
+                'KEKOMPAKAN' => 5,
             ],
             'basket' => [
-                'FISIK' => 60,
-                'SOSIAL' => 20,
-                'AKADEMIK' => 5,
-                'SENI' => 5,
-                'BAHASA' => 5,
-                'TEKNOLOGI' => 3,
-                'SOSIAL_HUMANIORA' => 2,
+                'FISIK' => 5,
+                'ESTETIKA' => 2,
+                'KOMUNIKASI' => 3,
+                'KREATIVITAS' => 2,
+                'DISIPLIN' => 4,
+                'KEKOMPAKAN' => 4,
             ],
-            'pmr' => [
-                'SOSIAL_HUMANIORA' => 35,
-                'AKADEMIK' => 25,
-                'FISIK' => 20,
-                'SOSIAL' => 10,
-                'SENI' => 5,
-                'BAHASA' => 3,
-                'TEKNOLOGI' => 2,
+            'teater' => [
+                'FISIK' => 1,
+                'ESTETIKA' => 5,
+                'KOMUNIKASI' => 5,
+                'KREATIVITAS' => 5,
+                'DISIPLIN' => 3,
+                'KEKOMPAKAN' => 3,
             ],
-            'paduan-suara' => [
-                'SENI' => 60,
-                'BAHASA' => 15,
-                'SOSIAL' => 15,
-                'AKADEMIK' => 5,
-                'FISIK' => 3,
-                'TEKNOLOGI' => 1,
-                'SOSIAL_HUMANIORA' => 1,
-            ],
-            'robotik' => [
-                'TEKNOLOGI' => 55,
-                'AKADEMIK' => 30,
-                'SOSIAL' => 7,
-                'FISIK' => 3,
-                'BAHASA' => 3,
-                'SENI' => 1,
-                'SOSIAL_HUMANIORA' => 1,
-            ],
-            'english-club' => [
-                'BAHASA' => 55,
-                'AKADEMIK' => 25,
-                'SOSIAL' => 12,
-                'SENI' => 3,
-                'FISIK' => 2,
-                'TEKNOLOGI' => 2,
-                'SOSIAL_HUMANIORA' => 1,
-            ],
+            // Anda bisa tambahkan ekskul lain di sini
         ];
 
         $inserts = [];

@@ -46,11 +46,11 @@ class RekomendasiService
     {
         $studentVector = [
             $jawaban['fisik'],
-            $jawaban['intelektual'],
-            $jawaban['kreativitas'],
-            $jawaban['sosial'],
-            $jawaban['mental'],
+            $jawaban['estetika'],
             $jawaban['komunikasi'],
+            $jawaban['kreativitas'],
+            $jawaban['disiplin'],
+            $jawaban['kekompakan'],
         ];
 
         $ekskuls = Ekstrakurikuler::where('status', 'aktif')->pluck('id');
@@ -86,17 +86,17 @@ class RekomendasiService
     }
 
     /**
-     * Bangun vektor profil ekskul dari bobot aspek (konversi 0-100 → 1-5).
+     * Bangun vektor profil ekskul dari bobot aspek.
      *
      * @param  array<string, float>  $aspekBobot
      * @return array<int, float>
      */
     private function buildEkskulVector(array $aspekBobot): array
     {
-        $mapping = ['FISIK', 'AKADEMIK', 'SENI', 'SOSIAL', 'SOSIAL_HUMANIORA', 'BAHASA'];
+        $mapping = ['FISIK', 'ESTETIKA', 'KOMUNIKASI', 'KREATIVITAS', 'DISIPLIN', 'KEKOMPAKAN'];
 
         return array_map(
-            fn ($kode) => isset($aspekBobot[$kode]) ? (float) $aspekBobot[$kode] / 20 : 0,
+            fn ($kode) => isset($aspekBobot[$kode]) ? (float) $aspekBobot[$kode] : 0,
             $mapping,
         );
     }

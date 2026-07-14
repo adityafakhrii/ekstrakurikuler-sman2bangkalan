@@ -21,11 +21,11 @@ class StoreEkskulRequest extends FormRequest
             'description' => ['required', 'string'],
             'logo' => ['nullable', 'image', 'max:2048'],
             'fisik' => ['required', 'integer', 'between:1,5'],
-            'intelektual' => ['required', 'integer', 'between:1,5'],
-            'kreativitas' => ['required', 'integer', 'between:1,5'],
-            'sosial' => ['required', 'integer', 'between:1,5'],
-            'mental' => ['required', 'integer', 'between:1,5'],
+            'estetika' => ['required', 'integer', 'between:1,5'],
             'komunikasi' => ['required', 'integer', 'between:1,5'],
+            'kreativitas' => ['required', 'integer', 'between:1,5'],
+            'disiplin' => ['required', 'integer', 'between:1,5'],
+            'kekompakan' => ['required', 'integer', 'between:1,5'],
         ];
     }
 }
