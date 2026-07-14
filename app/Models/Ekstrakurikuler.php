@@ -21,17 +21,9 @@ class Ekstrakurikuler extends Model
         'slug',
         'deskripsi',
         'logo',
-        'banner',
         'kuota',
-        'status',
         'kategori',
-        'hari_latihan',
-        'jam_mulai',
-        'jam_selesai',
-        'lokasi',
         'tahun_ajaran',
-        'persyaratan',
-        'prestasi',
         'pembina',
         'whatsapp_group',
         'jadwal',
@@ -45,13 +37,5 @@ class Ekstrakurikuler extends Model
     public function pendaftarans(): HasMany
     {
         return $this->hasMany(Pendaftaran::class, 'ekstrakurikuler_id');
-    }
-
-    /**
-     * Scope: hanya ekskul dengan status 'aktif'.
-     */
-    public function scopeAktif(Builder $query): Builder
-    {
-        return $query->where('status', 'aktif');
     }
 }

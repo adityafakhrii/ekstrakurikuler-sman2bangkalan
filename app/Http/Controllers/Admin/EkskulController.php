@@ -21,7 +21,7 @@ class EkskulController extends Controller
     public function index(): View
     {
         $search = request('search');
-        $ekskuls = Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'slug', 'logo', 'kuota', 'status', 'kategori', 'pembina', 'created_at')
+        $ekskuls = Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'slug', 'logo', 'kuota', 'kategori', 'pembina', 'created_at')
             ->when($search, function ($query, $search) {
                 return $query->where('nama', 'like', "%{$search}%")
                     ->orWhere('pembina', 'like', "%{$search}%")
@@ -60,7 +60,6 @@ class EkskulController extends Controller
                 'jadwal' => $validated['jadwal'],
                 'logo' => $logoPath,
                 'tahun_ajaran' => config('ekskul.tahun_ajaran'),
-                'status' => 'aktif',
                 'kuota' => config('ekskul.kuota_default'),
             ]);
 

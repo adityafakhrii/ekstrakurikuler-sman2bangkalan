@@ -52,7 +52,7 @@
                     <tr>
                         <td>Jadwal latihan</td>
                         <td>:</td>
-                        <td>{{ $ekskul->jadwal ?: (($ekskul->hari_latihan && $ekskul->jam_mulai && $ekskul->jam_selesai) ? $ekskul->hari_latihan.', '.$ekskul->jam_mulai.' - '.$ekskul->jam_selesai.' WIB' : '-') }}</td>
+                        <td>{{ $ekskul->jadwal ?: '-' }}</td>
                     </tr>
                     <tr>
                         <td>Keterangan</td>

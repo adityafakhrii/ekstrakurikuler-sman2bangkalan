@@ -161,11 +161,11 @@ class ExportController extends Controller
             fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
             // Header
-            fputcsv($file, ['No', 'Nama Ekskul', 'Kategori', 'Ketua', 'Kuota', 'Hari', 'Jam', 'Lokasi', 'Status']);
+            fputcsv($file, ['No', 'Nama Ekskul', 'Kategori', 'Ketua', 'Kuota', 'Hari', 'Jam', 'Lokasi']);
 
             // Data — lazy() stream per record
             $index = 0;
-            Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'kategori', 'kuota', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi', 'status')
+            Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'kategori', 'kuota', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi')
                 ->with('ketua:id,name')
                 ->latest()
                 ->lazy()
@@ -179,7 +179,6 @@ class ExportController extends Controller
                         $e->hari_latihan,
                         ($e->jam_mulai ? substr($e->jam_mulai, 0, 5) : '-') . ' - ' . ($e->jam_selesai ? substr($e->jam_selesai, 0, 5) : '-'),
                         $e->lokasi,
-                        ucfirst($e->status),
                     ]);
                 });
 

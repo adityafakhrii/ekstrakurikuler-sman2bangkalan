@@ -13,8 +13,7 @@ class EkskulController extends Controller
 {
     public function index(): View
     {
-        $ekskuls = Ekstrakurikuler::aktif()
-            ->select('id', 'nama', 'slug', 'logo', 'kuota', 'status', 'kategori', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi')
+        $ekskuls = Ekstrakurikuler::select('id', 'nama', 'slug', 'logo', 'kuota', 'kategori', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi')
             ->withCount(['pendaftarans as anggota_count' => fn($q) => $q->where('status', 'disetujui')])
             ->latest()
             ->paginate(12);

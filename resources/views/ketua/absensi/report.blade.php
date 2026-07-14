@@ -31,7 +31,7 @@
                 </div>
                 <div class="flex gap-2">
                     <span class="font-semibold text-gray-500 w-32">Jadwal Latihan</span>
-                    <span class="text-gray-800">: {{ $ekskul->jadwal ?: (($ekskul->hari_latihan && $ekskul->jam_mulai && $ekskul->jam_selesai) ? $ekskul->hari_latihan.', '.$ekskul->jam_mulai.' - '.$ekskul->jam_selesai.' WIB' : '-') }}</span>
+                    <span class="text-gray-800">: {{ $ekskul->jadwal ?: '-' }}</span>
                 </div>
                 <div class="flex gap-2">
                     <span class="font-semibold text-gray-500 w-32">Total Pertemuan</span>

@@ -23,13 +23,10 @@ class EkstrakurikulerFactory extends Factory
             'logo' => null,
             'kuota' => config('ekskul.kuota_default'),
             'kategori' => fake()->randomElement(['Olahraga', 'Seni', 'Akademik', 'Kemanusiaan']),
-            'status' => 'aktif',
-            'hari_latihan' => fake()->randomElement(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']),
-            'jam_mulai' => '14:30:00',
-            'jam_selesai' => '16:30:00',
-            'lokasi' => 'Aula Sekolah',
+            'pembina' => fake()->name(),
+            'whatsapp_group' => null,
+            'jadwal' => fake()->randomElement(['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']) . ', 14:30 - 16:30 WIB',
             'tahun_ajaran' => config('ekskul.tahun_ajaran'),
-            'persyaratan' => fake()->sentence(),
         ];
     }
 }

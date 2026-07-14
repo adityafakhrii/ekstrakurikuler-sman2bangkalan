@@ -68,7 +68,7 @@
                             <span class="col-span-4 sm:col-span-3 text-gray-800">Jadwal Ekskul</span>
                             <span class="col-span-1 text-center text-gray-800">:</span>
                             <span class="col-span-7 sm:col-span-8 font-bold text-gray-900">
-                                {{ $pendaftaran->ekstrakurikuler->hari_latihan }}, Jam {{ date('H.i', strtotime($pendaftaran->ekstrakurikuler->jam_mulai)) }} - {{ date('H.i', strtotime($pendaftaran->ekstrakurikuler->jam_selesai)) }}
+                                {{ $pendaftaran->ekstrakurikuler->jadwal ?: '-' }}
                             </span>
                         </div>
 

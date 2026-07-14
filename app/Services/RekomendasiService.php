@@ -53,7 +53,7 @@ class RekomendasiService
             $jawaban['kekompakan'],
         ];
 
-        $ekskuls = Ekstrakurikuler::where('status', 'aktif')->pluck('id');
+        $ekskuls = Ekstrakurikuler::pluck('id');
 
         // Pre-load semua aspek bobot sekaligus (menghindari N+1 query)
         $allAspekBobot = DB::table('ekskul_aspek')
