@@ -13,6 +13,7 @@ class Absensi extends Model
         'ekstrakurikuler_id',
         'siswa_id',
         'tanggal',
+        'topik',
         'status',
         'keterangan',
         'dicatat_oleh',

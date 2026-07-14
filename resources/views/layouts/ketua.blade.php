@@ -23,7 +23,7 @@
                 SMAN 2 Bangkalan
             </p>
             <p class="text-lg sm:text-xl md:text-2xl font-medium text-white/95 mt-3 drop-shadow-sm">
-                Ekstrakurikuler | Sepak Bola Putra
+                Ekstrakurikuler | {{ auth()->user()->ekstrakurikuler->nama ?? 'Tidak ada Ekstrakurikuler' }}
             </p>
         </div>
     </section>

@@ -173,28 +173,48 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        // Ambil daftar tanggal absensi yang pernah dicatat untuk ekskul ini
-        $tanggalFilter = $request->input('tanggal');
+        $search = $request->input('search');
 
-        $query = Absensi::with([
+        // Ambil daftar sesi kegiatan (grouped by tanggal + topik)
+        $query = Absensi::where('ekstrakurikuler_id', $ekskul->id)
+            ->selectRaw('MIN(id) as id, tanggal, topik, COUNT(*) as jumlah_siswa')
+            ->groupBy('tanggal', 'topik');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('topik', 'like', "%{$search}%")
+                    ->orWhereRaw("DATE_FORMAT(tanggal, '%d %M %Y') LIKE ?", ["%{$search}%"]);
+            });
+        }
+
+        $kegiatanList = $query->orderByDesc('tanggal')->paginate(10)->withQueryString();
+
+        return view('ketua.absensi.index', compact('kegiatanList', 'ekskul'));
+    }
+
+    public function absensiShow(Request $request, string $tanggal): View|RedirectResponse
+    {
+        $ekskul = auth()->user()->ekstrakurikuler;
+
+        if (! $ekskul) {
+            return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
+        }
+
+        $topik = $request->input('topik', '');
+
+        // Ambil data absensi untuk sesi ini
+        $absensiList = Absensi::with([
                 'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'rombel', 'jurusan'),
                 'siswa.user' => fn($q) => $q->select('id', 'name'),
             ])
-            ->where('ekstrakurikuler_id', $ekskul->id);
+            ->where('ekstrakurikuler_id', $ekskul->id)
+            ->whereDate('tanggal', $tanggal)
+            ->where('topik', $topik)
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
 
-        if ($tanggalFilter) {
-            $query->whereDate('tanggal', $tanggalFilter);
-        }
-
-        $absensiList = $query->latest('tanggal')->latest('id')->paginate(20)->withQueryString();
-
-        // Daftar tanggal unik untuk filter dropdown
-        $tanggalOptions = Absensi::where('ekstrakurikuler_id', $ekskul->id)
-            ->selectRaw('DISTINCT DATE(tanggal) as tgl')
-            ->orderByDesc('tgl')
-            ->pluck('tgl');
-
-        // Ambil semua anggota (status disetujui) untuk form tambah absensi
+        // Ambil semua anggota (status disetujui) untuk form absensi
         $anggotaList = Pendaftaran::with([
                 'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'kelas', 'rombel'),
                 'siswa.user' => fn($q) => $q->select('id', 'name'),
@@ -203,7 +223,16 @@ class KetuaDashboardController extends Controller
             ->where('status', 'disetujui')
             ->get();
 
-        return view('ketua.absensi.index', compact('absensiList', 'ekskul', 'tanggalOptions', 'tanggalFilter', 'anggotaList'));
+        // Cek apakah sudah ada data absensi untuk sesi ini
+        $existingAbsensi = Absensi::where('ekstrakurikuler_id', $ekskul->id)
+            ->whereDate('tanggal', $tanggal)
+            ->where('topik', $topik)
+            ->pluck('status', 'siswa_id')
+            ->toArray();
+
+        return view('ketua.absensi.show', compact(
+            'absensiList', 'ekskul', 'tanggal', 'topik', 'anggotaList', 'existingAbsensi'
+        ));
     }
 
     public function absensiStore(Request $request): RedirectResponse
@@ -216,13 +245,65 @@ class KetuaDashboardController extends Controller
 
         $request->validate([
             'tanggal' => 'required|date',
-            'absensi' => 'required|array',
-            'absensi.*.siswa_id' => 'required|integer|exists:siswa,id',
-            'absensi.*.status' => 'required|in:hadir,izin,sakit,alpha',
-            'absensi.*.keterangan' => 'nullable|string|max:255',
+            'topik' => 'required|string|max:255',
         ]);
 
         $tanggal = $request->input('tanggal');
+        $topik = $request->input('topik');
+
+        // Cek apakah sudah ada sesi dengan tanggal dan topik yang sama
+        $existing = Absensi::where('ekstrakurikuler_id', $ekskul->id)
+            ->whereDate('tanggal', $tanggal)
+            ->where('topik', $topik)
+            ->exists();
+
+        if ($existing) {
+            return redirect()->back()->with('error', 'Sesi absensi dengan tanggal dan topik tersebut sudah ada.');
+        }
+
+        // Ambil semua anggota dan buat record absensi default (alpha)
+        $anggotaList = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)
+            ->where('status', 'disetujui')
+            ->with('siswa')
+            ->get();
+
+        if ($anggotaList->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada anggota yang terdaftar.');
+        }
+
+        foreach ($anggotaList as $member) {
+            Absensi::create([
+                'ekstrakurikuler_id' => $ekskul->id,
+                'siswa_id' => $member->siswa->id,
+                'tanggal' => $tanggal,
+                'topik' => $topik,
+                'status' => 'alpha',
+                'dicatat_oleh' => auth()->id(),
+            ]);
+        }
+
+        return redirect()->route('ketua.absensi.show', [
+            'tanggal' => $tanggal,
+            'topik' => $topik,
+        ])->with('success', 'Sesi absensi baru berhasil dibuat.');
+    }
+
+    public function absensiUpdate(Request $request, string $tanggal): RedirectResponse
+    {
+        $ekskul = auth()->user()->ekstrakurikuler;
+
+        if (! $ekskul) {
+            return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
+        }
+
+        $request->validate([
+            'topik' => 'required|string|max:255',
+            'absensi' => 'required|array',
+            'absensi.*.siswa_id' => 'required|integer|exists:siswa,id',
+            'absensi.*.status' => 'required|in:hadir,izin,sakit,alpha',
+        ]);
+
+        $topik = $request->input('topik');
 
         foreach ($request->input('absensi') as $item) {
             Absensi::updateOrCreate(
@@ -232,23 +313,30 @@ class KetuaDashboardController extends Controller
                     'tanggal' => $tanggal,
                 ],
                 [
+                    'topik' => $topik,
                     'status' => $item['status'],
-                    'keterangan' => $item['keterangan'] ?? null,
                     'dicatat_oleh' => auth()->id(),
                 ]
             );
         }
 
-        return redirect()->route('ketua.absensi.index', ['tanggal' => $tanggal])
-            ->with('success', 'Absensi berhasil disimpan.');
+        return redirect()->route('ketua.absensi.show', [
+            'tanggal' => $tanggal,
+            'topik' => $topik,
+        ])->with('success', 'Absensi berhasil disimpan.');
     }
 
-    public function absensiDestroy(int $id): RedirectResponse
+    public function absensiDestroy(Request $request, string $tanggal): RedirectResponse
     {
         $ekskul = auth()->user()->ekstrakurikuler;
-        $absensi = Absensi::where('ekstrakurikuler_id', $ekskul->id)->findOrFail($id);
-        $absensi->delete();
+        $topik = $request->input('topik', '');
 
-        return redirect()->back()->with('success', 'Data absensi berhasil dihapus.');
+        // Hapus semua record absensi untuk sesi ini
+        Absensi::where('ekstrakurikuler_id', $ekskul->id)
+            ->whereDate('tanggal', $tanggal)
+            ->where('topik', $topik)
+            ->delete();
+
+        return redirect()->route('ketua.absensi.index')->with('success', 'Sesi kegiatan berhasil dihapus.');
     }
 }

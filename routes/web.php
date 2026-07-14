@@ -106,7 +106,9 @@ Route::prefix('ketua')->name('ketua.')->middleware(['auth', 'role:ketua'])->grou
     // Data Absensi
     Route::get('/absensi', [KetuaDashboardController::class, 'absensi'])->name('absensi.index');
     Route::post('/absensi', [KetuaDashboardController::class, 'absensiStore'])->name('absensi.store');
-    Route::delete('/absensi/{id}', [KetuaDashboardController::class, 'absensiDestroy'])->name('absensi.destroy');
+    Route::get('/absensi/{tanggal}', [KetuaDashboardController::class, 'absensiShow'])->name('absensi.show');
+    Route::put('/absensi/{tanggal}', [KetuaDashboardController::class, 'absensiUpdate'])->name('absensi.update');
+    Route::delete('/absensi/{tanggal}', [KetuaDashboardController::class, 'absensiDestroy'])->name('absensi.destroy');
 });
 
 // =======================

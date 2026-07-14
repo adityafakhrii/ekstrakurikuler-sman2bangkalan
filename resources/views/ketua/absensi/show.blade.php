@@ -1,0 +1,195 @@
+@extends('layouts.ketua')
+
+@section('title', 'List Absensi - EKSIS SMAN 2 Bangkalan')
+
+@section('content')
+    <!-- Alert Success -->
+    @if(session('success'))
+        <div class="max-w-5xl mx-auto mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-xl shadow-xs">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-semibold text-green-800">{{ session('success') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Alert Error -->
+    @if(session('error'))
+        <div class="max-w-5xl mx-auto mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-xs">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-semibold text-red-800">{{ session('error') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Main Card Wrapper -->
+    <div class="w-full max-w-5xl bg-[#FFF5F5] rounded-[2.5rem] shadow-xl p-8 sm:p-12 mx-auto" x-data="{ editMode: false }">
+        <!-- Title -->
+        <div class="text-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-900">List Absensi</h2>
+        </div>
+
+        <!-- Topik & Tanggal Info -->
+        <div class="text-center mb-6">
+            <p class="text-sm font-semibold text-gray-800">
+                Topik : {{ $topik ?: '-' }} &nbsp;|&nbsp; {{ \Carbon\Carbon::parse($tanggal)->format('d F Y') }}
+            </p>
+            <div class="w-40 h-[2px] bg-gray-400 mx-auto mt-2"></div>
+        </div>
+
+        <!-- Form Absensi -->
+        <form method="POST" action="{{ route('ketua.absensi.update', ['tanggal' => $tanggal]) }}">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="topik" value="{{ $topik }}">
+
+            <!-- Top Controls: Pagination Info -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div class="flex flex-col gap-2">
+                    <p class="text-xs text-gray-600">
+                        Showing {{ $absensiList->firstItem() ?? 0 }} to {{ $absensiList->lastItem() ?? 0 }} of {{ $absensiList->total() }} Entries
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <select class="text-xs border border-gray-300 rounded px-2 py-1 bg-white focus:outline-none">
+                            <option>10</option>
+                        </select>
+                        <div class="flex items-center gap-0.5">
+                            @if($absensiList->onFirstPage())
+                                <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Prev</span>
+                            @else
+                                <a href="{{ $absensiList->previousPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Prev</a>
+                            @endif
+                            @if($absensiList->hasMorePages())
+                                <a href="{{ $absensiList->nextPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Next</a>
+                            @else
+                                <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Next</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table with Radio Buttons -->
+            <div class="table-container shadow-sm border border-[#f2eaea]">
+                <table class="min-w-full divide-y divide-[#f2eaea]">
+                    <thead class="bg-[#FCFBFB]">
+                        <tr>
+                            <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">#</th>
+                            <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">NISN</th>
+                            <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Nama Lengkap</th>
+                            <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500" colspan="4">Status Kehadiran</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#f2eaea] bg-white">
+                        @forelse($anggotaList as $index => $member)
+                            @php
+                                $currentStatus = $existingAbsensi[$member->siswa->id] ?? 'alpha';
+                            @endphp
+                            <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+                                <td class="table-body-cell font-medium">{{ $index + 1 }}</td>
+                                <td class="table-body-cell text-gray-700 font-medium">{{ $member->siswa->nisn ?? '-' }}</td>
+                                <td class="table-body-cell font-semibold text-gray-900">{{ $member->siswa->user->name ?? '-' }}</td>
+                                <td class="table-body-cell" colspan="4">
+                                    <input type="hidden" name="absensi[{{ $index }}][siswa_id]" value="{{ $member->siswa->id }}">
+                                    <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
+                                        <!-- Hadir -->
+                                        <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                            <input type="radio"
+                                                name="absensi[{{ $index }}][status]"
+                                                value="hadir"
+                                                {{ $currentStatus === 'hadir' ? 'checked' : '' }}
+                                                :disabled="!editMode"
+                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
+                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            Hadir
+                                        </label>
+                                        <!-- Izin -->
+                                        <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                            <input type="radio"
+                                                name="absensi[{{ $index }}][status]"
+                                                value="izin"
+                                                {{ $currentStatus === 'izin' ? 'checked' : '' }}
+                                                :disabled="!editMode"
+                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
+                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            Izin
+                                        </label>
+                                        <!-- Sakit -->
+                                        <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                            <input type="radio"
+                                                name="absensi[{{ $index }}][status]"
+                                                value="sakit"
+                                                {{ $currentStatus === 'sakit' ? 'checked' : '' }}
+                                                :disabled="!editMode"
+                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
+                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            Sakit
+                                        </label>
+                                        <!-- Alfa -->
+                                        <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                            <input type="radio"
+                                                name="absensi[{{ $index }}][status]"
+                                                value="alpha"
+                                                {{ $currentStatus === 'alpha' ? 'checked' : '' }}
+                                                :disabled="!editMode"
+                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
+                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            Alfa
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="table-body-cell text-center text-gray-400 py-8 font-medium">
+                                    Tidak ada anggota yang terdaftar untuk dicatat absensinya.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bottom Buttons -->
+            @if($anggotaList->count() > 0)
+                <div class="mt-6 flex gap-3 justify-center">
+                    <!-- Lakukan Absensi Button (Yellow) — shown when NOT in edit mode -->
+                    <button type="button" x-show="!editMode" @click="editMode = true"
+                        class="bg-[#facc15] hover:bg-[#eab308] text-gray-900 text-sm font-semibold px-6 py-2.5 rounded-lg inline-flex items-center gap-2 transition-all cursor-pointer border-0 shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Lakukan Absensi
+                    </button>
+
+                    <!-- Simpan Button (Blue) — shown when IN edit mode -->
+                    <button type="submit" x-show="editMode" x-cloak
+                        class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-sm font-semibold px-6 py-2.5 rounded-lg inline-flex items-center gap-2 transition-all cursor-pointer border-0 shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                        </svg>
+                        Simpan
+                    </button>
+
+                    <a href="{{ route('ketua.absensi.index') }}"
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-700 text-sm font-semibold px-6 py-2.5 rounded-lg transition-all cursor-pointer border-0 no-underline inline-flex items-center">
+                        Batal
+                    </a>
+                </div>
+            @endif
+        </form>
+    </div>
+@endsection

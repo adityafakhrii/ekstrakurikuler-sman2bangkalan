@@ -36,149 +36,195 @@
     @endif
 
     <!-- Main Card Wrapper -->
-    <div class="w-full max-w-5xl bg-[#FFF5F5] rounded-[2.5rem] shadow-xl p-8 sm:p-12 mx-auto" x-data="{ showTambah: false, showHapus: null }">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-            <div>
-                <h2 class="text-2xl font-bold text-gray-800">Data Absensi Ekstrakurikuler</h2>
-                <p class="text-xs text-gray-500 font-medium mt-1">Kelola data kehadiran anggota ekskul {{ $ekskul->nama }}</p>
-            </div>
-            <div class="flex items-center gap-2">
-                <!-- Filter Tanggal -->
-                <form method="GET" action="{{ route('ketua.absensi.index') }}" class="flex items-center gap-2">
-                    <select name="tanggal" onchange="this.form.submit()"
-                        class="text-xs border border-[#f2eaea] rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white">
-                        <option value="">Semua Tanggal</option>
-                        @foreach($tanggalOptions as $tgl)
-                            <option value="{{ $tgl }}" {{ $tanggalFilter == $tgl ? 'selected' : '' }}>
-                                {{ \Carbon\Carbon::parse($tgl)->format('d M Y') }}
-                            </option>
-                        @endforeach
+    <div class="w-full max-w-5xl bg-[#FFF5F5] rounded-[2.5rem] shadow-xl p-8 sm:p-12 mx-auto" x-data="{ showTambah: false, showHapus: null, hapusTopik: '' }">
+        <!-- Title -->
+        <div class="text-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">List Kegiatan</h2>
+            <div class="w-40 h-[2px] bg-gray-400 mx-auto mt-2"></div>
+        </div>
+
+        <!-- Top Controls -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <!-- Showing Info + Pagination Controls -->
+            <div class="flex flex-col gap-2">
+                <p class="text-xs text-gray-600">
+                    Showing {{ $kegiatanList->firstItem() ?? 0 }} to {{ $kegiatanList->lastItem() ?? 0 }} of {{ $kegiatanList->total() }} Entries
+                </p>
+                <div class="flex items-center gap-2">
+                    <select class="text-xs border border-gray-300 rounded px-2 py-1 bg-white focus:outline-none">
+                        <option>10</option>
                     </select>
-                </form>
-                <!-- Tambah Absensi Button -->
-                @if($anggotaList->count() > 0)
-                    <button @click="showTambah = true"
-                        class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-4 py-2 rounded-lg inline-flex items-center gap-1.5 transition-all cursor-pointer border-0 shadow-xs">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                    <div class="flex items-center gap-0.5">
+                        @if($kegiatanList->onFirstPage())
+                            <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Prev</span>
+                        @else
+                            <a href="{{ $kegiatanList->previousPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Prev</a>
+                        @endif
+                        @if($kegiatanList->hasMorePages())
+                            <a href="{{ $kegiatanList->nextPageUrl() }}" class="text-xs font-medium text-gray-700 border border-gray-300 rounded px-2 py-1 bg-white hover:bg-gray-50 transition-colors">Next</a>
+                        @else
+                            <span class="text-xs font-medium text-gray-400 border border-gray-300 rounded px-2 py-1 bg-gray-100 cursor-not-allowed">Next</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons + Search -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Tambah Sesi Button -->
+                <button @click="showTambah = true"
+                    class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-4 py-2 rounded-lg inline-flex items-center gap-1.5 transition-all cursor-pointer border-0 shadow-xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                    </svg>
+                    Tambah Sesi
+                </button>
+
+                <!-- Export Button -->
+                <button class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg inline-flex items-center gap-1.5 transition-all cursor-pointer border-0 shadow-xs">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                    Export
+                </button>
+
+                <!-- Search -->
+                <form method="GET" action="{{ route('ketua.absensi.index') }}" class="flex items-center">
+                    <div class="relative">
+                        <svg class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
-                        Tambah Absensi
-                    </button>
-                @endif
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Tanggal Kegiatan"
+                            class="text-xs border border-gray-300 rounded-lg pl-8 pr-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-52">
+                    </div>
+                </form>
             </div>
         </div>
 
-        <x-tables.table :headers="['#', 'Nama Siswa', 'NISN', 'Kelas', 'Tanggal', 'Status', 'Keterangan', 'Action']">
-            @forelse($absensiList as $index => $absensi)
-                <tr class="hover:bg-gray-50/50 transition-colors duration-150">
-                    <td class="table-body-cell font-medium">{{ ($absensiList->currentPage() - 1) * $absensiList->perPage() + $index + 1 }}</td>
-                    <td class="table-body-cell font-semibold text-gray-900">{{ $absensi->siswa->user->name ?? '-' }}</td>
-                    <td class="table-body-cell text-gray-700 font-medium">{{ $absensi->siswa->nisn ?? '-' }}</td>
-                    <td class="table-body-cell text-gray-600">{{ $absensi->siswa->rombel ?? '-' }}</td>
-                    <td class="table-body-cell text-gray-600 text-xs">{{ $absensi->tanggal->format('d M Y') }}</td>
-                    <td class="table-body-cell">
-                        @switch($absensi->status)
-                            @case('hadir')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">Hadir</span>
-                                @break
-                            @case('izin')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">Izin</span>
-                                @break
-                            @case('sakit')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">Sakit</span>
-                                @break
-                            @case('alpha')
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">Alpha</span>
-                                @break
-                        @endswitch
-                    </td>
-                    <td class="table-body-cell text-gray-500 font-normal max-w-xs truncate" title="{{ $absensi->keterangan }}">
-                        {{ $absensi->keterangan ?? '-' }}
-                    </td>
-                    <td class="table-body-cell text-center">
-                        <button @click="showHapus = {{ $absensi->id }}"
-                            class="bg-red-500 hover:bg-red-600 text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-all cursor-pointer border-0 shadow-xs">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                            Hapus
-                        </button>
-
-                        <!-- Delete Confirmation Modal -->
-                        <div x-show="showHapus === {{ $absensi->id }}" x-cloak
-                             class="fixed inset-0 z-50 flex items-center justify-center p-4"
-                             x-transition:enter="transition ease-out duration-300"
-                             x-transition:enter-start="opacity-0"
-                             x-transition:enter-end="opacity-100"
-                             x-transition:leave="transition ease-in duration-200"
-                             x-transition:leave-start="opacity-100"
-                             x-transition:leave-end="opacity-0">
-                            <!-- Backdrop -->
-                            <div class="fixed inset-0 bg-black/40 backdrop-blur-xs" @click="showHapus = null"></div>
-                            <!-- Modal Box -->
-                            <div class="bg-[#FCF6F6] rounded-2xl overflow-hidden shadow-2xl border border-[#f2eaea] w-full max-w-sm z-50 transform transition-all p-6 relative"
-                                 x-transition:enter="transition ease-out duration-300"
-                                 x-transition:enter-start="opacity-0 scale-95"
-                                 x-transition:enter-end="opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-200"
-                                 x-transition:leave-start="opacity-100 scale-100"
-                                 x-transition:leave-end="opacity-0 scale-95"
-                                 @click.away="showHapus = null">
-                                <div class="flex items-center justify-between border-b border-[#f2eaea] pb-4 mb-4">
-                                    <h3 class="text-lg font-bold text-red-600">Hapus Absensi</h3>
-                                    <button @click="showHapus = null" class="text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        <!-- Table -->
+        <div class="table-container shadow-sm border border-[#f2eaea]">
+            <table class="min-w-full divide-y divide-[#f2eaea]">
+                <thead class="bg-[#FCFBFB]">
+                    <tr>
+                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">#</th>
+                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Topik Pertemuan</th>
+                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Tanggal Pertemuan</th>
+                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-[#f2eaea] bg-white">
+                    @forelse($kegiatanList as $index => $kegiatan)
+                        <tr class="hover:bg-gray-50/50 transition-colors duration-150">
+                            <td class="table-body-cell font-medium">{{ ($kegiatanList->currentPage() - 1) * $kegiatanList->perPage() + $index + 1 }}</td>
+                            <td class="table-body-cell font-semibold text-gray-900">{{ $kegiatan->topik ?? '-' }}</td>
+                            <td class="table-body-cell text-gray-600">{{ \Carbon\Carbon::parse($kegiatan->tanggal)->format('d, F Y') }}</td>
+                            <td class="table-body-cell text-center">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <!-- Lihat Button -->
+                                    <a href="{{ route('ketua.absensi.show', ['tanggal' => $kegiatan->tanggal, 'topik' => $kegiatan->topik]) }}"
+                                        class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-all cursor-pointer border-0 shadow-xs no-underline">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                         </svg>
+                                        Lihat
+                                    </a>
+                                    <!-- Hapus Button -->
+                                    <button @click="showHapus = '{{ $kegiatan->tanggal }}'; hapusTopik = '{{ $kegiatan->topik }}'"
+                                        class="bg-red-500 hover:bg-red-600 text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-all cursor-pointer border-0 shadow-xs">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                        Hapus
                                     </button>
                                 </div>
-                                <div class="text-sm text-gray-700 mb-5">
-                                    <div class="flex items-center gap-3 mb-3">
-                                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
-                                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                                            </svg>
-                                        </div>
-                                        <p>Hapus data absensi <strong>{{ $absensi->siswa->user->name ?? '-' }}</strong> pada tanggal <strong>{{ $absensi->tanggal->format('d M Y') }}</strong>?</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-2 justify-end">
-                                    <button @click="showHapus = null"
-                                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-4 py-2 rounded-lg transition-all cursor-pointer border-0">
-                                        Batal
-                                    </button>
-                                    <form method="POST" action="{{ route('ketua.absensi.destroy', $absensi->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all cursor-pointer border-0 shadow-xs">
-                                            Ya, Hapus
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="8" class="table-body-cell text-center text-gray-400 py-8 font-medium">
-                        @if($tanggalFilter)
-                            Tidak ada data absensi pada tanggal {{ \Carbon\Carbon::parse($tanggalFilter)->format('d M Y') }}.
-                        @else
-                            Belum ada data absensi yang tercatat.
-                        @endif
-                    </td>
-                </tr>
-            @endforelse
-        </x-tables.table>
-
-        <!-- Pagination Links -->
-        <div class="mt-8 flex justify-center">
-            {{ $absensiList->links() }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="table-body-cell text-center text-gray-400 py-8 font-medium">
+                                @if(request('search'))
+                                    Tidak ditemukan kegiatan dengan pencarian "{{ request('search') }}".
+                                @else
+                                    Belum ada sesi kegiatan yang tercatat.
+                                @endif
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
 
-        <!-- Tambah Absensi Modal -->
+        <!-- Load More -->
+        @if($kegiatanList->hasMorePages())
+            <div class="mt-6 flex justify-center">
+                <a href="{{ $kegiatanList->nextPageUrl() }}"
+                    class="inline-flex items-center gap-2 text-xs font-semibold text-gray-600 border border-gray-300 rounded-lg px-5 py-2 bg-white hover:bg-gray-50 transition-colors no-underline">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Load more
+                </a>
+            </div>
+        @endif
+
+        <!-- Delete Confirmation Modal -->
+        <div x-show="showHapus !== null" x-cloak
+             class="fixed inset-0 z-50 flex items-center justify-center p-4"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-black/40 backdrop-blur-xs" @click="showHapus = null"></div>
+            <!-- Modal Box -->
+            <div class="bg-[#FCF6F6] rounded-2xl overflow-hidden shadow-2xl border border-[#f2eaea] w-full max-w-sm z-50 transform transition-all p-6 relative"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 scale-95"
+                 x-transition:enter-end="opacity-100 scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 scale-100"
+                 x-transition:leave-end="opacity-0 scale-95"
+                 @click.away="showHapus = null">
+                <div class="flex items-center justify-between border-b border-[#f2eaea] pb-4 mb-4">
+                    <h3 class="text-lg font-bold text-red-600">Hapus Kegiatan</h3>
+                    <button @click="showHapus = null" class="text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="text-sm text-gray-700 mb-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                        </div>
+                        <p>Apakah Anda yakin ingin menghapus sesi kegiatan ini? Semua data absensi pada sesi ini akan dihapus.</p>
+                    </div>
+                </div>
+                <div class="flex gap-2 justify-end">
+                    <button @click="showHapus = null"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-4 py-2 rounded-lg transition-all cursor-pointer border-0">
+                        Batal
+                    </button>
+                    <form method="POST" :action="'/ketua/absensi/' + showHapus">
+                        @csrf
+                        @method('DELETE')
+                        <input type="hidden" name="topik" :value="hapusTopik">
+                        <button type="submit"
+                            class="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all cursor-pointer border-0 shadow-xs">
+                            Ya, Hapus
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tambah Sesi Modal -->
         <div x-show="showTambah" x-cloak
              class="fixed inset-0 z-50 flex items-center justify-center p-4"
              x-transition:enter="transition ease-out duration-300"
@@ -190,7 +236,7 @@
             <!-- Backdrop -->
             <div class="fixed inset-0 bg-black/40 backdrop-blur-xs" @click="showTambah = false"></div>
             <!-- Modal Box -->
-            <div class="bg-[#FCF6F6] rounded-2xl overflow-hidden shadow-2xl border border-[#f2eaea] w-full max-w-2xl z-50 transform transition-all p-6 relative max-h-[90vh] overflow-y-auto"
+            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl border border-gray-200 w-full max-w-md z-50 transform transition-all p-6 relative"
                  x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="opacity-0 scale-95"
                  x-transition:enter-end="opacity-100 scale-100"
@@ -199,8 +245,8 @@
                  x-transition:leave-end="opacity-0 scale-95"
                  @click.away="showTambah = false">
                 <!-- Header -->
-                <div class="flex items-center justify-between border-b border-[#f2eaea] pb-4 mb-4">
-                    <h3 class="text-lg font-bold text-[#2A1B60]">Tambah / Edit Absensi</h3>
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-gray-900">Buat Sesi Absensi Baru</h3>
                     <button @click="showTambah = false" class="text-gray-400 hover:text-gray-600 focus:outline-none cursor-pointer">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -208,91 +254,43 @@
                     </button>
                 </div>
 
-                <!-- Body: Absensi Form -->
-                <form method="POST" action="{{ route('ketua.absensi.store') }}" x-data="absensiForm()">
+                <!-- Body -->
+                <form method="POST" action="{{ route('ketua.absensi.store') }}">
                     @csrf
 
-                    <!-- Tanggal -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">Tanggal Kegiatan</label>
-                        <input type="date" name="tanggal" required
-                            value="{{ now()->format('Y-m-d') }}"
-                            class="text-sm border border-[#f2eaea] rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-full">
-                    </div>
-
-                    <!-- Set All Status -->
-                    <div class="mb-4 flex items-center gap-2">
-                        <span class="text-xs font-semibold text-gray-500">Set semua:</span>
-                        <button type="button" @click="setAll('hadir')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800 hover:bg-green-200 transition-colors cursor-pointer border-0">Hadir</button>
-                        <button type="button" @click="setAll('izin')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors cursor-pointer border-0">Izin</button>
-                        <button type="button" @click="setAll('sakit')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-yellow-100 text-yellow-800 hover:bg-yellow-200 transition-colors cursor-pointer border-0">Sakit</button>
-                        <button type="button" @click="setAll('alpha')" class="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-red-100 text-red-800 hover:bg-red-200 transition-colors cursor-pointer border-0">Alpha</button>
-                    </div>
-
-                    <!-- Daftar Anggota -->
-                    <div class="space-y-3 max-h-[45vh] overflow-y-auto pr-1">
-                        @foreach($anggotaList as $i => $member)
-                            <div class="bg-white rounded-xl p-4 border border-[#f2eaea] flex flex-col sm:flex-row sm:items-center gap-3">
-                                <input type="hidden" name="absensi[{{ $i }}][siswa_id]" value="{{ $member->siswa->id }}">
-
-                                <!-- Info Siswa -->
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-gray-900 truncate">{{ $member->siswa->user->name ?? '-' }}</p>
-                                    <p class="text-[10px] text-gray-500">{{ $member->siswa->nisn ?? '-' }} &middot; {{ $member->siswa->rombel ?? '-' }}</p>
-                                </div>
-
-                                <!-- Status Select -->
-                                <div class="flex items-center gap-2">
-                                    <select name="absensi[{{ $i }}][status]" x-model="statuses[{{ $i }}]"
-                                        class="text-xs border border-[#f2eaea] rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white min-w-[90px]">
-                                        <option value="hadir">Hadir</option>
-                                        <option value="izin">Izin</option>
-                                        <option value="sakit">Sakit</option>
-                                        <option value="alpha">Alpha</option>
-                                    </select>
-                                    <input type="text" name="absensi[{{ $i }}][keterangan]" placeholder="Keterangan..."
-                                        class="text-xs border border-[#f2eaea] rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-32 sm:w-40">
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    @if($anggotaList->count() === 0)
-                        <div class="text-center text-gray-400 py-6 text-sm">
-                            Tidak ada anggota yang terdaftar untuk dicatat absensinya.
+                    <!-- Tanggal Pertemuan -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Pertemuan :</label>
+                        <div class="relative">
+                            <input type="date" name="tanggal" required
+                                value="{{ now()->format('Y-m-d') }}"
+                                class="text-sm border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-full">
                         </div>
-                    @endif
+                    </div>
+
+                    <!-- Topik Pertemuan -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Topik Pertemuan :</label>
+                        <input type="text" name="topik" required placeholder="Contoh : Latihan Passing"
+                            class="text-sm border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-full">
+                    </div>
 
                     <!-- Footer -->
-                    <div class="mt-5 flex gap-2 justify-end border-t border-[#f2eaea] pt-4">
+                    <div class="flex gap-3 justify-center">
+                        <button type="submit"
+                            class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-sm font-semibold px-6 py-2.5 rounded-lg inline-flex items-center gap-2 transition-all cursor-pointer border-0 shadow-xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+                            </svg>
+                            Simpan
+                        </button>
                         <button type="button" @click="showTambah = false"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-5 py-2 rounded-lg transition-all cursor-pointer border-0">
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-700 text-sm font-semibold px-6 py-2.5 rounded-lg transition-all cursor-pointer border-0">
                             Batal
                         </button>
-                        @if($anggotaList->count() > 0)
-                            <button type="submit"
-                                class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-5 py-2 rounded-lg transition-all cursor-pointer border-0 shadow-xs">
-                                Simpan Absensi
-                            </button>
-                        @endif
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    <script>
-        function absensiForm() {
-            return {
-                statuses: {!! json_encode(array_fill(0, $anggotaList->count(), 'hadir')) !!},
-                setAll(status) {
-                    this.statuses = this.statuses.map(() => status);
-                    // Also update all select elements
-                    document.querySelectorAll('select[name^="absensi"][name$="[status]"]').forEach(el => {
-                        el.value = status;
-                    });
-                }
-            }
-        }
-    </script>
 @endsection
