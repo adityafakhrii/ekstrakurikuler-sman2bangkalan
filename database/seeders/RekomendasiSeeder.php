@@ -13,7 +13,7 @@ class RekomendasiSeeder extends Seeder
     public function run(): void
     {
         $siswas = Siswa::all();
-        $ekskuls = Ekstrakurikuler::where('status', 'aktif')->get();
+        $ekskuls = Ekstrakurikuler::get();
 
         if ($siswas->isEmpty() || $ekskuls->isEmpty()) {
             return;
