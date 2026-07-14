@@ -55,10 +55,12 @@
                        class="transition-colors duration-200 {{ request()->routeIs('ketua.pendaftaran.index') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Pendaftaran
                     </a>
-                    <a href="#" class="transition-colors duration-200 text-gray-300 hover:text-white">
+                    <a href="{{ route('ketua.anggota.index') }}"
+                       class="transition-colors duration-200 {{ request()->routeIs('ketua.anggota.index') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Data Anggota
                     </a>
-                    <a href="#" class="transition-colors duration-200 text-gray-300 hover:text-white">
+                    <a href="{{ route('ketua.absensi.index') }}"
+                       class="transition-colors duration-200 {{ request()->routeIs('ketua.absensi.index') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Data Absensi
                     </a>
                 @else
@@ -219,16 +221,16 @@
                    class="block py-2.5 px-3 rounded-lg text-white font-medium hover:bg-white/10 transition-colors duration-150">
                     Dashboard
                 </a>
-                <a href="#"
-                   class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+                <a href="{{ route('ketua.pendaftaran.index') }}"
+                   class="block py-2.5 px-3 rounded-lg {{ request()->routeIs('ketua.pendaftaran.index') ? 'text-white font-medium bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/10' }} transition-colors duration-150">
                     Pendaftaran
                 </a>
-                <a href="#"
-                   class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+                <a href="{{ route('ketua.anggota.index') }}"
+                   class="block py-2.5 px-3 rounded-lg {{ request()->routeIs('ketua.anggota.index') ? 'text-white font-medium bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/10' }} transition-colors duration-150">
                     Data Anggota
                 </a>
-                <a href="#"
-                   class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
+                <a href="{{ route('ketua.absensi.index') }}"
+                   class="block py-2.5 px-3 rounded-lg {{ request()->routeIs('ketua.absensi.index') ? 'text-white font-medium bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/10' }} transition-colors duration-150">
                     Data Absensi
                 </a>
             @else

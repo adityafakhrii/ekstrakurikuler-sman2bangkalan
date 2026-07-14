@@ -98,6 +98,15 @@ Route::prefix('ketua')->name('ketua.')->middleware(['auth', 'role:ketua'])->grou
     Route::get('/pendaftaran', [KetuaDashboardController::class, 'pendaftaran'])->name('pendaftaran.index');
     Route::post('/pendaftaran/{id}/approve', [KetuaDashboardController::class, 'approve'])->name('pendaftaran.approve');
     Route::post('/pendaftaran/{id}/reject', [KetuaDashboardController::class, 'reject'])->name('pendaftaran.reject');
+
+    // Data Anggota
+    Route::get('/anggota', [KetuaDashboardController::class, 'anggota'])->name('anggota.index');
+    Route::post('/anggota/{id}/kick', [KetuaDashboardController::class, 'anggotaKick'])->name('anggota.kick');
+
+    // Data Absensi
+    Route::get('/absensi', [KetuaDashboardController::class, 'absensi'])->name('absensi.index');
+    Route::post('/absensi', [KetuaDashboardController::class, 'absensiStore'])->name('absensi.store');
+    Route::delete('/absensi/{id}', [KetuaDashboardController::class, 'absensiDestroy'])->name('absensi.destroy');
 });
 
 // =======================
