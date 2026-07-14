@@ -8,7 +8,7 @@
             {{-- pendaftar Tertunda --}}
             <div class="bg-[#E9E9FF] rounded-lg p-5 relative flex flex-col justify-between min-h-[120px]">
                 <div>
-                    <p class="text-[13px] font-semibold text-[#3D2B2B]">pendaftar Tertunda</p>
+                    <p class="text-[13px] font-semibold text-[#3D2B2B]">Pendaftar Tertunda</p>
                     <p class="text-2xl font-bold text-[#3D2B2B] mt-3">{{ $stats['menunggu'] ?? 0 }}</p>
                 </div>
                 <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#E8E6DF] flex items-center justify-center">
@@ -21,7 +21,7 @@
             {{-- pendaftar Terkonfirmasi --}}
             <div class="bg-[#E9E9FF] rounded-lg p-5 relative flex flex-col justify-between min-h-[120px]">
                 <div>
-                    <p class="text-[13px] font-semibold text-[#3D2B2B]">pendaftar Terkonfirmasi</p>
+                    <p class="text-[13px] font-semibold text-[#3D2B2B]">Pendaftar Terkonfirmasi</p>
                     <p class="text-2xl font-bold text-[#3D2B2B] mt-3">{{ $stats['terkonfirmasi'] ?? $stats['disetujui'] ?? 0 }}</p>
                 </div>
                 <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#E8E6DF] flex items-center justify-center">
@@ -34,7 +34,7 @@
             {{-- pendaftar Disetujui --}}
             <div class="bg-[#E9E9FF] rounded-lg p-5 relative flex flex-col justify-between min-h-[120px]">
                 <div>
-                    <p class="text-[13px] font-semibold text-[#3D2B2B]">pendaftar Disetujui</p>
+                    <p class="text-[13px] font-semibold text-[#3D2B2B]">Pendaftar Disetujui</p>
                     <p class="text-2xl font-bold text-[#3D2B2B] mt-3">{{ $stats['disetujui'] ?? 0 }}</p>
                 </div>
                 <div class="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-[#E8E6DF] flex items-center justify-center">

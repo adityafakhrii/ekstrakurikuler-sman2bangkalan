@@ -19,14 +19,11 @@ class AdminDashboardController extends Controller
     public function index(): View
     {
         $stats = Cache::remember('admin.dashboard.stats', now()->addMinutes(15), function () {
-            // 1 query: hitung entity counts sekaligus
             $entityCounts = [
                 'total_ekskul' => Ekstrakurikuler::count(),
-                'total_siswa'  => Siswa::count(),
                 'total_ketua'  => User::where('role', 'ketua')->count(),
             ];
 
-            // 1 query: hitung semua status pendaftaran sekaligus (bukan 4 query terpisah)
             $pendaftaranCounts = Pendaftaran::selectRaw("
                 COUNT(*) as total,
                 SUM(status = 'menunggu') as menunggu,
@@ -34,7 +31,11 @@ class AdminDashboardController extends Controller
                 SUM(status = 'ditolak') as ditolak
             ")->first();
 
+            $totalAnggota = (int) $pendaftaranCounts->disetujui;
+
             return array_merge($entityCounts, [
+                'total_anggota'         => $totalAnggota,
+                'total_siswa'           => $totalAnggota,
                 'total_pendaftar'       => (int) $pendaftaranCounts->total,
                 'pendaftar_menunggu'    => (int) $pendaftaranCounts->menunggu,
                 'pendaftar_terkonfirmasi'=> (int) $pendaftaranCounts->disetujui,
