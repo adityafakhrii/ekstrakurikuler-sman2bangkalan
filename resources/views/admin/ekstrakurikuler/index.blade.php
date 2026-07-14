@@ -23,8 +23,10 @@
                     Tambah Ekskul
                 </x-buttons.button>
 
-                <!-- Search Input Component -->
-                <x-forms.search placeholder="Cari Ekskul" class="h-[38px]" />
+                <!-- Search Form -->
+                <form method="GET" action="{{ route('ekskul.index') }}" class="flex items-center">
+                    <x-forms.search placeholder="Cari Ekskul" class="h-[38px]" />
+                </form>
             </div>
 
         </div>

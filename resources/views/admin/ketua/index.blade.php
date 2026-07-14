@@ -22,8 +22,10 @@
                     Tambah Ketua
                 </x-buttons.button>
 
-                <!-- Search Input -->
-                <x-forms.search placeholder="Cari Ekskul" class="h-[38px]" />
+                <!-- Search Form -->
+                <form method="GET" action="{{ route('pengguna.ketua.index') }}" class="flex items-center">
+                    <x-forms.search placeholder="Cari Ketua" class="h-[38px]" />
+                </form>
             </div>
 
         </div>

@@ -16,9 +16,18 @@ class KetuaController extends Controller
 {
     public function index(): View
     {
+        $search = request('search');
         $ketuas = User::where('role', 'ketua')
             ->select('id', 'name', 'email', 'username', 'created_at')
             ->with('ekstrakurikuler:id,ketua_id,nama')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhereHas('ekstrakurikuler', function ($q) use ($search) {
+                        $q->where('nama', 'like', "%{$search}%");
+                    });
+            })
             ->latest()
             ->paginate($this->perPage())
             ->withQueryString();

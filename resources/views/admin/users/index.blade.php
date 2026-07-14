@@ -23,8 +23,10 @@
                     Tambah Admin
                 </x-buttons.button>
 
-                <!-- Search Input -->
-                <x-forms.search placeholder="Cari Admin" class="h-[38px]" />
+                <!-- Search Form -->
+                <form method="GET" action="{{ route('pengguna.admin.index') }}" class="flex items-center">
+                    <x-forms.search placeholder="Cari Admin" class="h-[38px]" />
+                </form>
             </div>
 
         </div>

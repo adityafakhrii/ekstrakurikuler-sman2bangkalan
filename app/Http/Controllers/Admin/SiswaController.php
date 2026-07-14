@@ -16,8 +16,18 @@ class SiswaController extends Controller
 {
     public function index(): View
     {
+        $search = request('search');
         $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
             ->with('user:id,name')
+            ->when($search, function ($query, $search) {
+                return $query->where('nis', 'like', "%{$search}%")
+                    ->orWhere('nisn', 'like', "%{$search}%")
+                    ->orWhere('kelas', 'like', "%{$search}%")
+                    ->orWhere('jurusan', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            })
             ->latest()
             ->paginate($this->perPage())
             ->withQueryString();

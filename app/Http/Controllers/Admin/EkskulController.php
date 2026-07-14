@@ -20,7 +20,13 @@ class EkskulController extends Controller
 {
     public function index(): View
     {
+        $search = request('search');
         $ekskuls = Ekstrakurikuler::select('id', 'ketua_id', 'nama', 'slug', 'logo', 'kuota', 'status', 'kategori', 'pembina', 'created_at')
+            ->when($search, function ($query, $search) {
+                return $query->where('nama', 'like', "%{$search}%")
+                    ->orWhere('pembina', 'like', "%{$search}%")
+                    ->orWhere('kategori', 'like', "%{$search}%");
+            })
             ->with('ketua:id,name')
             ->withCount('pendaftarans')
             ->latest()

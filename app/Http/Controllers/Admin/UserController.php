@@ -14,8 +14,14 @@ class UserController extends Controller
 {
     public function index(): View
     {
+        $search = request('search');
         $users = User::where('role', 'admin')
             ->select('id', 'name', 'username', 'email', 'created_at')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
             ->latest()
             ->paginate($this->perPage())
             ->withQueryString();
