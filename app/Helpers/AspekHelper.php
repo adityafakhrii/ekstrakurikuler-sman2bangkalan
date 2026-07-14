@@ -5,20 +5,20 @@ namespace App\Helpers;
 class AspekHelper
 {
     /**
-     * Konversi bobot aspek dari database (skala 0-100) ke nilai input form (skala 1-5).
+     * Konversi bobot aspek dari database (skala 1-5) ke nilai input form.
      *
-     * @param  array<string, float|int>  $aspekBobot
+     * @param  array<string, float|int>  $aspekBobot  key = kode aspek (FISIK, ESTETIKA, ...)
      * @return array<string, int>
      */
     public static function convertBobotToInput(array $aspekBobot): array
     {
         return [
-            'fisik' => isset($aspekBobot['FISIK']) ? (int) round($aspekBobot['FISIK'] / 20) : 1,
-            'intelektual' => isset($aspekBobot['AKADEMIK']) ? (int) round($aspekBobot['AKADEMIK'] / 20) : 1,
-            'kreativitas' => isset($aspekBobot['SENI']) ? (int) round($aspekBobot['SENI'] / 20) : 1,
-            'sosial' => isset($aspekBobot['SOSIAL']) ? (int) round($aspekBobot['SOSIAL'] / 20) : 1,
-            'mental' => isset($aspekBobot['SOSIAL_HUMANIORA']) ? (int) round($aspekBobot['SOSIAL_HUMANIORA'] / 20) : 1,
-            'komunikasi' => isset($aspekBobot['BAHASA']) ? (int) round($aspekBobot['BAHASA'] / 20) : 1,
+            'fisik'       => isset($aspekBobot['FISIK'])       ? (int) round($aspekBobot['FISIK'])       : 1,
+            'estetika'    => isset($aspekBobot['ESTETIKA'])    ? (int) round($aspekBobot['ESTETIKA'])    : 1,
+            'komunikasi'  => isset($aspekBobot['KOMUNIKASI'])  ? (int) round($aspekBobot['KOMUNIKASI'])  : 1,
+            'kreativitas' => isset($aspekBobot['KREATIVITAS']) ? (int) round($aspekBobot['KREATIVITAS']) : 1,
+            'disiplin'    => isset($aspekBobot['DISIPLIN'])    ? (int) round($aspekBobot['DISIPLIN'])    : 1,
+            'kekompakan'  => isset($aspekBobot['KEKOMPAKAN'])  ? (int) round($aspekBobot['KEKOMPAKAN'])  : 1,
         ];
     }
 }

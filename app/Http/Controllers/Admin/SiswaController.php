@@ -46,12 +46,10 @@ class SiswaController extends Controller
             $validated = $request->validated();
 
             $user = User::create([
-                'name' => $validated['nama_siswa'],
+                'name'     => $validated['nama_siswa'],
                 'username' => $validated['nisn'],
-                'nisn' => $validated['nisn'],
-                'no_hp' => $validated['no_hp'],
                 'password' => Hash::make(config('ekskul.password_default_siswa')),
-                'role' => 'siswa',
+                'role'     => 'siswa',
             ]);
 
             Siswa::create([

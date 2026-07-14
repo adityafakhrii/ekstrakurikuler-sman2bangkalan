@@ -60,7 +60,7 @@ class HomeController extends Controller
 
         $pendaftaran = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'tahun_ajaran', 'status', 'catatan_siswa', 'catatan_ketua', 'disetujui_at')
             ->with([
-                'ekstrakurikuler' => fn($q) => $q->select('id', 'nama', 'deskripsi', 'logo', 'pembina', 'whatsapp_group', 'jadwal', 'hari_latihan', 'jam_mulai', 'jam_selesai', 'lokasi', 'ketua_id'),
+                'ekstrakurikuler' => fn($q) => $q->select('id', 'nama', 'deskripsi', 'logo', 'pembina', 'whatsapp_group', 'jadwal', 'ketua_id'),
                 'ekstrakurikuler.ketua' => fn($q) => $q->select('id', 'name'),
                 'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'no_telp'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email')

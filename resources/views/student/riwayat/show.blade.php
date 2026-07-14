@@ -55,7 +55,7 @@
                         <div class="grid grid-cols-12 gap-x-2 items-center">
                             <span class="col-span-4 sm:col-span-3 text-gray-800">Nama Pembina</span>
                             <span class="col-span-1 text-center text-gray-800">:</span>
-                            <span class="col-span-7 sm:col-span-8 font-bold text-gray-900">Sugeng Priyatno</span>
+                            <span class="col-span-7 sm:col-span-8 font-bold text-gray-900">{{ $pendaftaran->ekstrakurikuler->pembina ?? 'Belum Ditentukan' }}</span>
                         </div>
 
                         <div class="grid grid-cols-12 gap-x-2 items-center">
@@ -125,7 +125,7 @@
                     <div class="flex justify-end gap-3 pt-8 items-center">
                         @if ($pendaftaran->status === 'disetujui')
                             <!-- Yellow "Masuk Grup" button matching screenshot -->
-                            <a href="https://chat.whatsapp.com/dummy-group-{{ $pendaftaran->ekstrakurikuler->slug }}"
+                            <a href="{{ $pendaftaran->ekstrakurikuler->whatsapp_group ?? '#' }}"
                                target="_blank"
                                class="bg-[#FCD34D] hover:bg-[#FBBF24] text-gray-900 font-bold text-xs px-6 py-2.5 rounded-xl shadow-xs transition-colors duration-150 flex items-center gap-1.5">
                                 Masuk Grup
