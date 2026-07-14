@@ -7,7 +7,6 @@
     <x-cards.card title="Detail Ekstrakurikuler">
 
         @php
-        @php
             $criteria = [
                 ['label' => 'Fisik & Ketangkasan',    'key' => 'fisik'],
                 ['label' => 'Intelektual & Strategi', 'key' => 'intelektual'],
@@ -75,8 +74,14 @@
                          <span class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800">Link Grup Ekskul</span>
                          <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
                          <div class="col-span-12 md:col-span-8">
-                             <div class="w-full bg-white border border-[#f2eaea] rounded-xl px-4 py-2.5 text-sm text-[#6366F1] font-medium shadow-xs break-all">
-                                 {{ $ekskul->whatsapp_group }}
+                             <div class="w-full bg-white border border-[#f2eaea] rounded-xl px-4 py-2.5 text-sm font-medium shadow-xs break-all">
+                                 @if($ekskul->whatsapp_group)
+                                     <a href="{{ $ekskul->whatsapp_group }}" target="_blank" class="text-[#6366F1] hover:underline">
+                                         {{ $ekskul->whatsapp_group }}
+                                     </a>
+                                 @else
+                                     <span class="text-gray-500">-</span>
+                                 @endif
                              </div>
                          </div>
                      </div>
