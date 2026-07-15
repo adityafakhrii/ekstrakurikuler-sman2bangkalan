@@ -17,7 +17,7 @@ class SiswaController extends Controller
     public function index(): View
     {
         $search = request('search');
-        $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
+        $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk', 'created_at')
             ->with('user:id,name')
             ->when($search, function ($query, $search) {
                 return $query->where('nis', 'like', "%{$search}%")
