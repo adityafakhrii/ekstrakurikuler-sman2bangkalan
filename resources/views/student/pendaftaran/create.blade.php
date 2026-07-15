@@ -72,7 +72,7 @@
                         <label for="kelas_jurusan" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Kelas-Jurusan</label>
                         <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
                         <div class="col-span-8 sm:col-span-8.5">
-                            <x-forms.input name="kelas_jurusan" value="{{ old('kelas_jurusan', auth()->user()->siswa->kelas . ' ' . auth()->user()->siswa->jurusan) }}" placeholder="Masukkan Kelas-Jurusan" class="bg-white border-gray-200" required />
+                            <x-forms.input name="kelas_jurusan" value="{{ auth()->user()->siswa->kelas . ' ' . auth()->user()->siswa->jurusan }}" class="bg-gray-50 border-gray-200 text-gray-600 font-semibold" readonly />
                         </div>
                     </div>
 
@@ -90,7 +90,7 @@
                         <label for="no_whatsapp" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">No.Whatsapp</label>
                         <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
                         <div class="col-span-8 sm:col-span-8.5">
-                            <x-forms.input name="no_whatsapp" value="{{ old('no_whatsapp', auth()->user()->siswa->no_telp) }}" placeholder="Masukkan No.Whatsapp" class="bg-white border-gray-200" required />
+                            <x-forms.input name="no_whatsapp" value="{{ auth()->user()->siswa->no_telp }}" class="bg-gray-50 border-gray-200 text-gray-600 font-semibold" readonly />
                         </div>
                     </div>
 
@@ -114,8 +114,13 @@
 
                 </div>
 
+                <!-- Note above confirmation button -->
+                <div class="flex justify-end text-[11px] text-gray-400 font-normal mt-6">
+                    * Apabila terdapat ketidaksesuaian data diri di atas, silakan hubungi admin sekolah.
+                </div>
+
                 <!-- Action Buttons matching screenshot layout -->
-                <div class="flex justify-end gap-3 pt-6 items-center">
+                <div class="flex justify-end gap-3 pt-3 items-center">
                     <!-- Yellow "Konfirmasi" button -->
                     <x-buttons.button type="submit" class="bg-[#FCD34D] hover:bg-[#FBBF24] text-gray-900 font-bold text-xs px-8 py-2.5 rounded-xl shadow-xs border-0 cursor-pointer">
                         Konfirmasi
