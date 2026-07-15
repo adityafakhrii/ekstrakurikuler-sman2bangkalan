@@ -83,13 +83,17 @@
                         Jenis Kelamin
                     </label>
                     <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
-                    <div class="col-span-12 md:col-span-8">
-                        <x-forms.select
-                            name="jenis_kelamin"
-                            value="{{ old('jenis_kelamin') }}"
-                            :options="['L' => 'Laki-laki', 'P' => 'Perempuan']"
-                            required
-                        />
+                    <div class="col-span-12 md:col-span-8 flex items-center gap-6 py-2">
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="jenis_kelamin" value="L" class="w-4 h-4 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]" 
+                                {{ old('jenis_kelamin') === 'L' ? 'checked' : '' }} required>
+                            <span class="text-sm font-semibold text-gray-700">Laki-laki</span>
+                        </label>
+                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                            <input type="radio" name="jenis_kelamin" value="P" class="w-4 h-4 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]" 
+                                {{ old('jenis_kelamin') === 'P' ? 'checked' : '' }} required>
+                            <span class="text-sm font-semibold text-gray-700">Perempuan</span>
+                        </label>
                     </div>
                 </div>
 
