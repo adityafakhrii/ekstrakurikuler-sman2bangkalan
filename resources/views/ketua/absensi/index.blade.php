@@ -42,6 +42,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                         </svg>
                         <input type="date" name="search_tanggal" value="{{ request('search_tanggal') }}"
+                            onchange="this.form.submit()"
                             class="text-xs border border-gray-300 rounded-lg pl-10 pr-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#6366F1] bg-white w-44">
                     </div>
                     <!-- Cari Topik -->
@@ -54,8 +55,11 @@
                     </div>
                     <!-- Clear Button -->
                     @if(request('search_tanggal') || request('search_topik'))
-                        <a href="{{ route('ketua.absensi.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-3 py-2 rounded-lg transition-all cursor-pointer border-0">
-                            Clear
+                        <a href="{{ route('ketua.absensi.index') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold px-3.5 py-2 rounded-lg transition-all cursor-pointer border-0 no-underline inline-flex items-center gap-1.5 shadow-xs">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/>
+                            </svg>
+                            Tampilkan Semua Sesi
                         </a>
                     @endif
                 </form>
@@ -104,8 +108,26 @@
                     @empty
                         <tr>
                             <td colspan="4" class="table-body-cell text-center text-gray-400 py-8 font-medium">
-                                @if(request('search_tanggal') || request('search_topik'))
-                                    Tidak ditemukan kegiatan dengan kriteria pencarian tersebut.
+                                @if(request('search_tanggal'))
+                                    <div class="flex flex-col items-center gap-3">
+                                        <span>Tidak ada sesi atau pertemuan pada tanggal yang dipilih.</span>
+                                        <a href="{{ route('ketua.absensi.index') }}" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all cursor-pointer border-0 no-underline inline-flex items-center gap-1.5 shadow-xs">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/>
+                                            </svg>
+                                            Tampilkan Semua Sesi
+                                        </a>
+                                    </div>
+                                @elseif(request('search_topik'))
+                                    <div class="flex flex-col items-center gap-3">
+                                        <span>Tidak ditemukan kegiatan dengan kriteria pencarian tersebut.</span>
+                                        <a href="{{ route('ketua.absensi.index') }}" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all cursor-pointer border-0 no-underline inline-flex items-center gap-1.5 shadow-xs">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/>
+                                            </svg>
+                                            Tampilkan Semua Sesi
+                                        </a>
+                                    </div>
                                 @else
                                     Belum ada sesi kegiatan yang tercatat.
                                 @endif
