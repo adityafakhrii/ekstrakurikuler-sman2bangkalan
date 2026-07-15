@@ -44,7 +44,6 @@ class PendaftaranController extends Controller
         $ekskul = Ekstrakurikuler::findOrFail($id);
         $siswa = $request->user()->siswa;
 
-        // Update profil siswa secara dinamis dari input form
         $kelasJurusan = $request->validated('kelas_jurusan');
         $parts = explode(' ', $kelasJurusan, 2);
         $kelas = $parts[0] ?? 'X';

@@ -3,17 +3,13 @@
 @section('title', 'Tambah Siswa Baru - EKSIS SMAN 2 Bangkalan')
 
 @section('content')
-    <!-- Main Card Wrapper -->
     <x-cards.card title="Tambah Siswa Baru">
         
-        <!-- Create Form -->
         <form method="POST" action="{{ route('pengguna.siswa.store') }}" class="max-w-4xl mx-auto space-y-8">
             @csrf
 
-            <!-- Form Fields -->
             <div class="space-y-6 pl-6">
 
-                <!-- Nama Siswa -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="nama_siswa" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Nama Siswa
@@ -29,7 +25,6 @@
                     </div>
                 </div>
 
-                <!-- NIS -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="nis" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         NIS
@@ -45,7 +40,6 @@
                     </div>
                 </div>
 
-                <!-- NISN -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="nisn" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         NISN
@@ -61,7 +55,6 @@
                     </div>
                 </div>
 
-                <!-- No Hp -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="no_hp" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         No Hp
@@ -77,7 +70,6 @@
                     </div>
                 </div>
 
-                <!-- Jenis Kelamin -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="jenis_kelamin" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Jenis Kelamin
@@ -97,7 +89,6 @@
                     </div>
                 </div>
 
-                <!-- Kelas -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="kelas" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Kelas
@@ -113,8 +104,6 @@
                     </div>
                 </div>
 
-
-                <!-- Jurusan -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="jurusan" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Jurusan
@@ -130,7 +119,6 @@
                     </div>
                 </div>
 
-                <!-- Tahun Masuk -->
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="tahun_masuk" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">
                         Tahun Masuk
@@ -149,9 +137,7 @@
 
             </div>
 
-            <!-- Action Buttons (Right Aligned) -->
             <div class="flex justify-end gap-3 pt-6 border-t border-[#f2eaea]">
-                <!-- Simpan Button -->
                 <x-buttons.button type="submit" class="bg-[#6366F1] hover:bg-[#4F46E5] text-white py-2.5 px-6 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
@@ -159,7 +145,6 @@
                     Simpan
                 </x-buttons.button>
 
-                <!-- Batal Button -->
                 <x-buttons.button variant="secondary" type="button" onclick="window.location.href='{{ route('pengguna.siswa.index') }}'" class="text-xs font-semibold py-2.5 px-6 rounded-lg shadow-sm">
                     Batal
                 </x-buttons.button>
