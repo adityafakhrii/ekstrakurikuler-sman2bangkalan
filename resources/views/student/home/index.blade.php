@@ -87,7 +87,7 @@
     </section>
 
     <!-- 2. Manfaat Section (Latar Belakang Abu-Abu) -->
-    <section class="bg-[#f3f4f6] pt-16 pb-16 relative">
+    <section id="manfaat" class="bg-[#f3f4f6] pt-16 pb-16 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Title with underlined border like screens -->
             <div class="text-center mb-12">

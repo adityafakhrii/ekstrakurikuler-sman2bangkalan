@@ -32,6 +32,30 @@ class EkskulController extends Controller
 
         $aspekValues = AspekHelper::convertBobotToInput($aspekBobot);
 
-        return view('student.ekstrakurikuler.show', compact('ekskul', 'aspekValues'));
+        $siswa = auth()->user()->siswa;
+        $canRegister = $siswa ? true : false;
+        $registerMessage = $siswa ? '' : 'Data siswa tidak ditemukan';
+
+        if ($siswa) {
+            $activeCount = \App\Models\Pendaftaran::where('siswa_id', $siswa->id)
+                ->whereIn('status', ['menunggu', 'disetujui'])
+                ->count();
+
+            if ($activeCount >= 2) {
+                $canRegister = false;
+                $registerMessage = 'Maksimal 2 ekskul diikuti';
+            } else {
+                $alreadyRegistered = \App\Models\Pendaftaran::where('siswa_id', $siswa->id)
+                    ->where('ekstrakurikuler_id', $id)
+                    ->exists();
+
+                if ($alreadyRegistered) {
+                    $canRegister = false;
+                    $registerMessage = 'Sudah terdaftar di ekskul ini';
+                }
+            }
+        }
+
+        return view('student.ekstrakurikuler.show', compact('ekskul', 'aspekValues', 'canRegister', 'registerMessage'));
     }
 }

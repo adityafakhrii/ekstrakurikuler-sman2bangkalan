@@ -29,7 +29,7 @@
                        class="transition-colors duration-200 {{ request()->routeIs('siswa.home') ? 'text-white font-semibold' : 'text-gray-300 hover:text-white' }}">
                         Home
                     </a>
-                    <a href="#about"
+                    <a href="{{ request()->routeIs('siswa.home') ? '#manfaat' : route('siswa.home') . '#manfaat' }}"
                        class="transition-colors duration-200 text-gray-300 hover:text-white">
                         About
                     </a>
@@ -192,7 +192,7 @@
                    class="block py-2.5 px-3 rounded-lg text-white font-medium hover:bg-white/10 transition-colors duration-150">
                     Home
                 </a>
-                <a href="#about"
+                <a href="{{ request()->routeIs('siswa.home') ? '#manfaat' : route('siswa.home') . '#manfaat' }}"
                    class="block py-2.5 px-3 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-150">
                     About
                 </a>

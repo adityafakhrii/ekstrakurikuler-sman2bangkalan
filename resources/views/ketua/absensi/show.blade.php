@@ -18,16 +18,16 @@
             <div class="w-40 h-[2px] bg-gray-400 mx-auto mt-2"></div>
         </div>
 
+        <!-- Top Controls: Pagination Info -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <x-pagination.pagination :paginator="$absensiList" />
+        </div>
+
         <!-- Form Absensi -->
         <form method="POST" action="{{ route('ketua.absensi.update', ['tanggal' => $tanggal]) }}">
             @csrf
             @method('PUT')
             <input type="hidden" name="topik" value="{{ $topik }}">
-
-            <!-- Top Controls: Pagination Info -->
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <x-pagination.pagination :paginator="$absensiList" />
-            </div>
 
             <!-- Table with Radio Buttons -->
             <div class="table-container shadow-sm border border-[#f2eaea]">

@@ -62,11 +62,21 @@
                     </div>
 
                     <!-- Action Buttons matching screenshot 2 (Right aligned bottom) -->
-                    <div class="flex justify-end gap-3 pt-6">
+                    <div class="flex flex-wrap items-center justify-end gap-3 pt-6">
+                        @if(!$canRegister)
+                            <span class="text-xs text-rose-500 font-semibold bg-rose-50 border border-rose-200 px-4 py-2 rounded-full">
+                                {{ $registerMessage }}
+                            </span>
+                        @endif
+
                         <!-- Daftar Button (Yellow styled, rounded-full) -->
                         <x-buttons.button 
-                            onclick="window.location.href='{{ route('siswa.register.create', $ekskul->id) }}'"
-                            class="bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] py-3 px-8 rounded-full text-xs font-bold border-0 cursor-pointer shadow-3xs"
+                            @if(!$canRegister)
+                                disabled
+                            @else
+                                onclick="window.location.href='{{ route('siswa.register.create', $ekskul->id) }}'"
+                            @endif
+                            class="py-3 px-8 rounded-full text-xs font-bold border-0 shadow-3xs {{ !$canRegister ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] cursor-pointer' }}"
                         >
                             Daftar
                         </x-buttons.button>
