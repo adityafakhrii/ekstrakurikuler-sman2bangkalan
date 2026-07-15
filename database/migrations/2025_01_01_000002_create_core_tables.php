@@ -14,8 +14,7 @@ return new class extends Migration
             $table->string('nis', 20)->unique();
             $table->string('nisn', 20)->nullable()->unique();
             $table->string('kelas', 10);
-            $table->string('rombel', 20);
-            $table->enum('jurusan', ['MIPA', 'IPS', 'Bahasa', 'Agama']);
+            $table->string('jurusan', 50);
             $table->string('no_telp', 20)->nullable();
             $table->string('alamat', 500)->nullable();
             $table->string('foto')->nullable();
@@ -25,7 +24,6 @@ return new class extends Migration
 
             $table->index('kelas');
             $table->index('jurusan');
-            $table->index(['kelas', 'rombel']);
         });
 
         Schema::create('ekstrakurikuler', function (Blueprint $table) {

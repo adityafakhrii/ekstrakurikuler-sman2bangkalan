@@ -55,9 +55,9 @@ class UserSeeder extends Seeder
         // SISWA (contoh)
         // =====================
         $siswaData = [
-            ['name' => 'Ahmad Jihaduddin', 'nis' => '120001', 'nisn' => '2120202', 'kelas' => 'X',   'rombel' => 'X MIPA 1',  'jurusan' => 'MIPA',   'no_telp' => '081234567890', 'jenis_kelamin' => 'L', 'tahun_masuk' => '2024'],
-            ['name' => 'Saiful Bahri',     'nis' => '120002', 'nisn' => '2120203', 'kelas' => 'XI',  'rombel' => 'XI IPS 1',  'jurusan' => 'IPS',    'no_telp' => '081234567891', 'jenis_kelamin' => 'L', 'tahun_masuk' => '2023'],
-            ['name' => 'Dewi Sartika',     'nis' => '120003', 'nisn' => '2120204', 'kelas' => 'XII', 'rombel' => 'XII IPA 2', 'jurusan' => 'MIPA',   'no_telp' => '081234567892', 'jenis_kelamin' => 'P', 'tahun_masuk' => '2022'],
+            ['name' => 'Ahmad Jihaduddin', 'nis' => '120001', 'nisn' => '2120202', 'kelas' => 'X',   'jurusan' => 'MIPA 1',  'no_telp' => '081234567890', 'jenis_kelamin' => 'L', 'tahun_masuk' => '2024'],
+            ['name' => 'Saiful Bahri',     'nis' => '120002', 'nisn' => '2120203', 'kelas' => 'XI',  'jurusan' => 'IPS 1',   'no_telp' => '081234567891', 'jenis_kelamin' => 'L', 'tahun_masuk' => '2023'],
+            ['name' => 'Dewi Sartika',     'nis' => '120003', 'nisn' => '2120204', 'kelas' => 'XII', 'jurusan' => 'MIPA 2',  'no_telp' => '081234567892', 'jenis_kelamin' => 'P', 'tahun_masuk' => '2022'],
         ];
 
         foreach ($siswaData as $data) {
@@ -77,7 +77,6 @@ class UserSeeder extends Seeder
                     'nis' => $data['nis'],
                     'nisn' => $data['nisn'],
                     'kelas' => $data['kelas'],
-                    'rombel' => $data['rombel'],
                     'jurusan' => $data['jurusan'],
                     'no_telp' => $data['no_telp'],
                     'jenis_kelamin' => $data['jenis_kelamin'],
@@ -144,8 +143,7 @@ class UserSeeder extends Seeder
                     'nis' => (string) (120000 + $nomor),
                     'nisn' => $nisn,
                     'kelas' => ['X', 'XI', 'XII'][$index % 3],
-                    'rombel' => ['X MIPA 1', 'XI MIPA 1', 'XII MIPA 1', 'X MIPA 1', 'XI IPS 1'][$index % 5],
-                    'jurusan' => ['MIPA', 'MIPA', 'IPS', 'Bahasa'][$index % 4],
+                    'jurusan' => ['MIPA 1', 'MIPA 2', 'IPS 1', 'Bahasa'][$index % 4],
                     'no_telp' => '08123456'.str_pad((string) $nomor, 4, '0', STR_PAD_LEFT),
                     'jenis_kelamin' => $index % 2 === 0 ? 'L' : 'P',
                     'tahun_masuk' => (string) (2024 - ($index % 3)),

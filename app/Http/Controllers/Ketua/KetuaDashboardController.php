@@ -60,7 +60,7 @@ class KetuaDashboardController extends Controller
 
         $query = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'alamat', 'catatan_ketua', 'created_at')
             ->with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'rombel', 'jurusan', 'no_telp', 'alamat', 'jenis_kelamin'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'jurusan', 'no_telp', 'alamat', 'jenis_kelamin'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email')
             ])
             ->where('ekstrakurikuler_id', $ekskul->id);
@@ -160,7 +160,7 @@ class KetuaDashboardController extends Controller
 
         $query = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'catatan_ketua', 'disetujui_at', 'created_at')
             ->with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'rombel', 'jurusan', 'no_telp', 'jenis_kelamin'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'jurusan', 'no_telp', 'jenis_kelamin'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -247,7 +247,7 @@ class KetuaDashboardController extends Controller
 
         // Ambil data absensi untuk sesi ini
         $absensiList = Absensi::with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'rombel', 'jurusan'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'jurusan'),
                 'siswa.user' => fn($q) => $q->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -259,7 +259,7 @@ class KetuaDashboardController extends Controller
 
         // Ambil semua anggota (status disetujui) untuk form absensi
         $anggotaList = Pendaftaran::with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'kelas', 'rombel'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'kelas', 'jurusan'),
                 'siswa.user' => fn($q) => $q->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -381,7 +381,7 @@ class KetuaDashboardController extends Controller
         $totalPertemuan = $absensi->map(fn ($item) => $item->tanggal->format('Y-m-d').'|'.($item->topik ?? ''))->unique()->count();
 
         $anggota = Pendaftaran::with([
-                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'rombel', 'jurusan'),
+                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'kelas', 'jurusan'),
                 'siswa.user' => fn ($query) => $query->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -442,7 +442,7 @@ class KetuaDashboardController extends Controller
             ->count();
 
         $anggota = Pendaftaran::with([
-                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'rombel', 'jurusan'),
+                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'kelas', 'jurusan'),
                 'siswa.user' => fn ($query) => $query->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -470,7 +470,7 @@ class KetuaDashboardController extends Controller
             return [
                 'nisn' => $member->siswa->nisn ?? '-',
                 'nama' => $member->siswa->user->name ?? '-',
-                'kelas_jurusan' => trim(($member->siswa->rombel ?? '').' - '.($member->siswa->jurusan ?? ''), ' -'),
+                'kelas_jurusan' => trim(($member->siswa->kelas ?? '').' '.($member->siswa->jurusan ?? ''), ' '),
                 'tp' => $totalPertemuan,
                 'hadir' => $hadir,
                 'sakit' => $sakit,

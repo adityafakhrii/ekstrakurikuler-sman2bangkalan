@@ -72,7 +72,7 @@
                         <label for="kelas_jurusan" class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Kelas-Jurusan</label>
                         <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
                         <div class="col-span-8 sm:col-span-8.5">
-                            <x-forms.input name="kelas_jurusan" value="{{ old('kelas_jurusan', auth()->user()->siswa->kelas . ' ' . auth()->user()->siswa->rombel) }}" placeholder="Masukkan Kelas-Jurusan" class="bg-white border-gray-200" required />
+                            <x-forms.input name="kelas_jurusan" value="{{ old('kelas_jurusan', auth()->user()->siswa->kelas . ' ' . auth()->user()->siswa->jurusan) }}" placeholder="Masukkan Kelas-Jurusan" class="bg-white border-gray-200" required />
                         </div>
                     </div>
 

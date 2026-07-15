@@ -57,13 +57,6 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                    <label for="rombel" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">Rombel</label>
-                    <span class="hidden md:inline md:col-span-1 text-sm font-semibold text-gray-800 text-center">:</span>
-                    <div class="col-span-12 md:col-span-8">
-                        <x-forms.input name="rombel" placeholder="Contoh: X MIPA 1" value="{{ old('rombel', $siswa->rombel) }}" required />
-                    </div>
-                </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <label for="jurusan" class="col-span-12 md:col-span-3 text-sm font-semibold text-gray-800 text-left">Jurusan</label>

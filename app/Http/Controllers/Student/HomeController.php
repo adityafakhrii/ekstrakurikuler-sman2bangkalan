@@ -62,7 +62,7 @@ class HomeController extends Controller
             ->with([
                 'ekstrakurikuler' => fn($q) => $q->select('id', 'nama', 'deskripsi', 'logo', 'pembina', 'whatsapp_group', 'jadwal', 'ketua_id'),
                 'ekstrakurikuler.ketua' => fn($q) => $q->select('id', 'name'),
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'no_telp'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'nisn', 'kelas', 'jurusan', 'no_telp'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email')
             ])
             ->where('siswa_id', $siswa->id)

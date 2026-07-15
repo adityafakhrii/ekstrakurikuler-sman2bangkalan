@@ -47,7 +47,7 @@
                             <td class="table-body-cell font-medium">{{ ($anggota->currentPage() - 1) * $anggota->perPage() + $index + 1 }}</td>
                             <td class="table-body-cell font-semibold text-gray-900">{{ $item->siswa->user->name ?? '-' }}</td>
                             <td class="table-body-cell text-gray-700 font-medium">{{ $item->siswa->nisn ?? '-' }}</td>
-                            <td class="table-body-cell text-gray-600">{{ ($item->siswa->rombel ?? '-') }} - {{ ($item->siswa->jurusan ?? '-') }}</td>
+                            <td class="table-body-cell text-gray-600">{{ ($item->siswa->kelas ?? '-') }} {{ ($item->siswa->jurusan ?? '-') }}</td>
                             <td class="table-body-cell text-gray-500 text-xs">{{ $item->disetujui_at ? $item->disetujui_at->format('F d, Y H:i') : '-' }}</td>
                             <td class="table-body-cell text-center">
                                 <div class="flex items-center justify-center gap-1.5">
@@ -124,7 +124,7 @@
                                                 </div>
                                                 <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
                                                     <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Kelas</span>
-                                                    <p class="text-sm font-semibold text-gray-800 mt-0.5">{{ $item->siswa->rombel ?? '-' }}</p>
+                                                    <p class="text-sm font-semibold text-gray-800 mt-0.5">{{ $item->siswa->kelas ?? '-' }}</p>
                                                 </div>
                                                 <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
                                                     <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">Jurusan</span>

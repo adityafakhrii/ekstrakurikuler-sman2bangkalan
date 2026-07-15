@@ -48,7 +48,7 @@ class PendaftaranController extends Controller
         $kelasJurusan = $request->validated('kelas_jurusan');
         $parts = explode(' ', $kelasJurusan, 2);
         $kelas = $parts[0] ?? 'X';
-        $rombel = $parts[1] ?? $kelasJurusan;
+        $jurusan = $parts[1] ?? '';
 
         $siswa->user->update([
             'email' => $request->validated('email')
@@ -58,7 +58,7 @@ class PendaftaranController extends Controller
             'no_telp' => $request->validated('no_whatsapp'),
             'alamat' => $request->validated('alamat'),
             'kelas' => $kelas,
-            'rombel' => $rombel,
+            'jurusan' => $jurusan,
         ]);
 
         Pendaftaran::create([

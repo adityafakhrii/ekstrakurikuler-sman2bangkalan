@@ -29,11 +29,11 @@ class ExportController extends Controller
             fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
             // Header
-            fputcsv($file, ['No', 'NIS', 'NISN', 'Nama Siswa', 'Kelas', 'Rombel', 'Jurusan', 'JK', 'No HP', 'Tahun Masuk']);
+            fputcsv($file, ['No', 'NIS', 'NISN', 'Nama Siswa', 'Kelas', 'Jurusan', 'JK', 'No HP', 'Tahun Masuk']);
 
             // Data — lazy() stream per record, hemat memory
             $index = 0;
-            Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
+            Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
                 ->with('user:id,name')
                 ->latest()
                 ->lazy()
@@ -44,7 +44,6 @@ class ExportController extends Controller
                         $siswa->nisn,
                         $siswa->user->name,
                         $siswa->kelas,
-                        $siswa->rombel,
                         $siswa->jurusan,
                         $siswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan',
                         $siswa->no_telp,

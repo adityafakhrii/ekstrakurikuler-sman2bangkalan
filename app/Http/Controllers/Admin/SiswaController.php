@@ -17,7 +17,7 @@ class SiswaController extends Controller
     public function index(): View
     {
         $search = request('search');
-        $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'rombel', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
+        $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
             ->with('user:id,name')
             ->when($search, function ($query, $search) {
                 return $query->where('nis', 'like', "%{$search}%")
@@ -57,7 +57,6 @@ class SiswaController extends Controller
                 'nis' => $validated['nis'],
                 'nisn' => $validated['nisn'],
                 'kelas' => $validated['kelas'],
-                'rombel' => $validated['rombel'],
                 'jurusan' => $validated['jurusan'],
                 'no_telp' => $validated['no_hp'],
                 'jenis_kelamin' => $validated['jenis_kelamin'],
@@ -86,7 +85,6 @@ class SiswaController extends Controller
                 'nis' => $validated['nis'],
                 'nisn' => $validated['nisn'],
                 'kelas' => $validated['kelas'],
-                'rombel' => $validated['rombel'],
                 'jurusan' => $validated['jurusan'],
                 'no_telp' => $validated['no_hp'],
                 'jenis_kelamin' => $validated['jenis_kelamin'],

@@ -18,7 +18,6 @@ class Siswa extends Model
         'nis',
         'nisn',
         'kelas',
-        'rombel',
         'jurusan',
         'no_telp',
         'alamat',

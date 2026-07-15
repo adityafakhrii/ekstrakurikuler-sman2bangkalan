@@ -50,9 +50,9 @@
                             data-nama="{{ $pendaftaran->siswa->user->name ?? '-' }}"
                             data-nisn="{{ $pendaftaran->siswa->nisn ?? '-' }}"
                             data-kelamin="{{ ($pendaftaran->siswa->jenis_kelamin ?? 'L') === 'L' ? 'Laki-laki' : 'Perempuan' }}"
-                            data-rombel="{{ $pendaftaran->siswa->rombel ?? '-' }}"
+                            data-kelas="{{ $pendaftaran->siswa->kelas ?? '-' }}"
                             data-jurusan="{{ $pendaftaran->siswa->jurusan ?? '-' }}"
-                            data-kelas-jurusan="{{ ($pendaftaran->siswa->rombel ?? '-') . ' - ' . ($pendaftaran->siswa->jurusan ?? '-') }}"
+                            data-kelas-jurusan="{{ ($pendaftaran->siswa->kelas ?? '-') . ' ' . ($pendaftaran->siswa->jurusan ?? '-') }}"
                             data-telp="{{ $pendaftaran->siswa->no_telp ?? '-' }}"
                             data-email="{{ $pendaftaran->siswa->user->email ?? '-' }}"
                             data-alamat="{{ $pendaftaran->alamat ?: ($pendaftaran->siswa->alamat ?? '-') }}"
@@ -64,7 +64,7 @@
                             <td class="table-body-cell font-medium text-xs">{{ ($pendaftarans->currentPage() - 1) * $pendaftarans->perPage() + $index + 1 }}</td>
                             <td class="table-body-cell font-medium text-gray-800 text-xs">{{ $pendaftaran->siswa->user->name ?? '-' }}</td>
                             <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->nisn ?? '-' }}</td>
-                            <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->rombel ?? '-' }} - {{ $pendaftaran->siswa->jurusan ?? '-' }}</td>
+                            <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->kelas ?? '-' }} {{ $pendaftaran->siswa->jurusan ?? '-' }}</td>
                             <td class="table-body-cell">
                                 <button type="button"
                                     class="status-trigger inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[10px] font-medium border bg-white border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
@@ -231,7 +231,7 @@
             document.getElementById('d-nisn').textContent = row.dataset.nisn || '-';
             document.getElementById('d-nama').textContent = row.dataset.nama || '-';
             document.getElementById('d-kelamin').textContent = row.dataset.kelamin || '-';
-            document.getElementById('d-kelas-jurusan').textContent = row.dataset.kelasJurusan || (row.dataset.rombel + ' - ' + row.dataset.jurusan) || '-';
+            document.getElementById('d-kelas-jurusan').textContent = row.dataset.kelasJurusan || '-';
             document.getElementById('d-telp').textContent = row.dataset.telp || '-';
             document.getElementById('d-email').textContent = row.dataset.email || '-';
             document.getElementById('d-alamat').textContent = row.dataset.alamat && row.dataset.alamat.trim() !== '' && row.dataset.alamat !== '-' ? row.dataset.alamat : '-';
