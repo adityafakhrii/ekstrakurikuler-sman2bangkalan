@@ -70,16 +70,21 @@
                         @endif
 
                         <!-- Daftar Button (Yellow styled, rounded-full) -->
-                        <x-buttons.button 
-                            @if(!$canRegister)
+                        @if(!$canRegister)
+                            <x-buttons.button 
                                 disabled
-                            @else
+                                class="py-3 px-8 rounded-full text-xs font-bold border-0 cursor-not-allowed bg-gray-300 text-gray-500 shadow-3xs"
+                            >
+                                Daftar
+                            </x-buttons.button>
+                        @else
+                            <x-buttons.button 
                                 onclick="window.location.href='{{ route('siswa.register.create', $ekskul->id) }}'"
-                            @endif
-                            class="py-3 px-8 rounded-full text-xs font-bold border-0 shadow-3xs {{ !$canRegister ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] cursor-pointer' }}"
-                        >
-                            Daftar
-                        </x-buttons.button>
+                                class="py-3 px-8 rounded-full text-xs font-bold border-0 cursor-pointer bg-[#FCD34D] hover:bg-[#FACC15] text-[#1F2937] shadow-3xs"
+                            >
+                                Daftar
+                            </x-buttons.button>
+                        @endif
 
                         <!-- Kembali Button (Dark Slate matching screenshot) -->
                         <x-buttons.button 
