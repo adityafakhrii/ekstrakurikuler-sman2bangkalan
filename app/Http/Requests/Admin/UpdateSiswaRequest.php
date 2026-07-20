@@ -34,4 +34,11 @@ class UpdateSiswaRequest extends FormRequest
             'tahun_masuk' => ['required', 'integer', 'min:2000', 'max:2100'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'nis.unique' => 'Mohon maaf, nomor NIS tersebut sudah digunakan oleh siswa lain. Silakan periksa kembali nomor NIS yang dimasukkan.',
+        ];
+    }
 }

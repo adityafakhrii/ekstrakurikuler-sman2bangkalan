@@ -41,26 +41,33 @@ class SiswaController extends Controller
 
     public function store(StoreSiswaRequest $request): RedirectResponse
     {
-        DB::transaction(function () use ($request) {
-            $validated = $request->validated();
+        try {
+            DB::transaction(function () use ($request) {
+                $validated = $request->validated();
 
-            $user = User::create([
-                'name'     => $validated['nama_siswa'],
-                'username' => $validated['nis'],
-                'password' => Hash::make(config('ekskul.password_default_siswa')),
-                'role'     => 'siswa',
-            ]);
+                $user = User::create([
+                    'name'     => $validated['nama_siswa'],
+                    'username' => $validated['nis'],
+                    'password' => Hash::make(config('ekskul.password_default_siswa')),
+                    'role'     => 'siswa',
+                ]);
 
-            Siswa::create([
-                'user_id' => $user->id,
-                'nis' => $validated['nis'],
-                'kelas' => $validated['kelas'],
-                'jurusan' => $validated['jurusan'],
-                'no_telp' => $validated['no_hp'],
-                'jenis_kelamin' => $validated['jenis_kelamin'],
-                'tahun_masuk' => $validated['tahun_masuk'],
-            ]);
-        });
+                Siswa::create([
+                    'user_id' => $user->id,
+                    'nis' => $validated['nis'],
+                    'kelas' => $validated['kelas'],
+                    'jurusan' => $validated['jurusan'],
+                    'no_telp' => $validated['no_hp'],
+                    'jenis_kelamin' => $validated['jenis_kelamin'],
+                    'tahun_masuk' => $validated['tahun_masuk'],
+                ]);
+            });
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return back()->withInput()->withErrors(['nis' => 'Mohon maaf, nomor NIS tersebut sudah terdaftar untuk siswa lain di sistem. Silakan periksa kembali nomor NIS yang dimasukkan.']);
+        } catch (\Exception $e) {
+            \Log::error('Gagal menambahkan siswa: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['nama_siswa' => 'Terjadi kesalahan sistem saat menyimpan data siswa. Silakan coba kembali nanti atau hubungi Administrator jika kendala berlanjut.']);
+        }
 
         return redirect()->route('pengguna.siswa.index')->with('success', 'Siswa berhasil ditambahkan.');
     }
@@ -76,42 +83,54 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::with('user')->findOrFail($id);
 
-        DB::transaction(function () use ($request, $siswa) {
-            $validated = $request->validated();
+        try {
+            DB::transaction(function () use ($request, $siswa) {
+                $validated = $request->validated();
 
-            $siswa->update([
-                'nis' => $validated['nis'],
-                'kelas' => $validated['kelas'],
-                'jurusan' => $validated['jurusan'],
-                'no_telp' => $validated['no_hp'],
-                'jenis_kelamin' => $validated['jenis_kelamin'],
-                'tahun_masuk' => $validated['tahun_masuk'],
-            ]);
+                $siswa->update([
+                    'nis' => $validated['nis'],
+                    'kelas' => $validated['kelas'],
+                    'jurusan' => $validated['jurusan'],
+                    'no_telp' => $validated['no_hp'],
+                    'jenis_kelamin' => $validated['jenis_kelamin'],
+                    'tahun_masuk' => $validated['tahun_masuk'],
+                ]);
 
-            $siswa->user->update([
-                'name' => $validated['nama_siswa'],
-                'username' => $validated['nis'],
-            ]);
-        });
+                $siswa->user->update([
+                    'name' => $validated['nama_siswa'],
+                    'username' => $validated['nis'],
+                ]);
+            });
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return back()->withInput()->withErrors(['nis' => 'Mohon maaf, nomor NIS tersebut sudah digunakan oleh siswa lain. Silakan periksa kembali nomor NIS yang dimasukkan.']);
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengubah siswa: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['nama_siswa' => 'Terjadi kesalahan sistem saat memperbarui data siswa. Silakan coba kembali nanti atau hubungi Administrator jika kendala berlanjut.']);
+        }
 
         return redirect()->route('pengguna.siswa.index')->with('success', 'Siswa berhasil diperbarui.');
     }
 
     public function destroy(int $id): RedirectResponse
     {
-        DB::transaction(function () use ($id) {
-            $siswa = Siswa::with('user')->findOrFail($id);
-            $userId = $siswa->user_id;
+        try {
+            DB::transaction(function () use ($id) {
+                $siswa = Siswa::with('user')->findOrFail($id);
+                $userId = $siswa->user_id;
 
-            // Hapus pendaftaran siswa
-            $siswa->pendaftarans()->delete();
+                // Hapus pendaftaran siswa
+                $siswa->pendaftarans()->delete();
 
-            // Hapus data siswa
-            $siswa->delete();
+                // Hapus data siswa
+                $siswa->delete();
 
-            // Hapus user
-            User::where('id', $userId)->delete();
-        });
+                // Hapus user
+                User::where('id', $userId)->delete();
+            });
+        } catch (\Exception $e) {
+            \Log::error('Gagal menghapus siswa: ' . $e->getMessage());
+            return redirect()->route('pengguna.siswa.index')->with('error', 'Terjadi kesalahan sistem saat menghapus data siswa. Silakan coba kembali nanti.');
+        }
 
         return redirect()->route('pengguna.siswa.index')->with('success', 'Siswa beserta data terkait berhasil dihapus.');
     }

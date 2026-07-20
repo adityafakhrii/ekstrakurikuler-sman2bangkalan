@@ -45,51 +45,58 @@ class EkskulController extends Controller
     {
         $validated = $request->validated();
 
-        DB::transaction(function () use ($request, $validated) {
-            $logoPath = null;
-            if ($request->hasFile('logo')) {
-                $logoPath = $request->file('logo')->store('ekskul-logos', 'public');
-            }
-
-            $ekskul = Ekstrakurikuler::create([
-                'nama' => $validated['name'],
-                'slug' => Str::slug($validated['name']),
-                'deskripsi' => $validated['description'],
-                'pembina' => $validated['pembina'],
-                'whatsapp_group' => $validated['whatsapp_group'],
-                'jadwal' => $validated['jadwal'],
-                'logo' => $logoPath,
-                'tahun_ajaran' => config('ekskul.tahun_ajaran'),
-                'kuota' => config('ekskul.kuota_default'),
-            ]);
-
-            // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
-            $mapping = [
-                'ketangkasan' => 'KETANGKASAN',
-                'intelektual' => 'INTELEKTUAL',
-                'sosial'      => 'SOSIAL',
-                'kreativitas' => 'KREATIVITAS',
-                'kedisiplinan'=> 'KEDISIPLINAN',
-                'komunikasi'  => 'KOMUNIKASI',
-            ];
-
-            $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))
-                ->pluck('id', 'kode');
-
-            foreach ($mapping as $formField => $dbKode) {
-                if ($aspekId = $aspekList[$dbKode] ?? null) {
-                    EkskulAspek::updateOrInsert(
-                        [
-                            'ekstrakurikuler_id' => $ekskul->id,
-                            'aspek_penilaian_id' => $aspekId,
-                        ],
-                        [
-                            'bobot' => $validated[$formField],
-                        ]
-                    );
+        try {
+            DB::transaction(function () use ($request, $validated) {
+                $logoPath = null;
+                if ($request->hasFile('logo')) {
+                    $logoPath = $request->file('logo')->store('ekskul-logos', 'public');
                 }
-            }
-        });
+
+                $ekskul = Ekstrakurikuler::create([
+                    'nama' => $validated['name'],
+                    'slug' => Str::slug($validated['name']),
+                    'deskripsi' => $validated['description'],
+                    'pembina' => $validated['pembina'],
+                    'whatsapp_group' => $validated['whatsapp_group'],
+                    'jadwal' => $validated['jadwal'],
+                    'logo' => $logoPath,
+                    'tahun_ajaran' => config('ekskul.tahun_ajaran'),
+                    'kuota' => config('ekskul.kuota_default'),
+                ]);
+
+                // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
+                $mapping = [
+                    'ketangkasan' => 'KETANGKASAN',
+                    'intelektual' => 'INTELEKTUAL',
+                    'sosial'      => 'SOSIAL',
+                    'kreativitas' => 'KREATIVITAS',
+                    'kedisiplinan'=> 'KEDISIPLINAN',
+                    'komunikasi'  => 'KOMUNIKASI',
+                ];
+
+                $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))
+                    ->pluck('id', 'kode');
+
+                foreach ($mapping as $formField => $dbKode) {
+                    if ($aspekId = $aspekList[$dbKode] ?? null) {
+                        EkskulAspek::updateOrInsert(
+                            [
+                                'ekstrakurikuler_id' => $ekskul->id,
+                                'aspek_penilaian_id' => $aspekId,
+                            ],
+                            [
+                                'bobot' => $validated[$formField],
+                            ]
+                        );
+                    }
+                }
+            });
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return back()->withInput()->withErrors(['name' => 'Mohon maaf, ekstrakurikuler dengan nama tersebut sudah terdaftar di sistem. Silakan pilih nama lain yang berbeda.']);
+        } catch (\Exception $e) {
+            \Log::error('Gagal menambahkan ekskul: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['name' => 'Terjadi kesalahan sistem saat menyimpan data ekstrakurikuler. Silakan coba kembali nanti atau hubungi Administrator jika kendala berlanjut.']);
+        }
 
         Cache::forget('admin.dashboard.stats');
 
@@ -145,52 +152,59 @@ class EkskulController extends Controller
         $ekskul = Ekstrakurikuler::findOrFail($id);
         $validated = $request->validated();
 
-        DB::transaction(function () use ($request, $validated, $ekskul) {
-            $logoPath = $ekskul->logo;
-            if ($request->hasFile('logo')) {
-                if ($logoPath) {
-                    Storage::disk('public')->delete($logoPath);
+        try {
+            DB::transaction(function () use ($request, $validated, $ekskul) {
+                $logoPath = $ekskul->logo;
+                if ($request->hasFile('logo')) {
+                    if ($logoPath) {
+                        Storage::disk('public')->delete($logoPath);
+                    }
+                    $logoPath = $request->file('logo')->store('ekskul-logos', 'public');
                 }
-                $logoPath = $request->file('logo')->store('ekskul-logos', 'public');
-            }
 
-            $ekskul->update([
-                'nama' => $validated['name'],
-                'slug' => Str::slug($validated['name']),
-                'deskripsi' => $validated['description'],
-                'pembina' => $validated['pembina'],
-                'whatsapp_group' => $validated['whatsapp_group'],
-                'jadwal' => $validated['jadwal'],
-                'logo' => $logoPath,
-            ]);
+                $ekskul->update([
+                    'nama' => $validated['name'],
+                    'slug' => Str::slug($validated['name']),
+                    'deskripsi' => $validated['description'],
+                    'pembina' => $validated['pembina'],
+                    'whatsapp_group' => $validated['whatsapp_group'],
+                    'jadwal' => $validated['jadwal'],
+                    'logo' => $logoPath,
+                ]);
 
-            // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
-            $mapping = [
-                'ketangkasan' => 'KETANGKASAN',
-                'intelektual' => 'INTELEKTUAL',
-                'sosial'      => 'SOSIAL',
-                'kreativitas' => 'KREATIVITAS',
-                'kedisiplinan'=> 'KEDISIPLINAN',
-                'komunikasi'  => 'KOMUNIKASI',
-            ];
+                // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
+                $mapping = [
+                    'ketangkasan' => 'KETANGKASAN',
+                    'intelektual' => 'INTELEKTUAL',
+                    'sosial'      => 'SOSIAL',
+                    'kreativitas' => 'KREATIVITAS',
+                    'kedisiplinan'=> 'KEDISIPLINAN',
+                    'komunikasi'  => 'KOMUNIKASI',
+                ];
 
-            $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))
-                ->pluck('id', 'kode');
+                $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))
+                    ->pluck('id', 'kode');
 
-            foreach ($mapping as $formField => $dbKode) {
-                if ($aspekId = $aspekList[$dbKode] ?? null) {
-                    EkskulAspek::updateOrInsert(
-                        [
-                            'ekstrakurikuler_id' => $ekskul->id,
-                            'aspek_penilaian_id' => $aspekId,
-                        ],
-                        [
-                            'bobot' => $validated[$formField],
-                        ]
-                    );
+                foreach ($mapping as $formField => $dbKode) {
+                    if ($aspekId = $aspekList[$dbKode] ?? null) {
+                        EkskulAspek::updateOrInsert(
+                            [
+                                'ekstrakurikuler_id' => $ekskul->id,
+                                'aspek_penilaian_id' => $aspekId,
+                            ],
+                            [
+                                'bobot' => $validated[$formField],
+                            ]
+                        );
+                    }
                 }
-            }
-        });
+            });
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            return back()->withInput()->withErrors(['name' => 'Mohon maaf, nama ekstrakurikuler tersebut sudah digunakan oleh ekskul lain. Silakan periksa kembali daftar ekskul atau pilih nama lain.']);
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengubah ekskul: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['name' => 'Terjadi kesalahan sistem saat memperbarui data ekstrakurikuler. Silakan coba kembali nanti atau hubungi Administrator jika kendala berlanjut.']);
+        }
 
         Cache::forget('admin.dashboard.stats');
 
