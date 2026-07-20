@@ -101,6 +101,41 @@
                     />
                 </div>
 
+                <!-- Hapus Otomatis Rekomendasi -->
+                <div class="space-y-2 pt-4 border-t border-gray-150">
+                    <label for="auto_delete_rekomendasi" class="block text-sm font-semibold text-gray-800">
+                        Hapus Otomatis Riwayat Rekomendasi
+                    </label>
+                    <x-forms.select 
+                        name="auto_delete_rekomendasi" 
+                        value="{{ old('auto_delete_rekomendasi', $autoDeleteSetting) }}"
+                        :options="[
+                            '3' => '3 Hari',
+                            '7' => '7 Hari',
+                            '14' => '14 Hari',
+                            '30' => '30 Hari'
+                        ]"
+                        required
+                    />
+                    <p class="text-xs text-gray-500 font-normal">💡 Rekomendasi hasil preferensi siswa yang lebih tua dari batas hari yang diset akan dihapus otomatis dari database untuk menjaga kestabilan performa sistem.</p>
+                </div>
+
+                <!-- Hapus Manual Rekomendasi -->
+                <div class="pt-4 border-t border-gray-150 space-y-2">
+                    <label class="block text-sm font-semibold text-gray-800">
+                        Hapus Riwayat Rekomendasi Secara Manual
+                    </label>
+                    <p class="text-xs text-gray-500 font-normal">💡 Anda dapat menghapus seluruh riwayat preferensi dan rekomendasi hasil siswa secara permanen untuk mengosongkan ruang penyimpanan database segera.</p>
+                    <button type="button" 
+                        onclick="if(confirm('Apakah Anda yakin ingin menghapus seluruh riwayat rekomendasi hasil siswa? Tindakan ini bersifat permanen dan tidak dapat dibatalkan.')) { document.getElementById('clear-recommendations-form').submit(); }"
+                        class="bg-[#EF4444] hover:bg-[#DC2626] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors cursor-pointer border-0 shadow-sm inline-flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Hapus Semua Riwayat Sekarang
+                    </button>
+                </div>
+
             </div>
 
             <!-- Action Buttons (Right Aligned matching screenshot) -->
@@ -120,6 +155,11 @@
                 </x-buttons.button>
             </div>
 
+        </form>
+
+        <!-- Form Tersembunyi untuk Hapus Manual -->
+        <form id="clear-recommendations-form" method="POST" action="{{ route('admin.profile.clear-recommendations') }}" class="hidden">
+            @csrf
         </form>
 
     </x-cards.card>

@@ -21,6 +21,11 @@ class DatabaseSeeder extends Seeder
             PengumumanSeeder::class,
         ]);
 
+        \Illuminate\Support\Facades\DB::table('pengaturan')->updateOrInsert(
+            ['key' => 'auto_delete_rekomendasi'],
+            ['value' => '30', 'created_at' => now(), 'updated_at' => now()]
+        );
+
         $this->command->newLine();
         $this->command->info('🎉 Database seeding selesai!');
         $this->command->table(

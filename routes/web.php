@@ -79,9 +79,9 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/pengguna/admin/{id}', [UserController::class, 'update'])->name('pengguna.admin.update');
     Route::delete('/pengguna/admin/{id}', [UserController::class, 'destroy'])->name('pengguna.admin.destroy');
 
-    // Profil/Manage Akun Admin
     Route::get('/settings/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::patch('/settings/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+    Route::post('/settings/profile/clear-recommendations', [AdminProfileController::class, 'clearRecommendations'])->name('admin.profile.clear-recommendations');
 
     // Export Data
     Route::get('/export/siswa', [ExportController::class, 'exportSiswa'])->name('export.siswa');
