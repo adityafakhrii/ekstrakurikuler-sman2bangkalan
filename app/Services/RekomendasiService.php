@@ -19,13 +19,16 @@ class RekomendasiService
      */
     public function generate(Siswa $siswa, array $jawaban): int
     {
-        // Pembersihan otomatis riwayat rekomendasi usang
+        // Pembersihan otomatis riwayat hasil rekomendasi usang
         try {
             $days = DB::table('pengaturan')->where('key', 'auto_delete_rekomendasi')->value('value') ?: 30;
             $date = now()->subDays((int) $days);
-            DB::table('rekomendasi')->where('created_at', '<', $date)->delete();
+            $expiredIds = DB::table('rekomendasi')
+                ->where('created_at', '<', $date)
+                ->pluck('id');
+            DB::table('rekomendasi_hasil')->whereIn('rekomendasi_id', $expiredIds)->delete();
         } catch (\Exception $e) {
-            \Log::warning('Gagal melakukan pembersihan otomatis riwayat rekomendasi: ' . $e->getMessage());
+            \Log::warning('Gagal melakukan pembersihan otomatis riwayat hasil rekomendasi: ' . $e->getMessage());
         }
 
         return DB::transaction(function () use ($siswa, $jawaban) {

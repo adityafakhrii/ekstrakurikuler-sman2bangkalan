@@ -21,7 +21,9 @@ class AdminProfileController extends Controller
             ->where('key', 'auto_delete_rekomendasi')
             ->value('value') ?: '30';
 
-        return view('admin.profile.edit', compact('autoDeleteSetting'));
+        $recommendationResultsCount = \Illuminate\Support\Facades\DB::table('rekomendasi_hasil')->count();
+
+        return view('admin.profile.edit', compact('autoDeleteSetting', 'recommendationResultsCount'));
     }
 
     /**
@@ -51,10 +53,16 @@ class AdminProfileController extends Controller
                 ['value' => $validated['auto_delete_rekomendasi'], 'updated_at' => now()]
             );
 
-            // Clean up old history immediately
+            // Clean up old history immediately (rekomendasi_hasil only)
             $days = (int) $validated['auto_delete_rekomendasi'];
             $date = now()->subDays($days);
-            \Illuminate\Support\Facades\DB::table('rekomendasi')->where('created_at', '<', $date)->delete();
+            $expiredIds = \Illuminate\Support\Facades\DB::table('rekomendasi')
+                ->where('created_at', '<', $date)
+                ->pluck('id');
+
+            \Illuminate\Support\Facades\DB::table('rekomendasi_hasil')
+                ->whereIn('rekomendasi_id', $expiredIds)
+                ->delete();
 
             $updateData = [
                 'name' => $validated['name'],
@@ -93,21 +101,21 @@ class AdminProfileController extends Controller
     }
 
     /**
-     * Hapus semua riwayat rekomendasi hasil secara manual.
+     * Hapus semua data hasil rekomendasi secara manual.
      */
     public function clearRecommendations(): RedirectResponse
     {
         try {
-            \Illuminate\Support\Facades\DB::table('rekomendasi')->delete();
+            \Illuminate\Support\Facades\DB::table('rekomendasi_hasil')->delete();
 
             return redirect()
                 ->route('admin.profile.edit')
-                ->with('success', 'Semua riwayat rekomendasi hasil berhasil dihapus secara permanen dari database.');
+                ->with('success', 'Semua data hasil rekomendasi berhasil dihapus secara permanen dari database.');
         } catch (\Exception $e) {
-            \Log::error('Gagal menghapus manual riwayat rekomendasi: ' . $e->getMessage());
+            \Log::error('Gagal menghapus manual data hasil rekomendasi: ' . $e->getMessage());
             return redirect()
                 ->back()
-                ->with('error', 'Terjadi kesalahan sistem saat menghapus riwayat rekomendasi: ' . $e->getMessage());
+                ->with('error', 'Terjadi kesalahan sistem saat menghapus data hasil rekomendasi: ' . $e->getMessage());
         }
     }
 }

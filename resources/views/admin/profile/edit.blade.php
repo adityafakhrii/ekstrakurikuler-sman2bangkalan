@@ -82,7 +82,7 @@
                         placeholder="Masukkan password baru jika ingin mengubah" 
                         class="bg-gray-100/80 border-gray-200"
                     />
-                    <p class="text-xs text-gray-500 font-normal mt-0.5">💡 Abaikan atau kosongkan jika tidak ingin mengubah password.</p>
+                    <p class="text-xs text-gray-500 font-normal mt-0.5">Abaikan atau kosongkan jika tidak ingin mengubah password.</p>
                     @error('password')
                         <p class="text-xs text-red-600 font-medium mt-1">{{ $message }}</p>
                     @enderror
@@ -117,22 +117,25 @@
                         ]"
                         required
                     />
-                    <p class="text-xs text-gray-500 font-normal">💡 Rekomendasi hasil preferensi siswa yang lebih tua dari batas hari yang diset akan dihapus otomatis dari database untuk menjaga kestabilan performa sistem.</p>
+                    <p class="text-xs text-gray-500 font-normal">Rekomendasi hasil preferensi siswa yang lebih tua dari batas hari yang diset akan dihapus otomatis dari database untuk menjaga kestabilan performa sistem.</p>
                 </div>
 
                 <!-- Hapus Manual Rekomendasi -->
                 <div class="pt-4 border-t border-gray-150 space-y-2">
                     <label class="block text-sm font-semibold text-gray-800">
-                        Hapus Riwayat Rekomendasi Secara Manual
+                        Hapus Hasil Rekomendasi Secara Manual
                     </label>
-                    <p class="text-xs text-gray-500 font-normal">💡 Anda dapat menghapus seluruh riwayat preferensi dan rekomendasi hasil siswa secara permanen untuk mengosongkan ruang penyimpanan database segera.</p>
+                    <p class="text-xs text-gray-500 font-normal">Anda dapat menghapus seluruh data hasil rekomendasi siswa secara permanen untuk mengosongkan ruang penyimpanan database segera.</p>
+                    <p class="text-xs text-rose-600 font-semibold bg-rose-50 border border-rose-150 p-2.5 rounded-lg">
+                        ⚠️ Data saat ini: terdapat {{ $recommendationResultsCount }} data hasil rekomendasi di database.
+                    </p>
                     <button type="button" 
-                        onclick="if(confirm('Apakah Anda yakin ingin menghapus seluruh riwayat rekomendasi hasil siswa? Tindakan ini bersifat permanen dan tidak dapat dibatalkan.')) { document.getElementById('clear-recommendations-form').submit(); }"
+                        onclick="if(confirm('Apakah Anda yakin ingin menghapus seluruh data hasil rekomendasi siswa? Tindakan ini bersifat permanen dan tidak dapat dibatalkan.')) { document.getElementById('clear-recommendations-form').submit(); }"
                         class="bg-[#EF4444] hover:bg-[#DC2626] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors cursor-pointer border-0 shadow-sm inline-flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
-                        Hapus Semua Riwayat Sekarang
+                        Hapus Semua Hasil Sekarang
                     </button>
                 </div>
 

@@ -70,9 +70,39 @@ class AdminSettingsTest extends TestCase
             'updated_at' => now(),
         ]);
 
-        // Assert they both exist
-        $this->assertDatabaseHas('rekomendasi', ['id' => $oldRecId]);
-        $this->assertDatabaseHas('rekomendasi', ['id' => $newRecId]);
+        // Ekskul dummy
+        $ekskulId = DB::table('ekstrakurikuler')->insertGetId([
+            'nama' => 'Pramuka',
+            'slug' => 'pramuka',
+            'deskripsi' => 'Pramuka',
+            'pembina' => 'Pembina',
+            'whatsapp_group' => 'wa',
+            'jadwal' => 'Senin',
+            'tahun_ajaran' => '2025/2026',
+            'kuota' => 20,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Hasil lama
+        DB::table('rekomendasi_hasil')->insert([
+            'rekomendasi_id' => $oldRecId,
+            'ekstrakurikuler_id' => $ekskulId,
+            'skor' => 4.5,
+            'peringkat' => 1,
+        ]);
+
+        // Hasil baru
+        DB::table('rekomendasi_hasil')->insert([
+            'rekomendasi_id' => $newRecId,
+            'ekstrakurikuler_id' => $ekskulId,
+            'skor' => 4.5,
+            'peringkat' => 1,
+        ]);
+
+        // Assert they all exist
+        $this->assertDatabaseHas('rekomendasi_hasil', ['rekomendasi_id' => $oldRecId]);
+        $this->assertDatabaseHas('rekomendasi_hasil', ['rekomendasi_id' => $newRecId]);
 
         // Update auto-delete to 7 days
         $response = $this->patch(route('admin.profile.update'), [
@@ -87,8 +117,12 @@ class AdminSettingsTest extends TestCase
         // Check if settings table updated
         $this->assertEquals('7', DB::table('pengaturan')->where('key', 'auto_delete_rekomendasi')->value('value'));
 
-        // Check if old recommendation (10 days old) was deleted, and new one exists
-        $this->assertDatabaseMissing('rekomendasi', ['id' => $oldRecId]);
+        // Check that old rekomendasi_hasil is deleted, but new one exists
+        $this->assertDatabaseMissing('rekomendasi_hasil', ['rekomendasi_id' => $oldRecId]);
+        $this->assertDatabaseHas('rekomendasi_hasil', ['rekomendasi_id' => $newRecId]);
+
+        // Check that the rekomendasi sessions themselves are NOT deleted
+        $this->assertDatabaseHas('rekomendasi', ['id' => $oldRecId]);
         $this->assertDatabaseHas('rekomendasi', ['id' => $newRecId]);
     }
 
@@ -119,7 +153,29 @@ class AdminSettingsTest extends TestCase
             'updated_at' => now(),
         ]);
 
-        $this->assertDatabaseHas('rekomendasi', ['id' => $recId]);
+        // Ekskul dummy
+        $ekskulId = DB::table('ekstrakurikuler')->insertGetId([
+            'nama' => 'Pramuka',
+            'slug' => 'pramuka',
+            'deskripsi' => 'Pramuka',
+            'pembina' => 'Pembina',
+            'whatsapp_group' => 'wa',
+            'jadwal' => 'Senin',
+            'tahun_ajaran' => '2025/2026',
+            'kuota' => 20,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // Hasil
+        DB::table('rekomendasi_hasil')->insert([
+            'rekomendasi_id' => $recId,
+            'ekstrakurikuler_id' => $ekskulId,
+            'skor' => 4.5,
+            'peringkat' => 1,
+        ]);
+
+        $this->assertDatabaseHas('rekomendasi_hasil', ['rekomendasi_id' => $recId]);
 
         // Request manual clear
         $response = $this->post(route('admin.profile.clear-recommendations'));
@@ -127,8 +183,11 @@ class AdminSettingsTest extends TestCase
         $response->assertRedirect(route('admin.profile.edit'));
         $response->assertSessionHas('success');
 
-        // Verify database is cleared
-        $this->assertDatabaseMissing('rekomendasi', ['id' => $recId]);
-        $this->assertEquals(0, DB::table('rekomendasi')->count());
+        // Verify rekomendasi_hasil is cleared
+        $this->assertDatabaseMissing('rekomendasi_hasil', ['rekomendasi_id' => $recId]);
+        $this->assertEquals(0, DB::table('rekomendasi_hasil')->count());
+
+        // Verify rekomendasi (history/preference session) is NOT deleted
+        $this->assertDatabaseHas('rekomendasi', ['id' => $recId]);
     }
 }
