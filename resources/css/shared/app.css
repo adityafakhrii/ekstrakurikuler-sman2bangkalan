@@ -359,15 +359,6 @@ input[type=number] {
         overflow-x: hidden;
     }
 
-    table {
-        min-width: max-content;
-    }
-
-    .table-container,
-    [class*="overflow-x-auto"] {
-        -webkit-overflow-scrolling: touch;
-    }
-
     input,
     select,
     textarea,
@@ -378,4 +369,99 @@ input[type=number] {
     .card-main {
         border-radius: 1rem;
     }
+
+    /* Mobile Card Table Pattern */
+    .table-container {
+        overflow: visible;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .table-container table,
+    .table-container thead,
+    .table-container tbody,
+    .table-container tr,
+    .table-container th,
+    .table-container td {
+        display: block;
+        width: 100%;
+    }
+
+    .table-container thead {
+        display: none;
+    }
+
+    .table-container tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        background: transparent;
+    }
+
+    .table-container tbody tr {
+        background: #ffffff;
+        border: 1px solid #f2eaea;
+        border-radius: 1rem;
+        box-shadow: 0 6px 18px rgba(42, 27, 96, 0.06);
+        overflow: hidden;
+    }
+
+    .table-container tbody tr:hover {
+        background: #ffffff;
+    }
+
+    .table-container .table-body-cell,
+    .table-container tbody td {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #f3eded;
+        font-size: 0.8125rem;
+        text-align: right;
+        word-break: break-word;
+    }
+
+    .table-container tbody td:last-child {
+        border-bottom: 0;
+    }
+
+    .table-container tbody td::before {
+        content: attr(data-label);
+        flex: 0 0 42%;
+        color: #9ca3af;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .table-container tbody td[colspan]::before {
+        content: attr(data-label);
+    }
+
+    .table-container tbody td[colspan] {
+        display: flex;
+    }
+
+    .table-container tbody td[colspan] > * {
+        flex: 1;
+    }
+
+    .table-container tbody td.text-center {
+        text-align: right;
+    }
+
+    .table-container tbody td .flex.items-center.justify-center,
+    .table-container tbody td .flex.items-center.gap-2,
+    .table-container tbody td .flex.items-center.justify-center.gap-2,
+    .table-container tbody td .flex.items-center.justify-center.gap-1\.5 {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
 }
+

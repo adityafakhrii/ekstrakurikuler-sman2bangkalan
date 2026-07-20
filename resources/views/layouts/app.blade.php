@@ -88,6 +88,18 @@
             @if($errors->any())
                 showToast(@json($errors->first()), 'error');
             @endif
+
+            // Responsive table helper: ubah setiap cell menjadi berlabel saat mobile.
+            document.querySelectorAll('.table-container table').forEach((table) => {
+                const headers = Array.from(table.querySelectorAll('thead th')).map((th) => th.textContent.trim());
+                table.querySelectorAll('tbody tr').forEach((row) => {
+                    Array.from(row.children).forEach((cell, index) => {
+                        if (!cell.hasAttribute('data-label')) {
+                            cell.setAttribute('data-label', headers[index] || 'Data');
+                        }
+                    });
+                });
+            });
         });
     </script>
 

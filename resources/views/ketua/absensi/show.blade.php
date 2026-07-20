@@ -29,8 +29,8 @@
             @method('PUT')
             <input type="hidden" name="topik" value="{{ $topik }}">
 
-            <!-- Table with Radio Buttons -->
-            <div class="table-container shadow-sm border border-[#f2eaea]">
+            <!-- Desktop Table with Radio Buttons -->
+            <div class="hidden md:block overflow-x-auto rounded-xl bg-white shadow-sm border border-[#f2eaea]">
                 <table class="min-w-full divide-y divide-[#f2eaea]">
                     <thead class="bg-[#FCFBFB]">
                         <tr>
@@ -52,48 +52,20 @@
                                 <td class="table-body-cell" colspan="4">
                                     <input type="hidden" name="absensi[{{ $index }}][siswa_id]" value="{{ $member->siswa->id }}">
                                     <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
-                                        <!-- Hadir -->
                                         <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
-                                            <input type="radio"
-                                                name="absensi[{{ $index }}][status]"
-                                                value="hadir"
-                                                {{ $currentStatus === 'hadir' ? 'checked' : '' }}
-                                                :disabled="!editMode"
-                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
-                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            <input type="radio" name="absensi[{{ $index }}][status]" value="hadir" {{ $currentStatus === 'hadir' ? 'checked' : '' }} :disabled="!editMode" class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]" :class="editMode ? 'cursor-pointer' : 'cursor-default'">
                                             Hadir
                                         </label>
-                                        <!-- Izin -->
                                         <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
-                                            <input type="radio"
-                                                name="absensi[{{ $index }}][status]"
-                                                value="izin"
-                                                {{ $currentStatus === 'izin' ? 'checked' : '' }}
-                                                :disabled="!editMode"
-                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
-                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            <input type="radio" name="absensi[{{ $index }}][status]" value="izin" {{ $currentStatus === 'izin' ? 'checked' : '' }} :disabled="!editMode" class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]" :class="editMode ? 'cursor-pointer' : 'cursor-default'">
                                             Izin
                                         </label>
-                                        <!-- Sakit -->
                                         <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
-                                            <input type="radio"
-                                                name="absensi[{{ $index }}][status]"
-                                                value="sakit"
-                                                {{ $currentStatus === 'sakit' ? 'checked' : '' }}
-                                                :disabled="!editMode"
-                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
-                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            <input type="radio" name="absensi[{{ $index }}][status]" value="sakit" {{ $currentStatus === 'sakit' ? 'checked' : '' }} :disabled="!editMode" class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]" :class="editMode ? 'cursor-pointer' : 'cursor-default'">
                                             Sakit
                                         </label>
-                                        <!-- Alfa -->
                                         <label class="inline-flex items-center gap-1.5 text-xs text-gray-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
-                                            <input type="radio"
-                                                name="absensi[{{ $index }}][status]"
-                                                value="alpha"
-                                                {{ $currentStatus === 'alpha' ? 'checked' : '' }}
-                                                :disabled="!editMode"
-                                                class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]"
-                                                :class="editMode ? 'cursor-pointer' : 'cursor-default'">
+                                            <input type="radio" name="absensi[{{ $index }}][status]" value="alpha" {{ $currentStatus === 'alpha' ? 'checked' : '' }} :disabled="!editMode" class="w-3.5 h-3.5 text-[#6366F1] border-gray-300 focus:ring-[#6366F1]" :class="editMode ? 'cursor-pointer' : 'cursor-default'">
                                             Alfa
                                         </label>
                                     </div>
@@ -108,6 +80,51 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Mobile Card List with Radio Buttons -->
+            <div class="md:hidden space-y-3">
+                @forelse($anggotaList as $index => $member)
+                    @php
+                        $currentStatus = $existingAbsensi[$member->siswa->id] ?? 'alpha';
+                    @endphp
+                    <div class="rounded-2xl border border-[#f2eaea] bg-white p-4 shadow-sm">
+                        <input type="hidden" name="absensi[{{ $index }}][siswa_id]" value="{{ $member->siswa->id }}">
+
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div class="min-w-0">
+                                <div class="text-[11px] font-semibold text-gray-400 uppercase tracking-wide">#{{ $index + 1 }} • NIS {{ $member->siswa->nis ?? '-' }}</div>
+                                <div class="text-sm font-bold text-gray-900 leading-snug break-words">{{ $member->siswa->user->name ?? '-' }}</div>
+                            </div>
+                            <span class="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold {{ $currentStatus === 'hadir' ? 'bg-emerald-50 text-emerald-700' : ($currentStatus === 'izin' ? 'bg-blue-50 text-blue-700' : ($currentStatus === 'sakit' ? 'bg-amber-50 text-amber-700' : 'bg-rose-50 text-rose-700')) }}">
+                                {{ ucfirst($currentStatus === 'alpha' ? 'Alfa' : $currentStatus) }}
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center justify-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50/60 px-3 py-2.5 text-xs font-semibold text-emerald-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                <input type="radio" name="absensi[{{ $index }}][status]" value="hadir" {{ $currentStatus === 'hadir' ? 'checked' : '' }} :disabled="!editMode" class="w-4 h-4 text-emerald-600 border-gray-300 focus:ring-emerald-500">
+                                Hadir
+                            </label>
+                            <label class="flex items-center justify-center gap-2 rounded-xl border border-blue-100 bg-blue-50/60 px-3 py-2.5 text-xs font-semibold text-blue-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                <input type="radio" name="absensi[{{ $index }}][status]" value="izin" {{ $currentStatus === 'izin' ? 'checked' : '' }} :disabled="!editMode" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                Izin
+                            </label>
+                            <label class="flex items-center justify-center gap-2 rounded-xl border border-amber-100 bg-amber-50/60 px-3 py-2.5 text-xs font-semibold text-amber-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                <input type="radio" name="absensi[{{ $index }}][status]" value="sakit" {{ $currentStatus === 'sakit' ? 'checked' : '' }} :disabled="!editMode" class="w-4 h-4 text-amber-600 border-gray-300 focus:ring-amber-500">
+                                Sakit
+                            </label>
+                            <label class="flex items-center justify-center gap-2 rounded-xl border border-rose-100 bg-rose-50/60 px-3 py-2.5 text-xs font-semibold text-rose-700" :class="editMode ? 'cursor-pointer' : 'cursor-default opacity-60'">
+                                <input type="radio" name="absensi[{{ $index }}][status]" value="alpha" {{ $currentStatus === 'alpha' ? 'checked' : '' }} :disabled="!editMode" class="w-4 h-4 text-rose-600 border-gray-300 focus:ring-rose-500">
+                                Alfa
+                            </label>
+                        </div>
+                    </div>
+                @empty
+                    <div class="rounded-2xl border border-[#f2eaea] bg-white p-5 text-center text-sm font-medium text-gray-400">
+                        Tidak ada anggota yang terdaftar untuk dicatat absensinya.
+                    </div>
+                @endforelse
             </div>
 
             <!-- Bottom Buttons -->
