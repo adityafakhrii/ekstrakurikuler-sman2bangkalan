@@ -349,3 +349,33 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+/* Global responsive safeguards */
+@media (max-width: 767px) {
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    table {
+        min-width: max-content;
+    }
+
+    .table-container,
+    [class*="overflow-x-auto"] {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+        max-width: 100%;
+    }
+
+    .card-main {
+        border-radius: 1rem;
+    }
+}

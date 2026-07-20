@@ -182,7 +182,7 @@
          x-transition:leave="transition ease-in duration-150"
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 -translate-y-4"
-         class="md:hidden bg-[#2A1B60] border-t border-white/10 shadow-lg"
+         class="md:hidden bg-[#2A1B60] border-t border-white/10 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto"
          style="display: none;">
         <div class="px-4 pt-2 pb-6 space-y-3 text-sm">
 
@@ -218,7 +218,7 @@
             @elseif(request()->is('ketua*'))
                 <!-- Ketua Mobile Menu Items -->
                 <a href="{{ route('ketua.dashboard') }}"
-                   class="block py-2.5 px-3 rounded-lg text-white font-medium hover:bg-white/10 transition-colors duration-150">
+                   class="block py-2.5 px-3 rounded-lg {{ request()->routeIs('ketua.dashboard') ? 'text-white font-medium bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/10' }} transition-colors duration-150">
                     Dashboard
                 </a>
                 <a href="{{ route('ketua.pendaftaran.index') }}"
@@ -233,6 +233,28 @@
                    class="block py-2.5 px-3 rounded-lg {{ request()->routeIs('ketua.absensi.index') ? 'text-white font-medium bg-white/10' : 'text-gray-300 hover:text-white hover:bg-white/10' }} transition-colors duration-150">
                     Data Absensi
                 </a>
+
+                <hr class="border-white/10 my-2">
+
+                <!-- Ketua Mobile User Profile -->
+                <div class="px-3 py-2 flex items-center gap-3 rounded-xl bg-white/5 border border-white/10">
+                    <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-brand-primary overflow-hidden border border-white/50 shrink-0">
+                        <svg class="w-6 h-6 text-[#2A1B60] mt-1" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="font-semibold text-white truncate">Hallo, {{ Auth::user()->name ?? 'Username' }}</div>
+                        <div class="text-xs text-gray-400 truncate">{{ Auth::user()->email ?? 'user@sman2bangkalan.sch.id' }}</div>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left block py-2.5 px-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors duration-150 cursor-pointer">
+                        Keluar
+                    </button>
+                </form>
             @else
                 <!-- Admin Mobile Menu Items -->
                 <!-- Dashboard Link -->
