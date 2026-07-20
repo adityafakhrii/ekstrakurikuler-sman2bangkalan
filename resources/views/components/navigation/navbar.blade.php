@@ -128,9 +128,13 @@
                                 aria-haspopup="true"
                                 :aria-expanded="openProfile">
                             <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-brand-primary overflow-hidden border border-white/50 shadow-sm transition-transform duration-200">
-                                <svg class="w-5.5 h-5.5 text-[#2A1B60] mt-1" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
+                                @if(Auth::user()->foto)
+                                    <img src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Foto profil {{ Auth::user()->name }}" class="w-full h-full object-cover">
+                                @else
+                                    <svg class="w-5.5 h-5.5 text-[#2A1B60] mt-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                @endif
                             </div>
                             <span class="font-normal">Hallo, {{ Auth::user()->name ?? 'Username' }}</span>
                             <svg class="w-3.5 h-3.5 transition-transform duration-200" :class="openProfile ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -239,9 +243,13 @@
                 <!-- Ketua Mobile User Profile -->
                 <div class="px-3 py-2 flex items-center gap-3 rounded-xl bg-white/5 border border-white/10">
                     <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-brand-primary overflow-hidden border border-white/50 shrink-0">
-                        <svg class="w-6 h-6 text-[#2A1B60] mt-1" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
+                        @if(Auth::user()->foto)
+                            <img src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Foto profil {{ Auth::user()->name }}" class="w-full h-full object-cover">
+                        @else
+                            <svg class="w-6 h-6 text-[#2A1B60] mt-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        @endif
                     </div>
                     <div class="min-w-0">
                         <div class="font-semibold text-white truncate">Hallo, {{ Auth::user()->name ?? 'Username' }}</div>
@@ -289,10 +297,14 @@
 
                 <!-- Mobile User Profile -->
                 <div class="px-3 py-2 flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-brand-primary font-bold overflow-hidden border border-white/50">
-                        <svg class="w-6 h-6 text-[#2A1B60] mt-1" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
+                    <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-brand-primary font-bold overflow-hidden border border-white/50 shrink-0">
+                        @if(Auth::user()->foto)
+                            <img src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Foto profil {{ Auth::user()->name }}" class="w-full h-full object-cover">
+                        @else
+                            <svg class="w-6 h-6 text-[#2A1B60] mt-1" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        @endif
                     </div>
                     <div>
                         <div class="font-semibold text-white">Hallo, {{ Auth::user()->name ?? 'Username' }}</div>
