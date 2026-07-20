@@ -447,7 +447,7 @@ class KetuaDashboardController extends Controller
             ->where('status', 'disetujui')
             ->get();
 
-        $rows = $anggota->map(function ($member) use ($absensi, $totalPertemuan) {
+        $rows = $anggota->map(function ($member, $index) use ($absensi, $totalPertemuan) {
             $records = $absensi->where('siswa_id', $member->siswa_id);
             $hadir = $records->where('status', 'hadir')->count();
             $sakit = $records->where('status', 'sakit')->count();
@@ -466,6 +466,7 @@ class KetuaDashboardController extends Controller
             };
 
             return [
+                'index' => $index + 1,
                 'nis' => $member->siswa->nis ?? '-',
                 'nama' => $member->siswa->user->name ?? '-',
                 'kelas_jurusan' => trim(($member->siswa->kelas ?? '').' '.($member->siswa->jurusan ?? ''), ' '),
@@ -479,7 +480,7 @@ class KetuaDashboardController extends Controller
             ];
         });
 
-        $pages = $rows->chunk(20);
+        $pages = $rows->chunk(15);
         $semester = $request->input('semester', 'Tahun Pelajaran '.($ekskul->tahun_ajaran ?? date('Y')));
 
         $pdf = Pdf::loadView('ketua.absensi.pdf', [

@@ -78,7 +78,7 @@
                     <tbody>
                         @foreach($rows as $rowIndex => $row)
                             <tr>
-                                <td class="text-center">{{ ($pageIndex * 20) + $rowIndex + 1 }}</td>
+                                <td class="text-center">{{ $row['index'] }}</td>
                                 <td class="text-center">{{ $row['nis'] }}</td>
                                 <td>{{ $row['nama'] }}</td>
                                 <td class="text-center">{{ $row['tp'] }}</td>
