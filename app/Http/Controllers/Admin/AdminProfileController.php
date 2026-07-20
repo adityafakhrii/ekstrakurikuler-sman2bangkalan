@@ -42,7 +42,7 @@ class AdminProfileController extends Controller
                 Rule::unique('users', 'username')->ignore($user->id),
             ],
             'password' => ['nullable', 'string', 'min:6', 'confirmed'],
-            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'profile_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240'],
             'auto_delete_rekomendasi' => ['required', 'in:3,7,14,30'],
         ]);
 
@@ -74,6 +74,8 @@ class AdminProfileController extends Controller
                 $updateData['password'] = Hash::make($validated['password']);
             }
 
+            $compressionMsg = '';
+
             // Handle upload foto profil
             if ($request->hasFile('profile_image')) {
                 // Hapus foto lama jika ada
@@ -81,16 +83,22 @@ class AdminProfileController extends Controller
                     Storage::disk('public')->delete($user->foto);
                 }
 
-                // Simpan foto baru ke direktori profile_images di disk public
-                $path = $request->file('profile_image')->store('profile_images', 'public');
-                $updateData['foto'] = $path;
+                // Kompres dan konversi ke WebP menggunakan ImageHelper
+                $uploadResult = \App\Helpers\ImageHelper::convertToWebp(
+                    $request->file('profile_image'),
+                    'profile_images'
+                );
+
+                $updateData['foto'] = $uploadResult['path'];
+
+                $compressionMsg = " Foto profil berhasil dikompresi sebesar {$uploadResult['percentage']}% (dari {$uploadResult['original_size_formatted']} menjadi {$uploadResult['compressed_size_formatted']}).";
             }
 
             $user->update($updateData);
 
             return redirect()
                 ->route('admin.profile.edit')
-                ->with('success', 'Profil berhasil diperbarui.');
+                ->with('success', 'Profil berhasil diperbarui.' . $compressionMsg);
 
         } catch (\Exception $e) {
             return redirect()

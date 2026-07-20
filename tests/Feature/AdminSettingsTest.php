@@ -190,4 +190,35 @@ class AdminSettingsTest extends TestCase
         // Verify rekomendasi (history/preference session) is NOT deleted
         $this->assertDatabaseHas('rekomendasi', ['id' => $recId]);
     }
+
+    public function test_admin_can_upload_profile_image_which_is_compressed_to_webp()
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+
+        $admin = User::factory()->admin()->create();
+        $this->actingAs($admin);
+
+        // Buat file gambar palsu dengan format png berukuran 1MB
+        $file = \Illuminate\Http\UploadedFile::fake()->image('profile.png', 800, 600)->size(1024);
+
+        $response = $this->patch(route('admin.profile.update'), [
+            'name' => 'Admin Baru',
+            'username' => 'admin_baru',
+            'profile_image' => $file,
+            'auto_delete_rekomendasi' => '30',
+        ]);
+
+        $response->assertRedirect(route('admin.profile.edit'));
+        $response->assertSessionHas('success');
+        
+        // Assert success message contains compression stats
+        $successMsg = session('success');
+        $this->assertStringContainsString('Foto profil berhasil dikompresi sebesar', $successMsg);
+
+        // Assert file exists in public storage with webp extension
+        $admin->refresh();
+        $this->assertNotNull($admin->foto);
+        $this->assertStringEndsWith('.webp', $admin->foto);
+        \Illuminate\Support\Facades\Storage::disk('public')->assertExists($admin->foto);
+    }
 }
