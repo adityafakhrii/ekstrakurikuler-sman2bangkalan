@@ -8,12 +8,12 @@
 
         @php
             $criteria = [
-                ['label' => 'Fisik',       'key' => 'fisik'],
-                ['label' => 'Estetika',    'key' => 'estetika'],
-                ['label' => 'Komunikasi',  'key' => 'komunikasi'],
-                ['label' => 'Kreativitas', 'key' => 'kreativitas'],
-                ['label' => 'Disiplin',    'key' => 'disiplin'],
-                ['label' => 'Kekompakan',  'key' => 'kekompakan'],
+                ['label' => 'Ketangkasan',  'key' => 'ketangkasan'],
+                ['label' => 'Intelektual',  'key' => 'intelektual'],
+                ['label' => 'Sosial',       'key' => 'sosial'],
+                ['label' => 'Kreativitas',  'key' => 'kreativitas'],
+                ['label' => 'Kedisiplinan', 'key' => 'kedisiplinan'],
+                ['label' => 'Komunikasi',   'key' => 'komunikasi'],
             ];
         @endphp
 

@@ -36,12 +36,12 @@
                     @php
                         // 6 Recommendation Criteria with preset values from database
                         $criteria = [
-                            ['label' => 'Fisik', 'name' => 'fisik', 'value' => $aspekValues['fisik']],
-                            ['label' => 'Estetika', 'name' => 'estetika', 'value' => $aspekValues['estetika']],
-                            ['label' => 'Komunikasi', 'name' => 'komunikasi', 'value' => $aspekValues['komunikasi']],
+                            ['label' => 'Ketangkasan', 'name' => 'ketangkasan', 'value' => $aspekValues['ketangkasan']],
+                            ['label' => 'Intelektual', 'name' => 'intelektual', 'value' => $aspekValues['intelektual']],
+                            ['label' => 'Sosial', 'name' => 'sosial', 'value' => $aspekValues['sosial']],
                             ['label' => 'Kreativitas', 'name' => 'kreativitas', 'value' => $aspekValues['kreativitas']],
-                            ['label' => 'Disiplin', 'name' => 'disiplin', 'value' => $aspekValues['disiplin']],
-                            ['label' => 'Kekompakan', 'name' => 'kekompakan', 'value' => $aspekValues['kekompakan']]
+                            ['label' => 'Kedisiplinan', 'name' => 'kedisiplinan', 'value' => $aspekValues['kedisiplinan']],
+                            ['label' => 'Komunikasi', 'name' => 'komunikasi', 'value' => $aspekValues['komunikasi']]
                         ];
                     @endphp
 

@@ -34,7 +34,7 @@
                     <tr>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">#</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Nama Lengkap</th>
-                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Nisn</th>
+                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">NIS</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Kelas-Jurusan</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Tanggal bergabung</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Action</th>
@@ -46,7 +46,7 @@
                             x-data="{ showDetail: false, showKick: false }">
                             <td class="table-body-cell font-medium">{{ ($anggota->currentPage() - 1) * $anggota->perPage() + $index + 1 }}</td>
                             <td class="table-body-cell font-semibold text-gray-900">{{ $item->siswa->user->name ?? '-' }}</td>
-                            <td class="table-body-cell text-gray-700 font-medium">{{ $item->siswa->nisn ?? '-' }}</td>
+                            <td class="table-body-cell text-gray-700 font-medium">{{ $item->siswa->nis ?? '-' }}</td>
                             <td class="table-body-cell text-gray-600">{{ ($item->siswa->kelas ?? '-') }} {{ ($item->siswa->jurusan ?? '-') }}</td>
                             <td class="table-body-cell text-gray-500 text-xs">{{ $item->disetujui_at ? $item->disetujui_at->format('F d, Y H:i') : '-' }}</td>
                             <td class="table-body-cell text-center">
@@ -114,10 +114,6 @@
                                             </div>
 
                                             <div class="grid grid-cols-2 gap-3">
-                                                <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
-                                                    <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">NISN</span>
-                                                    <p class="text-sm font-semibold text-gray-800 mt-0.5">{{ $item->siswa->nisn ?? '-' }}</p>
-                                                </div>
                                                 <div class="bg-white rounded-xl p-3 border border-[#f2eaea]">
                                                     <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-wide">NIS</span>
                                                     <p class="text-sm font-semibold text-gray-800 mt-0.5">{{ $item->siswa->nis ?? '-' }}</p>

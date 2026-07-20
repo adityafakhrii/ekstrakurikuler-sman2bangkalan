@@ -29,7 +29,7 @@ class StorePendaftaranRequest extends FormRequest
             $siswa = $this->user()?->siswa;
 
             if (! $siswa) {
-                $validator->errors()->add('nisn', 'Data siswa tidak ditemukan. Silakan hubungi admin.');
+                $validator->errors()->add('nis', 'Data siswa tidak ditemukan. Silakan hubungi admin.');
 
                 return;
             }

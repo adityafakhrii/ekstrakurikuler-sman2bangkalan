@@ -25,12 +25,12 @@ class RekomendasiController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'fisik' => ['required', 'integer', 'between:1,5'],
-            'estetika' => ['required', 'integer', 'between:1,5'],
-            'komunikasi' => ['required', 'integer', 'between:1,5'],
+            'ketangkasan' => ['required', 'integer', 'between:1,5'],
+            'intelektual' => ['required', 'integer', 'between:1,5'],
+            'sosial' => ['required', 'integer', 'between:1,5'],
             'kreativitas' => ['required', 'integer', 'between:1,5'],
-            'disiplin' => ['required', 'integer', 'between:1,5'],
-            'kekompakan' => ['required', 'integer', 'between:1,5'],
+            'kedisiplinan' => ['required', 'integer', 'between:1,5'],
+            'komunikasi' => ['required', 'integer', 'between:1,5'],
         ]);
 
         $siswa = auth()->user()->siswa;
@@ -43,12 +43,12 @@ class RekomendasiController extends Controller
         $siswa = $siswa;
 
         $jawaban = [
-            'fisik' => (int) $request->input('fisik'),
-            'estetika' => (int) $request->input('estetika'),
-            'komunikasi' => (int) $request->input('komunikasi'),
+            'ketangkasan' => (int) $request->input('ketangkasan'),
+            'intelektual' => (int) $request->input('intelektual'),
+            'sosial' => (int) $request->input('sosial'),
             'kreativitas' => (int) $request->input('kreativitas'),
-            'disiplin' => (int) $request->input('disiplin'),
-            'kekompakan' => (int) $request->input('kekompakan'),
+            'kedisiplinan' => (int) $request->input('kedisiplinan'),
+            'komunikasi' => (int) $request->input('komunikasi'),
         ];
 
         $rekomendasiId = $this->rekomendasiService->generate($siswa, $jawaban);

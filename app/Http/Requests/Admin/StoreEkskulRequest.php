@@ -14,18 +14,25 @@ class StoreEkskulRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:ekstrakurikuler,nama'],
             'pembina' => ['required', 'string', 'max:255'],
             'jadwal' => ['required', 'string', 'max:255'],
             'whatsapp_group' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'logo' => ['nullable', 'image', 'max:2048'],
-            'fisik' => ['required', 'integer', 'between:1,5'],
-            'estetika' => ['required', 'integer', 'between:1,5'],
-            'komunikasi' => ['required', 'integer', 'between:1,5'],
+            'ketangkasan' => ['required', 'integer', 'between:1,5'],
+            'intelektual' => ['required', 'integer', 'between:1,5'],
+            'sosial' => ['required', 'integer', 'between:1,5'],
             'kreativitas' => ['required', 'integer', 'between:1,5'],
-            'disiplin' => ['required', 'integer', 'between:1,5'],
-            'kekompakan' => ['required', 'integer', 'between:1,5'],
+            'kedisiplinan' => ['required', 'integer', 'between:1,5'],
+            'komunikasi' => ['required', 'integer', 'between:1,5'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.unique' => 'Mohon maaf, ekstrakurikuler dengan nama tersebut sudah terdaftar di sistem. Silakan periksa kembali daftar ekskul atau gunakan nama lain yang berbeda.',
         ];
     }
 }

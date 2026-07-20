@@ -29,10 +29,10 @@
                 <div class="space-y-5 text-xs font-semibold text-gray-800">
                     
                     <div class="grid grid-cols-12 gap-x-2 items-center">
-                        <label class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">Nisn</label>
+                        <label class="col-span-3 sm:col-span-2.5 text-gray-800 font-bold text-sm">NIS</label>
                         <span class="col-span-1 text-center text-gray-800 text-sm">:</span>
                         <div class="col-span-8 sm:col-span-8.5">
-                            <x-forms.input name="nisn" value="{{ auth()->user()->siswa->nisn }}" class="bg-gray-50 border-gray-200 text-gray-600 font-semibold" readonly />
+                            <x-forms.input name="nis" value="{{ auth()->user()->siswa->nis }}" class="bg-gray-50 border-gray-200 text-gray-600 font-semibold" readonly />
                         </div>
                     </div>
 

@@ -27,12 +27,6 @@ class UpdateSiswaRequest extends FormRequest
                 'max:20',
                 Rule::unique('siswa', 'nis')->ignore($siswaId),
             ],
-            'nisn' => [
-                'required',
-                'string',
-                'max:20',
-                Rule::unique('siswa', 'nisn')->ignore($siswaId),
-            ],
             'no_hp' => ['required', 'string', 'max:20'],
             'kelas' => ['required', 'in:X,XI,XII'],
             'jurusan' => ['required', 'string', 'max:50'],

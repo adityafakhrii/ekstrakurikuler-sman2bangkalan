@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
 
         foreach ($siswaData as $data) {
             $user = User::firstOrCreate(
-                ['username' => $data['nisn']],
+                ['username' => $data['nis']],
                 [
                     'name' => $data['name'],
                     'password' => Hash::make('password'),
@@ -75,7 +75,6 @@ class UserSeeder extends Seeder
                 ['user_id' => $user->id],
                 [
                     'nis' => $data['nis'],
-                    'nisn' => $data['nisn'],
                     'kelas' => $data['kelas'],
                     'jurusan' => $data['jurusan'],
                     'no_telp' => $data['no_telp'],
@@ -126,9 +125,9 @@ class UserSeeder extends Seeder
 
         foreach ($namaSiswaTambahan as $index => $namaSiswa) {
             $nomor = $index + 4;
-            $nisn = (string) (2120200 + $nomor);
+            $nis = (string) (120000 + $nomor);
             $user = User::updateOrCreate(
-                ['username' => $nisn],
+                ['username' => $nis],
                 [
                     'name' => $namaSiswa,
                     'password' => Hash::make('password'),
@@ -140,8 +139,7 @@ class UserSeeder extends Seeder
             Siswa::updateOrCreate(
                 ['user_id' => $user->id],
                 [
-                    'nis' => (string) (120000 + $nomor),
-                    'nisn' => $nisn,
+                    'nis' => $nis,
                     'kelas' => ['X', 'XI', 'XII'][$index % 3],
                     'jurusan' => ['MIPA 1', 'MIPA 2', 'IPS 1', 'Bahasa'][$index % 4],
                     'no_telp' => '08123456'.str_pad((string) $nomor, 4, '0', STR_PAD_LEFT),

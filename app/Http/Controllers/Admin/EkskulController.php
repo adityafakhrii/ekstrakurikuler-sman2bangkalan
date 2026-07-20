@@ -65,12 +65,12 @@ class EkskulController extends Controller
 
             // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
             $mapping = [
-                'fisik' => 'FISIK',
-                'estetika' => 'ESTETIKA',
-                'komunikasi' => 'KOMUNIKASI',
+                'ketangkasan' => 'KETANGKASAN',
+                'intelektual' => 'INTELEKTUAL',
+                'sosial'      => 'SOSIAL',
                 'kreativitas' => 'KREATIVITAS',
-                'disiplin' => 'DISIPLIN',
-                'kekompakan' => 'KEKOMPAKAN',
+                'kedisiplinan'=> 'KEDISIPLINAN',
+                'komunikasi'  => 'KOMUNIKASI',
             ];
 
             $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))
@@ -107,12 +107,12 @@ class EkskulController extends Controller
             ->toArray();
 
         $aspekValues = [
-            'fisik' => isset($aspekBobot['FISIK']) ? $aspekBobot['FISIK'] : 1,
-            'estetika' => isset($aspekBobot['ESTETIKA']) ? $aspekBobot['ESTETIKA'] : 1,
-            'komunikasi' => isset($aspekBobot['KOMUNIKASI']) ? $aspekBobot['KOMUNIKASI'] : 1,
+            'ketangkasan' => isset($aspekBobot['KETANGKASAN']) ? $aspekBobot['KETANGKASAN'] : 1,
+            'intelektual' => isset($aspekBobot['INTELEKTUAL']) ? $aspekBobot['INTELEKTUAL'] : 1,
+            'sosial'      => isset($aspekBobot['SOSIAL']) ? $aspekBobot['SOSIAL'] : 1,
             'kreativitas' => isset($aspekBobot['KREATIVITAS']) ? $aspekBobot['KREATIVITAS'] : 1,
-            'disiplin' => isset($aspekBobot['DISIPLIN']) ? $aspekBobot['DISIPLIN'] : 1,
-            'kekompakan' => isset($aspekBobot['KEKOMPAKAN']) ? $aspekBobot['KEKOMPAKAN'] : 1,
+            'kedisiplinan'=> isset($aspekBobot['KEDISIPLINAN']) ? $aspekBobot['KEDISIPLINAN'] : 1,
+            'komunikasi'  => isset($aspekBobot['KOMUNIKASI']) ? $aspekBobot['KOMUNIKASI'] : 1,
         ];
 
         return view('admin.ekstrakurikuler.show', compact('ekskul', 'aspekValues'));
@@ -129,12 +129,12 @@ class EkskulController extends Controller
             ->toArray();
 
         $aspekValues = [
-            'fisik' => isset($aspekBobot['FISIK']) ? $aspekBobot['FISIK'] : 1,
-            'estetika' => isset($aspekBobot['ESTETIKA']) ? $aspekBobot['ESTETIKA'] : 1,
-            'komunikasi' => isset($aspekBobot['KOMUNIKASI']) ? $aspekBobot['KOMUNIKASI'] : 1,
+            'ketangkasan' => isset($aspekBobot['KETANGKASAN']) ? $aspekBobot['KETANGKASAN'] : 1,
+            'intelektual' => isset($aspekBobot['INTELEKTUAL']) ? $aspekBobot['INTELEKTUAL'] : 1,
+            'sosial'      => isset($aspekBobot['SOSIAL']) ? $aspekBobot['SOSIAL'] : 1,
             'kreativitas' => isset($aspekBobot['KREATIVITAS']) ? $aspekBobot['KREATIVITAS'] : 1,
-            'disiplin' => isset($aspekBobot['DISIPLIN']) ? $aspekBobot['DISIPLIN'] : 1,
-            'kekompakan' => isset($aspekBobot['KEKOMPAKAN']) ? $aspekBobot['KEKOMPAKAN'] : 1,
+            'kedisiplinan'=> isset($aspekBobot['KEDISIPLINAN']) ? $aspekBobot['KEDISIPLINAN'] : 1,
+            'komunikasi'  => isset($aspekBobot['KOMUNIKASI']) ? $aspekBobot['KOMUNIKASI'] : 1,
         ];
 
         return view('admin.ekstrakurikuler.edit', compact('ekskul', 'aspekValues'));
@@ -166,12 +166,12 @@ class EkskulController extends Controller
 
             // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
             $mapping = [
-                'fisik' => 'FISIK',
-                'estetika' => 'ESTETIKA',
-                'komunikasi' => 'KOMUNIKASI',
+                'ketangkasan' => 'KETANGKASAN',
+                'intelektual' => 'INTELEKTUAL',
+                'sosial'      => 'SOSIAL',
                 'kreativitas' => 'KREATIVITAS',
-                'disiplin' => 'DISIPLIN',
-                'kekompakan' => 'KEKOMPAKAN',
+                'kedisiplinan'=> 'KEDISIPLINAN',
+                'komunikasi'  => 'KOMUNIKASI',
             ];
 
             $aspekList = AspekPenilaian::whereIn('kode', array_values($mapping))

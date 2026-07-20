@@ -45,12 +45,12 @@ class RekomendasiService
     private function calculateSimilarities(array $jawaban): array
     {
         $studentVector = [
-            $jawaban['fisik'],
-            $jawaban['estetika'],
-            $jawaban['komunikasi'],
+            $jawaban['ketangkasan'],
+            $jawaban['intelektual'],
+            $jawaban['sosial'],
             $jawaban['kreativitas'],
-            $jawaban['disiplin'],
-            $jawaban['kekompakan'],
+            $jawaban['kedisiplinan'],
+            $jawaban['komunikasi'],
         ];
 
         $ekskuls = Ekstrakurikuler::pluck('id');
@@ -108,7 +108,7 @@ class RekomendasiService
      */
     private function buildEkskulVector(array $aspekBobot): array
     {
-        $mapping = ['FISIK', 'ESTETIKA', 'KOMUNIKASI', 'KREATIVITAS', 'DISIPLIN', 'KEKOMPAKAN'];
+        $mapping = ['KETANGKASAN', 'INTELEKTUAL', 'SOSIAL', 'KREATIVITAS', 'KEDISIPLINAN', 'KOMUNIKASI'];
 
         return array_map(
             fn ($kode) => isset($aspekBobot[$kode]) ? (float) $aspekBobot[$kode] : 0,

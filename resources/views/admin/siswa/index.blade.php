@@ -18,12 +18,12 @@
             </div>
         </div>
 
-        <x-tables.table :headers="['#', 'NIS', 'NISN', 'Nama Siswa', 'Tanggal Ditambahkan', 'Action']">
+        <x-tables.table :headers="['#', 'NIS', 'Nama Siswa', 'Tanggal Ditambahkan', 'Action']">
             @foreach($siswas as $index => $siswa)
                 <tr class="hover:bg-gray-50/50 transition-colors duration-150">
                     <td class="table-body-cell font-medium">{{ ($siswas->currentPage() - 1) * $siswas->perPage() + $index + 1 }}</td>
                     <td class="table-body-cell text-gray-700 font-medium">{{ $siswa->nis }}</td>
-                    <td class="table-body-cell text-gray-700 font-medium">{{ $siswa->nisn }}</td>
+
                     <td class="table-body-cell font-medium text-gray-900">{{ $siswa->user->name }}</td>
                     <td class="table-body-cell text-gray-500 font-normal">{{ $siswa->created_at?->format('F d, Y H.i') }}</td>
                     <td class="table-body-cell text-center">

@@ -31,23 +31,23 @@ class StudentAuthController extends Controller
     public function login(LoginSiswaRequest $request): RedirectResponse
     {
         $validated = $request->validated();
-        $nisn = $validated['nisn'];
+        $nis = $validated['nis'];
 
         try {
             if (! \Schema::hasTable('siswa')) {
                 return back()
-                    ->withInput($request->only('nisn'))
-                    ->withErrors(['nisn' => 'Gagal masuk. Terjadi gangguan pada sistem, silakan hubungi Administrator.']);
+                    ->withInput($request->only('nis'))
+                    ->withErrors(['nis' => 'Gagal masuk. Terjadi gangguan pada sistem, silakan hubungi Administrator.']);
             }
 
             $siswa = Siswa::with('user')
-                ->where('nisn', $nisn)
+                ->where('nis', $nis)
                 ->first();
 
             if (! $siswa || ! $siswa->user) {
                 return back()
-                    ->withInput($request->only('nisn'))
-                    ->withErrors(['nisn' => 'NISN tidak terdaftar. Silakan hubungi Administrator.']);
+                    ->withInput($request->only('nis'))
+                    ->withErrors(['nis' => 'NIS tidak terdaftar. Silakan hubungi Administrator.']);
             }
 
             /** @var \App\Models\User $user */
@@ -55,8 +55,8 @@ class StudentAuthController extends Controller
 
             if (! $user->isSiswa()) {
                 return back()
-                    ->withInput($request->only('nisn'))
-                    ->withErrors(['nisn' => 'Akun Anda tidak terdaftar sebagai Siswa.']);
+                    ->withInput($request->only('nis'))
+                    ->withErrors(['nis' => 'Akun Anda tidak terdaftar sebagai Siswa.']);
             }
 
             $request->session()->regenerate();
@@ -70,8 +70,8 @@ class StudentAuthController extends Controller
             \Log::error('Database error during student login: '.$e->getMessage());
 
             return back()
-                ->withInput($request->only('nisn'))
-                ->withErrors(['nisn' => 'Gagal masuk. Terjadi gangguan pada sistem, silakan hubungi Administrator.']);
+                ->withInput($request->only('nis'))
+                ->withErrors(['nis' => 'Gagal masuk. Terjadi gangguan pada sistem, silakan hubungi Administrator.']);
         }
     }
 }

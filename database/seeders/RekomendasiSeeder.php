@@ -22,12 +22,12 @@ class RekomendasiSeeder extends Seeder
         foreach ($siswas as $siswa) {
             // Seed jawaban simulasi
             $jawaban = [
-                'fisik'       => rand(1, 5),
-                'estetika'    => rand(1, 5),
-                'komunikasi'  => rand(1, 5),
-                'kreativitas' => rand(1, 5),
-                'disiplin'    => rand(1, 5),
-                'kekompakan'  => rand(1, 5),
+                'ketangkasan'  => rand(1, 5),
+                'intelektual'  => rand(1, 5),
+                'sosial'       => rand(1, 5),
+                'kreativitas'  => rand(1, 5),
+                'kedisiplinan' => rand(1, 5),
+                'komunikasi'   => rand(1, 5),
             ];
 
             $rekomendasi = Rekomendasi::create([

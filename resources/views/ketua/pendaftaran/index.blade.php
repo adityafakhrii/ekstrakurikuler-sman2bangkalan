@@ -37,7 +37,7 @@
                     <tr>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">#</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Nama Lengkap</th>
-                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Nisn</th>
+                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">NIS</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Kelas-Jurusan</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Status</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Action</th>
@@ -48,7 +48,7 @@
                         <tr class="hover:bg-gray-50/50 transition-colors duration-150"
                             data-id="{{ $pendaftaran->id }}"
                             data-nama="{{ $pendaftaran->siswa->user->name ?? '-' }}"
-                            data-nisn="{{ $pendaftaran->siswa->nisn ?? '-' }}"
+                            data-nis="{{ $pendaftaran->siswa->nis ?? '-' }}"
                             data-kelamin="{{ ($pendaftaran->siswa->jenis_kelamin ?? 'L') === 'L' ? 'Laki-laki' : 'Perempuan' }}"
                             data-kelas="{{ $pendaftaran->siswa->kelas ?? '-' }}"
                             data-jurusan="{{ $pendaftaran->siswa->jurusan ?? '-' }}"
@@ -63,7 +63,7 @@
                             data-tgl="{{ $pendaftaran->created_at ? $pendaftaran->created_at->format('d F Y') : '-' }}">
                             <td class="table-body-cell font-medium text-xs">{{ ($pendaftarans->currentPage() - 1) * $pendaftarans->perPage() + $index + 1 }}</td>
                             <td class="table-body-cell font-medium text-gray-800 text-xs">{{ $pendaftaran->siswa->user->name ?? '-' }}</td>
-                            <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->nisn ?? '-' }}</td>
+                            <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->nis ?? '-' }}</td>
                             <td class="table-body-cell text-gray-600 text-xs">{{ $pendaftaran->siswa->kelas ?? '-' }} {{ $pendaftaran->siswa->jurusan ?? '-' }}</td>
                             <td class="table-body-cell">
                                 <button type="button"
@@ -160,7 +160,7 @@
             <!-- inner content sesuai screenshot: list label : value -->
             <div id="detail-content" class="space-y-3 text-[11px] sm:text-xs text-gray-800">
                 <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
-                    <span class="font-medium">NISN</span><span>:</span><span id="d-nisn" class="font-semibold">-</span>
+                    <span class="font-medium">NIS</span><span>:</span><span id="d-nis" class="font-semibold">-</span>
                 </div>
                 <div class="grid grid-cols-[100px_12px_1fr] gap-1 items-start">
                     <span class="font-medium">Nama Lengkap</span><span>:</span><span id="d-nama" class="font-semibold">-</span>
@@ -228,7 +228,7 @@
             document.body.style.overflow = '';
         }
         function openDetailModal(row) {
-            document.getElementById('d-nisn').textContent = row.dataset.nisn || '-';
+            document.getElementById('d-nis').textContent = row.dataset.nis || '-';
             document.getElementById('d-nama').textContent = row.dataset.nama || '-';
             document.getElementById('d-kelamin').textContent = row.dataset.kelamin || '-';
             document.getElementById('d-kelas-jurusan').textContent = row.dataset.kelasJurusan || '-';

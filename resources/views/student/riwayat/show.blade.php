@@ -83,9 +83,9 @@
                         </div>
 
                         <div class="grid grid-cols-12 gap-x-2 items-center">
-                            <span class="col-span-4 sm:col-span-3 text-gray-800">NISN</span>
+                            <span class="col-span-4 sm:col-span-3 text-gray-800">NIS</span>
                             <span class="col-span-1 text-center text-gray-800">:</span>
-                            <span class="col-span-7 sm:col-span-8 font-bold text-gray-900">{{ $pendaftaran->siswa->nisn }}</span>
+                            <span class="col-span-7 sm:col-span-8 font-bold text-gray-900">{{ $pendaftaran->siswa->nis }}</span>
                         </div>
 
                         <div class="grid grid-cols-12 gap-x-2 items-center">

@@ -69,7 +69,7 @@
                 <thead class="bg-[#FCFBFB]">
                     <tr>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">#</th>
-                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">NISN</th>
+                        <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">NIS</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Nama Lengkap</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500 text-center">TP</th>
                         <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500 text-center">H</th>
@@ -83,7 +83,7 @@
                     @forelse($rows as $index => $row)
                         <tr class="hover:bg-gray-50/50 transition-colors duration-150">
                             <td class="table-body-cell font-medium">{{ $index + 1 }}</td>
-                            <td class="table-body-cell text-gray-700 font-medium">{{ $row['nisn'] }}</td>
+                            <td class="table-body-cell text-gray-700 font-medium">{{ $row['nis'] }}</td>
                             <td class="table-body-cell font-semibold text-gray-900">{{ $row['nama'] }}</td>
                             <td class="table-body-cell text-center text-gray-600">{{ $row['tp'] }}</td>
                             <td class="table-body-cell text-center text-green-600 font-semibold">{{ $row['hadir'] }}</td>

@@ -13,12 +13,10 @@ class SiswaFactory extends Factory
     public function definition(): array
     {
         $nis = fake()->unique()->numerify('######');
-        $nisn = fake()->unique()->numerify('##########');
 
         return [
             'user_id' => User::factory()->siswa(),
             'nis' => $nis,
-            'nisn' => $nisn,
             'kelas' => fake()->randomElement(['X', 'XI', 'XII']),
             'jurusan' => fake()->randomElement(['MIPA 1', 'IPS 2', 'Bahasa']),
             'no_telp' => fake()->phoneNumber(),

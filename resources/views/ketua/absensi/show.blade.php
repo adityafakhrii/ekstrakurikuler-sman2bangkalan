@@ -35,7 +35,7 @@
                     <thead class="bg-[#FCFBFB]">
                         <tr>
                             <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">#</th>
-                            <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">NISN</th>
+                            <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">NIS</th>
                             <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500">Nama Lengkap</th>
                             <th scope="col" class="table-header-cell text-xs tracking-wider font-semibold text-gray-500" colspan="4">Status Kehadiran</th>
                         </tr>
@@ -47,7 +47,7 @@
                             @endphp
                             <tr class="hover:bg-gray-50/50 transition-colors duration-150">
                                 <td class="table-body-cell font-medium">{{ $index + 1 }}</td>
-                                <td class="table-body-cell text-gray-700 font-medium">{{ $member->siswa->nisn ?? '-' }}</td>
+                                <td class="table-body-cell text-gray-700 font-medium">{{ $member->siswa->nis ?? '-' }}</td>
                                 <td class="table-body-cell font-semibold text-gray-900">{{ $member->siswa->user->name ?? '-' }}</td>
                                 <td class="table-body-cell" colspan="4">
                                     <input type="hidden" name="absensi[{{ $index }}][siswa_id]" value="{{ $member->siswa->id }}">

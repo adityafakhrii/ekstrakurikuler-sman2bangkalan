@@ -17,11 +17,10 @@ class SiswaController extends Controller
     public function index(): View
     {
         $search = request('search');
-        $siswas = Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk', 'created_at')
+        $siswas = Siswa::select('id', 'user_id', 'nis', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk', 'created_at')
             ->with('user:id,name')
             ->when($search, function ($query, $search) {
                 return $query->where('nis', 'like', "%{$search}%")
-                    ->orWhere('nisn', 'like', "%{$search}%")
                     ->orWhere('kelas', 'like', "%{$search}%")
                     ->orWhere('jurusan', 'like', "%{$search}%")
                     ->orWhereHas('user', function ($q) use ($search) {
@@ -47,7 +46,7 @@ class SiswaController extends Controller
 
             $user = User::create([
                 'name'     => $validated['nama_siswa'],
-                'username' => $validated['nisn'],
+                'username' => $validated['nis'],
                 'password' => Hash::make(config('ekskul.password_default_siswa')),
                 'role'     => 'siswa',
             ]);
@@ -55,7 +54,6 @@ class SiswaController extends Controller
             Siswa::create([
                 'user_id' => $user->id,
                 'nis' => $validated['nis'],
-                'nisn' => $validated['nisn'],
                 'kelas' => $validated['kelas'],
                 'jurusan' => $validated['jurusan'],
                 'no_telp' => $validated['no_hp'],
@@ -83,7 +81,6 @@ class SiswaController extends Controller
 
             $siswa->update([
                 'nis' => $validated['nis'],
-                'nisn' => $validated['nisn'],
                 'kelas' => $validated['kelas'],
                 'jurusan' => $validated['jurusan'],
                 'no_telp' => $validated['no_hp'],
@@ -93,7 +90,7 @@ class SiswaController extends Controller
 
             $siswa->user->update([
                 'name' => $validated['nama_siswa'],
-                'username' => $validated['nisn'],
+                'username' => $validated['nis'],
             ]);
         });
 

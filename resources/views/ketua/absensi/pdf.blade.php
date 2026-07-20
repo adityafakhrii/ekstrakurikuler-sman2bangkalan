@@ -65,7 +65,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>NISN</th>
+                            <th>NIS</th>
                             <th>Nama Lengkap</th>
                             <th>TP</th>
                             <th>H</th>
@@ -79,7 +79,7 @@
                         @foreach($rows as $rowIndex => $row)
                             <tr>
                                 <td class="text-center">{{ ($pageIndex * 20) + $rowIndex + 1 }}</td>
-                                <td class="text-center">{{ $row['nisn'] }}</td>
+                                <td class="text-center">{{ $row['nis'] }}</td>
                                 <td>{{ $row['nama'] }}</td>
                                 <td class="text-center">{{ $row['tp'] }}</td>
                                 <td class="text-center">{{ $row['hadir'] }}</td>

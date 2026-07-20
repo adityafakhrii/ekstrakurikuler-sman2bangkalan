@@ -60,7 +60,7 @@ class KetuaDashboardController extends Controller
 
         $query = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'alamat', 'catatan_ketua', 'created_at')
             ->with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'jurusan', 'no_telp', 'alamat', 'jenis_kelamin'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'kelas', 'jurusan', 'no_telp', 'alamat', 'jenis_kelamin'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email')
             ])
             ->where('ekstrakurikuler_id', $ekskul->id);
@@ -68,8 +68,7 @@ class KetuaDashboardController extends Controller
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->whereHas('siswa', function ($sq) use ($search) {
-                    $sq->where('nisn', 'like', "%{$search}%")
-                        ->orWhere('nis', 'like', "%{$search}%")
+                    $sq->where('nis', 'like', "%{$search}%")
                         ->orWhereHas('user', fn($uq) => $uq->where('name', 'like', "%{$search}%"));
                 });
             });
@@ -160,18 +159,17 @@ class KetuaDashboardController extends Controller
 
         $query = Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_siswa', 'catatan_ketua', 'disetujui_at', 'created_at')
             ->with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'jurusan', 'no_telp', 'jenis_kelamin'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'kelas', 'jurusan', 'no_telp', 'jenis_kelamin'),
                 'siswa.user' => fn($q) => $q->select('id', 'name', 'email'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
             ->where('status', 'disetujui');
 
-        // Pencarian berdasarkan nama/NISN
+        // Pencarian berdasarkan nama/NIS
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->whereHas('siswa', function ($sq) use ($search) {
-                    $sq->where('nisn', 'like', "%{$search}%")
-                        ->orWhere('nis', 'like', "%{$search}%")
+                    $sq->where('nis', 'like', "%{$search}%")
                         ->orWhereHas('user', fn($uq) => $uq->where('name', 'like', "%{$search}%"));
                 });
             });
@@ -247,7 +245,7 @@ class KetuaDashboardController extends Controller
 
         // Ambil data absensi untuk sesi ini
         $absensiList = Absensi::with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'nis', 'kelas', 'jurusan'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'kelas', 'jurusan'),
                 'siswa.user' => fn($q) => $q->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -259,7 +257,7 @@ class KetuaDashboardController extends Controller
 
         // Ambil semua anggota (status disetujui) untuk form absensi
         $anggotaList = Pendaftaran::with([
-                'siswa' => fn($q) => $q->select('id', 'user_id', 'nisn', 'kelas', 'jurusan'),
+                'siswa' => fn($q) => $q->select('id', 'user_id', 'nis', 'kelas', 'jurusan'),
                 'siswa.user' => fn($q) => $q->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -381,7 +379,7 @@ class KetuaDashboardController extends Controller
         $totalPertemuan = $absensi->map(fn ($item) => $item->tanggal->format('Y-m-d').'|'.($item->topik ?? ''))->unique()->count();
 
         $anggota = Pendaftaran::with([
-                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'kelas', 'jurusan'),
+                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nis', 'kelas', 'jurusan'),
                 'siswa.user' => fn ($query) => $query->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -404,7 +402,7 @@ class KetuaDashboardController extends Controller
             };
 
             return [
-                'nisn' => $member->siswa->nisn ?? '-',
+                'nis' => $member->siswa->nis ?? '-',
                 'nama' => $member->siswa->user->name ?? '-',
                 'tp' => $totalPertemuan,
                 'hadir' => $hadir,
@@ -442,7 +440,7 @@ class KetuaDashboardController extends Controller
             ->count();
 
         $anggota = Pendaftaran::with([
-                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nisn', 'kelas', 'jurusan'),
+                'siswa' => fn ($query) => $query->select('id', 'user_id', 'nis', 'kelas', 'jurusan'),
                 'siswa.user' => fn ($query) => $query->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
@@ -468,7 +466,7 @@ class KetuaDashboardController extends Controller
             };
 
             return [
-                'nisn' => $member->siswa->nisn ?? '-',
+                'nis' => $member->siswa->nis ?? '-',
                 'nama' => $member->siswa->user->name ?? '-',
                 'kelas_jurusan' => trim(($member->siswa->kelas ?? '').' '.($member->siswa->jurusan ?? ''), ' '),
                 'tp' => $totalPertemuan,

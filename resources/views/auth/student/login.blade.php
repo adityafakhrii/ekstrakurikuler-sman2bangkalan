@@ -9,7 +9,7 @@
                 Login Siswa
             </h1>
             <p class="text-base sm:text-lg text-gray-600 font-medium tracking-wide">
-                Masuk menggunakan NISN yang sudah didaftarkan admin.
+                Masuk menggunakan NIS yang sudah didaftarkan admin.
             </p>
         </div>
 
@@ -26,10 +26,10 @@
 
                     <div>
                         <x-forms.input 
-                            label="NISN" 
-                            name="nisn" 
-                            placeholder="Masukkan NISN" 
-                            value="{{ old('nisn') }}" 
+                            label="NIS" 
+                            name="nis" 
+                            placeholder="Masukkan NIS" 
+                            value="{{ old('nis') }}" 
                             required 
                             autofocus 
                         />

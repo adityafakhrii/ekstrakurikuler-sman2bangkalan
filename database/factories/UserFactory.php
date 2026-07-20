@@ -64,7 +64,7 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'siswa',
-            'username' => fake()->unique()->numerify('##########'), // NISN 10 digit
+            'username' => fake()->unique()->numerify('######'), // NIS 6 digit
         ]);
     }
 

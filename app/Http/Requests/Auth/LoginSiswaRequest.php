@@ -14,21 +14,21 @@ class LoginSiswaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nisn' => ['required', 'string'],
+            'nis' => ['required', 'string'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nisn.required' => 'NISN wajib diisi.',
+            'nis.required' => 'NIS wajib diisi.',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'nisn' => 'NISN',
+            'nis' => 'NIS',
         ];
     }
 }

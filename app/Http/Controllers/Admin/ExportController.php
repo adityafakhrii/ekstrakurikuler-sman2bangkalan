@@ -29,11 +29,11 @@ class ExportController extends Controller
             fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
             // Header
-            fputcsv($file, ['No', 'NIS', 'NISN', 'Nama Siswa', 'Kelas', 'Jurusan', 'JK', 'No HP', 'Tahun Masuk']);
+            fputcsv($file, ['No', 'NIS', 'Nama Siswa', 'Kelas', 'Jurusan', 'JK', 'No HP', 'Tahun Masuk']);
 
             // Data — lazy() stream per record, hemat memory
             $index = 0;
-            Siswa::select('id', 'user_id', 'nis', 'nisn', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
+            Siswa::select('id', 'user_id', 'nis', 'kelas', 'jurusan', 'jenis_kelamin', 'no_telp', 'tahun_masuk')
                 ->with('user:id,name')
                 ->latest()
                 ->lazy()
@@ -41,7 +41,6 @@ class ExportController extends Controller
                     fputcsv($file, [
                         ++$index,
                         $siswa->nis,
-                        $siswa->nisn,
                         $siswa->user->name,
                         $siswa->kelas,
                         $siswa->jurusan,
@@ -117,19 +116,19 @@ class ExportController extends Controller
             fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
             // Header
-            fputcsv($file, ['No', 'Nama Siswa', 'NISN', 'Ekskul', 'Tanggal Daftar', 'Status', 'Catatan Ketua']);
+            fputcsv($file, ['No', 'Nama Siswa', 'NIS', 'Ekskul', 'Tanggal Daftar', 'Status', 'Catatan Ketua']);
 
             // Data — lazy() stream per record
             $index = 0;
             Pendaftaran::select('id', 'siswa_id', 'ekstrakurikuler_id', 'status', 'catatan_ketua', 'created_at')
-                ->with(['siswa:id,user_id,nisn' => ['user:id,name'], 'ekstrakurikuler:id,nama'])
+                ->with(['siswa:id,user_id,nis' => ['user:id,name'], 'ekstrakurikuler:id,nama'])
                 ->latest()
                 ->lazy()
                 ->each(function ($p) use ($file, &$index) {
                     fputcsv($file, [
                         ++$index,
                         $p->siswa?->user?->name ?? '-',
-                        $p->siswa?->nisn ?? '-',
+                        $p->siswa?->nis ?? '-',
                         $p->ekstrakurikuler?->nama ?? '-',
                         $p->created_at->format('d/m/Y H:i'),
                         ucfirst($p->status),
