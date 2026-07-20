@@ -16,34 +16,31 @@ class KetuaDashboardController extends Controller
     public function index(): View
     {
         $ekskul = auth()->user()->ekstrakurikuler;
-        $userId = auth()->id();
+        $stats = [
+            'menunggu' => 0,
+            'terkonfirmasi' => 0,
+            'disetujui' => 0,
+            'ditolak' => 0,
+            'dibatalkan' => 0,
+            'total' => 0,
+        ];
 
-        $stats = Cache::remember("ketua.dashboard.stats.{$userId}", now()->addMinutes(15), function () use ($ekskul) {
-            $statsData = [
-                'menunggu' => 0,
-                'terkonfirmasi' => 0,
-                'disetujui' => 0,
-                'ditolak' => 0,
-                'total' => 0,
-            ];
+        if ($ekskul) {
+            $counts = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)
+                ->selectRaw('COUNT(*) as total')
+                ->selectRaw("SUM(CASE WHEN status = 'menunggu' THEN 1 ELSE 0 END) as menunggu")
+                ->selectRaw("SUM(CASE WHEN status = 'disetujui' THEN 1 ELSE 0 END) as disetujui")
+                ->selectRaw("SUM(CASE WHEN status = 'ditolak' THEN 1 ELSE 0 END) as ditolak")
+                ->selectRaw("SUM(CASE WHEN status = 'dibatalkan' THEN 1 ELSE 0 END) as dibatalkan")
+                ->first();
 
-            if ($ekskul) {
-                $counts = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)
-                    ->selectRaw("count(*) as total")
-                    ->selectRaw("sum(status = 'menunggu') as menunggu")
-                    ->selectRaw("sum(status = 'disetujui') as disetujui")
-                    ->selectRaw("sum(status = 'ditolak') as ditolak")
-                    ->first();
-
-                $statsData['menunggu'] = (int) $counts->menunggu;
-                $statsData['terkonfirmasi'] = (int) $counts->disetujui;
-                $statsData['disetujui'] = (int) $counts->disetujui;
-                $statsData['ditolak'] = (int) $counts->ditolak;
-                $statsData['total'] = (int) $counts->total;
-            }
-
-            return $statsData;
-        });
+            $stats['menunggu'] = (int) ($counts->menunggu ?? 0);
+            $stats['terkonfirmasi'] = (int) (($counts->disetujui ?? 0) + ($counts->ditolak ?? 0) + ($counts->dibatalkan ?? 0));
+            $stats['disetujui'] = (int) ($counts->disetujui ?? 0);
+            $stats['ditolak'] = (int) ($counts->ditolak ?? 0);
+            $stats['dibatalkan'] = (int) ($counts->dibatalkan ?? 0);
+            $stats['total'] = (int) ($counts->total ?? 0);
+        }
 
         $ekskulNama = $ekskul ? $ekskul->nama : 'Tidak ada Ekstrakurikuler yang dipimpin';
 

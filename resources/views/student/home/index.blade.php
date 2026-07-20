@@ -6,15 +6,20 @@
     <!-- 1. Hero Section with Interactive Slider (Frontend Only via AlpineJS) -->
     <section class="bg-[#2A1B60] text-white pt-16 pb-16 md:pt-20 md:pb-24 overflow-hidden relative"
              x-data="{ 
-                activeSlide: 0, 
+                activeSlide: 0,
+                autoplayMs: 3000,
+                autoplayTimer: null,
                 slides: [
                     'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=600&auto=format&fit=crop',
                     'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=600&auto=format&fit=crop',
                     'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
                 ],
                 prev() { this.activeSlide = (this.activeSlide === 0) ? this.slides.length - 1 : this.activeSlide - 1 },
-                next() { this.activeSlide = (this.activeSlide === this.slides.length - 1) ? 0 : this.activeSlide + 1 }
-             }">
+                next() { this.activeSlide = (this.activeSlide === this.slides.length - 1) ? 0 : this.activeSlide + 1 },
+                startAutoplay() { this.stopAutoplay(); this.autoplayTimer = setInterval(() => this.next(), this.autoplayMs) },
+                stopAutoplay() { if (this.autoplayTimer) clearInterval(this.autoplayTimer) }
+             }"
+             x-init="startAutoplay()">
         <!-- Background School Glow -->
         <div class="absolute inset-0 bg-gradient-to-tr from-[#2A1B60] via-[#2A1B60]/95 to-[#3b258c] z-0"></div>
         
@@ -209,11 +214,10 @@
                     </p>
 
                     <div class="pt-2">
-                        <x-buttons.button 
-                            class="bg-[#FDE047] hover:bg-[#FACC15] text-[#1F2937] px-8 py-3 rounded-full text-xs font-bold shadow-md transition-all duration-200 border-0 cursor-pointer"
-                        >
+                        <a href="https://www.sman2bangkalan.sch.id/" target="_blank" rel="noopener noreferrer"
+                           class="inline-flex items-center justify-center bg-[#FDE047] hover:bg-[#FACC15] text-[#1F2937] px-8 py-3 rounded-full text-xs font-bold shadow-md transition-all duration-200 border-0 cursor-pointer no-underline">
                             Selengkapnya
-                        </x-buttons.button>
+                        </a>
                     </div>
                 </div>
 

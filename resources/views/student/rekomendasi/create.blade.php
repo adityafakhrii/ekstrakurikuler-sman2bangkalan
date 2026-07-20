@@ -50,16 +50,10 @@
                 @endforeach
             </div>
 
-            <!-- Action Buttons matching screenshot style inside the card (Right aligned) -->
-            <div class="flex justify-end gap-3 pt-6 border-t border-gray-200 max-w-3xl mx-auto">
-                <!-- Submit Button (Green, rounded-full) -->
+            <!-- Action Button matching screenshot style inside the card (Right aligned) -->
+            <div class="flex justify-end pt-6 border-t border-gray-200 max-w-3xl mx-auto">
                 <x-buttons.button type="submit" class="bg-[#22C55E] hover:bg-[#16A34A] text-white py-3 px-8 rounded-full text-xs font-bold border-0 cursor-pointer shadow-3xs">
                     Submit
-                </x-buttons.button>
-
-                <!-- Edit Button (Yellow, rounded-full) -->
-                <x-buttons.button variant="secondary" type="button" class="bg-[#FDE047] hover:bg-[#FACC15] text-[#1F2937] py-3 px-8 rounded-full text-xs font-bold border-0 cursor-pointer shadow-3xs">
-                    Edit
                 </x-buttons.button>
             </div>
 
