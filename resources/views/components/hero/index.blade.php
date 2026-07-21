@@ -1,17 +1,17 @@
 @props([
     'title' => 'Sistem Informasi Ekstrakurikuler',
     'subtitle' => 'SMAN 2 Bangkalan',
-    'backgroundImage' => '/images/bg-school-hero.jpg'
+    'backgroundImage' => '/images/background.png'
 ])
 
 <section class="relative bg-[#2A1B60] min-h-[360px] md:min-h-[380px] flex items-center justify-center text-center px-4 overflow-hidden">
     <!-- Background Image -->
-    <div class="absolute inset-0 z-0 bg-cover bg-center opacity-40 mix-blend-overlay" 
-         style="background-image: url('{{ $backgroundImage }}');">
+    <div class="absolute inset-0 z-0 bg-cover bg-center" 
+         style="background-image: url('{{ $backgroundImage }}'); opacity: 0.55;">
     </div>
     
-    <!-- Dark Violet Gradient Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-b from-[#2A1B60]/75 via-[#2A1B60]/90 to-[#2A1B60] z-0"></div>
+    <!-- Dark Overlay for readability -->
+    <div class="absolute inset-0 bg-gradient-to-b from-[#2A1B60]/60 via-[#2A1B60]/65 to-[#2A1B60]/80 z-0"></div>
 
     <!-- Centered Content -->
     <div class="relative z-10 max-w-4xl mx-auto pb-24 md:pb-28">

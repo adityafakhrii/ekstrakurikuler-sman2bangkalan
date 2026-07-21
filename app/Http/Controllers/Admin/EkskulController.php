@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreEkskulRequest;
 use App\Http\Requests\Admin\UpdateEkskulRequest;
 use App\Helpers\AspekHelper;
+use App\Helpers\ImageHelper;
 use App\Models\Ekstrakurikuler;
 use App\Models\AspekPenilaian;
 use App\Models\EkskulAspek;
@@ -45,11 +46,14 @@ class EkskulController extends Controller
     {
         $validated = $request->validated();
 
+        $compressionInfo = null;
+
         try {
-            DB::transaction(function () use ($request, $validated) {
+            DB::transaction(function () use ($request, $validated, &$compressionInfo) {
                 $logoPath = null;
                 if ($request->hasFile('logo')) {
-                    $logoPath = $request->file('logo')->store('ekskul-logos', 'public');
+                    $compressionInfo = ImageHelper::convertToWebp($request->file('logo'), 'ekskul-images');
+                    $logoPath = $compressionInfo['path'];
                 }
 
                 $ekskul = Ekstrakurikuler::create([
@@ -100,7 +104,12 @@ class EkskulController extends Controller
 
         Cache::forget('admin.dashboard.stats');
 
-        return redirect()->route('ekskul.index')->with('success', 'Ekstrakurikuler berhasil ditambahkan.');
+        $message = 'Ekstrakurikuler berhasil ditambahkan.';
+        if ($compressionInfo) {
+            $message .= " Gambar berhasil dikompres dari {$compressionInfo['original_size_formatted']} menjadi {$compressionInfo['compressed_size_formatted']} ({$compressionInfo['percentage']}% lebih ringan).";
+        }
+
+        return redirect()->route('ekskul.index')->with('success', $message);
     }
 
     public function show(int $id): View
@@ -152,14 +161,17 @@ class EkskulController extends Controller
         $ekskul = Ekstrakurikuler::findOrFail($id);
         $validated = $request->validated();
 
+        $compressionInfo = null;
+
         try {
-            DB::transaction(function () use ($request, $validated, $ekskul) {
+            DB::transaction(function () use ($request, $validated, $ekskul, &$compressionInfo) {
                 $logoPath = $ekskul->logo;
                 if ($request->hasFile('logo')) {
                     if ($logoPath) {
                         Storage::disk('public')->delete($logoPath);
                     }
-                    $logoPath = $request->file('logo')->store('ekskul-logos', 'public');
+                    $compressionInfo = ImageHelper::convertToWebp($request->file('logo'), 'ekskul-images');
+                    $logoPath = $compressionInfo['path'];
                 }
 
                 $ekskul->update([
@@ -208,7 +220,12 @@ class EkskulController extends Controller
 
         Cache::forget('admin.dashboard.stats');
 
-        return redirect()->route('ekskul.index')->with('success', 'Ekstrakurikuler berhasil diperbarui.');
+        $message = 'Ekstrakurikuler berhasil diperbarui.';
+        if ($compressionInfo) {
+            $message .= " Gambar berhasil dikompres dari {$compressionInfo['original_size_formatted']} menjadi {$compressionInfo['compressed_size_formatted']} ({$compressionInfo['percentage']}% lebih ringan).";
+        }
+
+        return redirect()->route('ekskul.index')->with('success', $message);
     }
 
     public function destroy(int $id): RedirectResponse

@@ -16,12 +16,14 @@
                 <!-- Red Background Photo Container matching screenshot -->
                 <div class="w-28 h-36 bg-[#E11D48] rounded-xl overflow-hidden border-2 border-[#E11D48] shadow-md flex items-center justify-center relative">
                     @if(Auth::user()->foto)
-                        <img src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Foto Profil" class="w-full h-full object-cover">
+                        <img id="profile-preview" src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Foto Profil" class="w-full h-full object-cover">
                     @else
-                        <!-- Pas foto dummy placeholder (Avatar SVG representing student) -->
-                        <svg class="w-20 h-20 text-white/90 mt-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                        </svg>
+                        <div id="profile-preview-container">
+                            <svg id="profile-preview-icon" class="w-20 h-20 text-white/90 mt-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                            <img id="profile-preview" src="" alt="Preview" class="w-full h-full object-cover hidden">
+                        </div>
                     @endif
                 </div>
                 
@@ -30,7 +32,7 @@
                     <label class="bg-gray-100 border border-gray-300 rounded-sm px-2.5 py-1 text-[10px] font-bold text-gray-700 hover:bg-gray-200 transition-colors duration-150 cursor-pointer shadow-xs uppercase tracking-wide">
                         Choose Img
                         <input type="file" name="profile_image" class="hidden" accept="image/*" 
-                               onchange="document.getElementById('img-chosen-text').textContent = this.files[0] ? this.files[0].name : 'No Img Chosen'">
+                               onchange="previewProfileImage(this)">
                     </label>
                     <span id="img-chosen-text" class="text-[10px] text-gray-500 font-medium truncate w-24">No Img Chosen</span>
                 </div>
@@ -39,6 +41,32 @@
                     <p class="text-xs text-red-600 font-medium mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
+            <script>
+                function previewProfileImage(input) {
+                    const preview = document.getElementById('profile-preview');
+                    const icon = document.getElementById('profile-preview-icon');
+                    const chosenText = document.getElementById('img-chosen-text');
+                    
+                    if (input.files && input.files[0]) {
+                        const file = input.files[0];
+                        chosenText.textContent = file.name;
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            preview.classList.remove('hidden');
+                            if (icon) icon.classList.add('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.src = '';
+                        preview.classList.add('hidden');
+                        if (icon) icon.classList.remove('hidden');
+                        chosenText.textContent = 'No Img Chosen';
+                    }
+                }
+            </script>
 
             <!-- Input Fields Group -->
             <div class="space-y-5">

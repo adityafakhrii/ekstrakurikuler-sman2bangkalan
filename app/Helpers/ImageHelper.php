@@ -40,8 +40,13 @@ class ImageHelper
             imagesavealpha($image, true);
         }
 
-        // Buat nama file unik dengan ekstensi .webp
-        $filename = Str::random(40) . '.webp';
+        // Buat nama file dari nama asli dengan ekstensi .webp
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        // Sanitize nama file: hilangkan karakter non-alphanumeric kecuali dash/underscore
+        $sanitized = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $originalName);
+        $sanitized = trim($sanitized, '_');
+        // Tambahkan suffix acak pendek untuk menghindari nama duplikat
+        $filename = $sanitized . '_' . Str::random(8) . '.webp';
         
         // Dapatkan path penyimpanan lokal sementara
         $tempOutPath = tempnam(sys_get_temp_dir(), 'webp_');

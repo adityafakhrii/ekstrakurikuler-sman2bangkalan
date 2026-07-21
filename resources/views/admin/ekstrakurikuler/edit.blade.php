@@ -22,7 +22,7 @@
                         :jadwal="$ekskul->jadwal"
                         :whatsapp-group="$ekskul->whatsapp_group"
                         :description="$ekskul->deskripsi" 
-                        :logo-filename="$ekskul->logo ? basename($ekskul->logo) : null" 
+                        :logo-filename="$ekskul->logo ?: null" 
                     />
                 </div>
             </div>
