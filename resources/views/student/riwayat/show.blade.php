@@ -25,12 +25,7 @@
                 <div class="w-full lg:w-80 shrink-0 flex justify-center">
                     <div class="w-64 h-64 sm:w-72 sm:h-72 p-1.5 bg-gradient-to-tr from-[#34D399] via-[#6366F1] to-[#EC4899] rounded-3xl shadow-lg relative">
                         <div class="w-full h-full rounded-2.5xl overflow-hidden bg-white">
-                            @if ($pendaftaran->ekstrakurikuler->logo)
-                                <img src="{{ asset('storage/' . $pendaftaran->ekstrakurikuler->logo) }}" alt="{{ $pendaftaran->ekstrakurikuler->nama }}" class="w-full h-full object-cover">
-                            @else
-                                <!-- School-style fallback image if logo is missing -->
-                                <img src="/images/bg-school-hero.jpg" onerror="this.src='https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=school%20gate%20sma%20indonesia%20building%20realistic&image_size=square'" alt="{{ $pendaftaran->ekstrakurikuler->nama }}" class="w-full h-full object-cover">
-                            @endif
+                            <img src="{{ $pendaftaran->ekstrakurikuler->logo_url }}" alt="{{ $pendaftaran->ekstrakurikuler->nama }}" class="w-full h-full object-cover">
                         </div>
                     </div>
                 </div>

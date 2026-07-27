@@ -38,10 +38,17 @@
                     <!-- Gambar -->
                     <div class="w-full aspect-[16/10] overflow-hidden bg-gradient-to-tr {{ $gradients[$index % count($gradients)] }} p-6 sm:p-8 flex items-center justify-center">
                         <div class="w-full h-full overflow-hidden shadow-2xs">
-                            <img src="{{ $ekskul->logo ? asset('storage/' . $ekskul->logo) : 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop' }}"
-                                 alt="{{ $ekskul->nama }}"
-                                 class="w-full h-full object-cover"
-                                 onerror="this.src='https://placehold.co/600x375?text={{ urlencode($ekskul->nama) }}'">
+                            @if($ekskul->logo && $ekskul->logo !== '/images/logo-sman2.png')
+                                <img src="{{ $ekskul->logo_url }}"
+                                     alt="{{ $ekskul->nama }}"
+                                     class="w-full h-full object-cover"
+                                     onerror="this.src='https://placehold.co/600x375?text={{ urlencode($ekskul->nama) }}'">
+                            @else
+                                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#4F46E5] via-[#6366F1] to-[#3B82F6] text-white p-6 text-center select-none rounded-[1rem] shadow-xs">
+                                    <span class="text-[10px] font-bold tracking-widest uppercase opacity-75 mb-1.5">Ekstrakurikuler</span>
+                                    <span class="text-base font-extrabold tracking-tight leading-snug line-clamp-2 px-2">{{ $ekskul->nama }}</span>
+                                </div>
+                            @endif
                         </div>
                     </div>
 

@@ -2,6 +2,7 @@
     'name',
     'description',
     'image' => '/images/placeholder-ekskul.jpg',
+    'hasLogo' => false,
     'match' => null,
     'route' => '#',
     'gradient' => null
@@ -12,7 +13,14 @@
     <!-- Image wrapper with thick gradient borders and sharp sharp siku corners (rounded-none) -->
     <div class="w-full aspect-[16/10] overflow-hidden bg-gradient-to-tr {{ $gradient ?? 'from-[#567BB3] to-[#B1C2D4]' }} p-6 sm:p-8 flex items-center justify-center">
         <div class="w-full h-full overflow-hidden shadow-2xs">
-            <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x375?text={{ urlencode($name) }}'">
+            @if($hasLogo)
+                <img src="{{ $image }}" alt="{{ $name }}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/600x375?text={{ urlencode($name) }}'">
+            @else
+                <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#4F46E5] via-[#6366F1] to-[#3B82F6] text-white p-6 text-center select-none rounded-[1rem] shadow-xs">
+                    <span class="text-[10px] font-bold tracking-widest uppercase opacity-75 mb-1.5">Ekstrakurikuler</span>
+                    <span class="text-base font-extrabold tracking-tight leading-snug line-clamp-2 px-2">{{ $name }}</span>
+                </div>
+            @endif
         </div>
     </div>
 

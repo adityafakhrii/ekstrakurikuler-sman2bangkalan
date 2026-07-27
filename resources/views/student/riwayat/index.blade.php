@@ -27,12 +27,7 @@
 
                         <!-- Left: Ekskul Image -->
                         <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-gray-150 shrink-0 border border-gray-100 shadow-3xs">
-                            @if ($reg->ekstrakurikuler->logo)
-                                <img src="{{ asset('storage/' . $reg->ekstrakurikuler->logo) }}" alt="{{ $reg->ekstrakurikuler->nama }}" class="w-full h-full object-cover">
-                            @else
-                                <!-- School image default placeholder -->
-                                <img src="/images/bg-school-hero.jpg" onerror="this.src='https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=school%20gate%20sma%20indonesia%20building%20realistic&image_size=square'" alt="{{ $reg->ekstrakurikuler->nama }}" class="w-full h-full object-cover">
-                            @endif
+                            <img src="{{ $reg->ekstrakurikuler->logo_url }}" alt="{{ $reg->ekstrakurikuler->nama }}" class="w-full h-full object-cover">
                         </div>
 
                         <!-- Right: Details Content -->

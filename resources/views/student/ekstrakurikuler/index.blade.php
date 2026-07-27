@@ -22,7 +22,8 @@
                     match="{{ null }}"
                     gradient="from-blue-200 via-indigo-150 to-purple-200"
                     description="{{ $ekskul->deskripsi }}"
-                    image="{{ $ekskul->logo ? asset('storage/' . $ekskul->logo) : 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop' }}"
+                    image="{{ $ekskul->logo_url }}"
+                    has-logo="{{ $ekskul->logo && $ekskul->logo !== '/images/logo-sman2.png' ? 'true' : '' }}"
                     route="{{ route('siswa.ekskul.show', $ekskul->id) }}"
                 />
             @endforeach

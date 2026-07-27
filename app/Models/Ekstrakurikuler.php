@@ -36,4 +36,24 @@ class Ekstrakurikuler extends Model
     {
         return $this->hasMany(Pendaftaran::class, 'ekstrakurikuler_id');
     }
+
+    /**
+     * Dapatkan URL logo yang valid, baik untuk default maupun upload.
+     */
+    public function getLogoUrlAttribute(): string
+    {
+        if (!$this->logo) {
+            return 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=600&auto=format&fit=crop';
+        }
+
+        if (str_starts_with($this->logo, 'http') || str_starts_with($this->logo, '/')) {
+            return asset($this->logo);
+        }
+
+        if (str_starts_with($this->logo, 'images/')) {
+            return asset($this->logo);
+        }
+
+        return asset('storage/' . $this->logo);
+    }
 }
