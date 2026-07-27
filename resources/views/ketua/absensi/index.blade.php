@@ -86,7 +86,7 @@
                             <td class="table-body-cell text-center">
                                 <div class="flex items-center justify-center gap-1.5">
                                     <!-- Lihat Button -->
-                                    <a href="{{ route('ketua.absensi.show', ['tanggal' => $kegiatan->tanggal, 'topik' => $kegiatan->topik]) }}"
+                                    <a href="{{ route('ketua.absensi.show', ['sesi_id' => $kegiatan->sesi_id]) }}"
                                         class="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-all cursor-pointer border-0 shadow-xs no-underline">
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -95,7 +95,7 @@
                                         Lihat
                                     </a>
                                     <!-- Hapus Button -->
-                                    <button @click="showHapus = '{{ $kegiatan->tanggal }}'; hapusTopik = '{{ $kegiatan->topik }}'"
+                                    <button @click="showHapus = '{{ $kegiatan->sesi_id }}'; hapusTopik = '{{ $kegiatan->topik }}'"
                                         class="bg-red-500 hover:bg-red-600 text-white text-[10px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1 transition-all cursor-pointer border-0 shadow-xs">
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>

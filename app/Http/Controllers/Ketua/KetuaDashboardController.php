@@ -212,10 +212,10 @@ class KetuaDashboardController extends Controller
         $searchTanggal = $request->input('search_tanggal');
         $searchTopik = $request->input('search_topik');
 
-        // Ambil daftar sesi kegiatan (grouped by tanggal + topik)
+        // Ambil daftar sesi kegiatan (grouped by sesi_id)
         $query = Absensi::where('ekstrakurikuler_id', $ekskul->id)
-            ->selectRaw('MIN(id) as id, tanggal, topik, COUNT(*) as jumlah_siswa')
-            ->groupBy('tanggal', 'topik');
+            ->selectRaw('sesi_id, MIN(id) as id, tanggal, topik, COUNT(*) as jumlah_siswa')
+            ->groupBy('sesi_id', 'tanggal', 'topik');
 
         if ($searchTanggal) {
             $query->whereDate('tanggal', $searchTanggal);
@@ -230,7 +230,7 @@ class KetuaDashboardController extends Controller
         return view('ketua.absensi.index', compact('kegiatanList', 'ekskul'));
     }
 
-    public function absensiShow(Request $request, string $tanggal): View|RedirectResponse
+    public function absensiShow(Request $request, string $sesiId): View|RedirectResponse
     {
         $ekskul = auth()->user()->ekstrakurikuler;
 
@@ -238,7 +238,17 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        $topik = $request->input('topik', '');
+        // Cari tahu detail sesi dari salah satu absensi dengan sesi_id ini
+        $sesi = Absensi::where('ekstrakurikuler_id', $ekskul->id)
+            ->where('sesi_id', $sesiId)
+            ->first();
+
+        if (! $sesi) {
+            return redirect()->route('ketua.absensi.index')->with('error', 'Sesi absensi tidak ditemukan.');
+        }
+
+        $tanggal = $sesi->tanggal->format('Y-m-d');
+        $topik = $sesi->topik;
 
         // Ambil data absensi untuk sesi ini
         $absensiList = Absensi::with([
@@ -246,8 +256,7 @@ class KetuaDashboardController extends Controller
                 'siswa.user' => fn($q) => $q->select('id', 'name'),
             ])
             ->where('ekstrakurikuler_id', $ekskul->id)
-            ->whereDate('tanggal', $tanggal)
-            ->where('topik', $topik)
+            ->where('sesi_id', $sesiId)
             ->latest('id')
             ->get();
 
@@ -262,13 +271,12 @@ class KetuaDashboardController extends Controller
 
         // Cek apakah sudah ada data absensi untuk sesi ini
         $existingAbsensi = Absensi::where('ekstrakurikuler_id', $ekskul->id)
-            ->whereDate('tanggal', $tanggal)
-            ->where('topik', $topik)
+            ->where('sesi_id', $sesiId)
             ->pluck('status', 'siswa_id')
             ->toArray();
 
         return view('ketua.absensi.show', compact(
-            'absensiList', 'ekskul', 'tanggal', 'topik', 'anggotaList', 'existingAbsensi'
+            'absensiList', 'ekskul', 'tanggal', 'topik', 'anggotaList', 'existingAbsensi', 'sesiId'
         ));
     }
 
@@ -288,15 +296,9 @@ class KetuaDashboardController extends Controller
         $tanggal = $request->input('tanggal');
         $topik = $request->input('topik');
 
-        // Cek apakah sudah ada sesi dengan tanggal dan topik yang sama
-        $existing = Absensi::where('ekstrakurikuler_id', $ekskul->id)
-            ->whereDate('tanggal', $tanggal)
-            ->where('topik', $topik)
-            ->exists();
-
-        if ($existing) {
-            return redirect()->back()->with('error', 'Sesi absensi dengan tanggal dan topik tersebut sudah ada.');
-        }
+        // Ketua bebas membuat kegiatan dengan tanggal dan topik yang sama.
+        // Hapus limitasi unik di tingkat aplikasi.
+        $sesiId = (string) \Illuminate\Support\Str::uuid();
 
         // Ambil semua anggota dan buat record absensi default (alpha)
         $anggotaList = Pendaftaran::where('ekstrakurikuler_id', $ekskul->id)
@@ -310,6 +312,7 @@ class KetuaDashboardController extends Controller
 
         foreach ($anggotaList as $member) {
             Absensi::create([
+                'sesi_id' => $sesiId,
                 'ekstrakurikuler_id' => $ekskul->id,
                 'siswa_id' => $member->siswa->id,
                 'tanggal' => $tanggal,
@@ -320,12 +323,11 @@ class KetuaDashboardController extends Controller
         }
 
         return redirect()->route('ketua.absensi.show', [
-            'tanggal' => $tanggal,
-            'topik' => $topik,
+            'sesi_id' => $sesiId,
         ])->with('success', 'Sesi absensi baru berhasil dibuat.');
     }
 
-    public function absensiUpdate(Request $request, string $tanggal): RedirectResponse
+    public function absensiUpdate(Request $request, string $sesiId): RedirectResponse
     {
         $ekskul = auth()->user()->ekstrakurikuler;
 
@@ -345,9 +347,9 @@ class KetuaDashboardController extends Controller
         foreach ($request->input('absensi') as $item) {
             Absensi::updateOrCreate(
                 [
+                    'sesi_id' => $sesiId,
                     'ekstrakurikuler_id' => $ekskul->id,
                     'siswa_id' => $item['siswa_id'],
-                    'tanggal' => $tanggal,
                 ],
                 [
                     'topik' => $topik,
@@ -369,7 +371,25 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        $absensi = Absensi::where('ekstrakurikuler_id', $ekskul->id)->get(['siswa_id', 'tanggal', 'topik', 'status']);
+        $semesterFilter = $request->input('semester', 'all');
+        $tahunAjaran = $ekskul->tahun_ajaran ?? '2025/2026';
+        $parts = explode('/', $tahunAjaran);
+        $tahunAwal = isset($parts[0]) ? (int)$parts[0] : (int)date('Y');
+        $tahunAkhir = isset($parts[1]) ? (int)$parts[1] : $tahunAwal + 1;
+
+        $queryAbsensi = Absensi::where('ekstrakurikuler_id', $ekskul->id);
+
+        if ($semesterFilter === 'ganjil') {
+            $queryAbsensi->whereBetween('tanggal', ["{$tahunAwal}-07-01", "{$tahunAwal}-12-31"]);
+            $semesterLabel = "Semester Ganjil {$tahunAjaran} (Juli {$tahunAwal} - Desember {$tahunAwal})";
+        } elseif ($semesterFilter === 'genap') {
+            $queryAbsensi->whereBetween('tanggal', ["{$tahunAkhir}-01-01", "{$tahunAkhir}-06-30"]);
+            $semesterLabel = "Semester Genap {$tahunAjaran} (Januari {$tahunAkhir} - Juni {$tahunAkhir})";
+        } else {
+            $semesterLabel = "Tahun Pelajaran {$tahunAjaran}";
+        }
+
+        $absensi = $queryAbsensi->get(['siswa_id', 'tanggal', 'topik', 'status']);
         $totalPertemuan = $absensi->map(fn ($item) => $item->tanggal->format('Y-m-d').'|'.($item->topik ?? ''))->unique()->count();
 
         $anggota = Pendaftaran::with([
@@ -413,7 +433,8 @@ class KetuaDashboardController extends Controller
             'ekskul' => $ekskul,
             'ketua' => $ekskul->ketua,
             'totalPertemuan' => $totalPertemuan,
-            'semester' => $request->input('semester', 'Tahun Pelajaran '.($ekskul->tahun_ajaran ?? date('Y'))),
+            'semester' => $semesterLabel,
+            'semesterFilter' => $semesterFilter,
         ]);
     }
 
@@ -425,8 +446,25 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
-        $absensi = Absensi::where('ekstrakurikuler_id', $ekskul->id)
-            ->get(['siswa_id', 'tanggal', 'topik', 'status']);
+        $semesterFilter = $request->input('semester', 'all');
+        $tahunAjaran = $ekskul->tahun_ajaran ?? '2025/2026';
+        $parts = explode('/', $tahunAjaran);
+        $tahunAwal = isset($parts[0]) ? (int)$parts[0] : (int)date('Y');
+        $tahunAkhir = isset($parts[1]) ? (int)$parts[1] : $tahunAwal + 1;
+
+        $queryAbsensi = Absensi::where('ekstrakurikuler_id', $ekskul->id);
+
+        if ($semesterFilter === 'ganjil') {
+            $queryAbsensi->whereBetween('tanggal', ["{$tahunAwal}-07-01", "{$tahunAwal}-12-31"]);
+            $semesterLabel = "Semester Ganjil {$tahunAjaran} (Juli {$tahunAwal} - Desember {$tahunAwal})";
+        } elseif ($semesterFilter === 'genap') {
+            $queryAbsensi->whereBetween('tanggal', ["{$tahunAkhir}-01-01", "{$tahunAkhir}-06-30"]);
+            $semesterLabel = "Semester Genap {$tahunAjaran} (Januari {$tahunAkhir} - Juni {$tahunAkhir})";
+        } else {
+            $semesterLabel = "Tahun Pelajaran {$tahunAjaran}";
+        }
+
+        $absensi = $queryAbsensi->get(['siswa_id', 'tanggal', 'topik', 'status']);
 
         $totalPertemuan = $absensi
             ->map(fn ($item) => $item->tanggal->format('Y-m-d').'|'.($item->topik ?? ''))
@@ -475,28 +513,25 @@ class KetuaDashboardController extends Controller
         });
 
         $pages = $rows->chunk(15);
-        $semester = $request->input('semester', 'Tahun Pelajaran '.($ekskul->tahun_ajaran ?? date('Y')));
 
         $pdf = Pdf::loadView('ketua.absensi.pdf', [
             'pages' => $pages,
             'ekskul' => $ekskul,
             'ketua' => $ekskul->ketua,
             'totalPertemuan' => $totalPertemuan,
-            'semester' => $semester,
+            'semester' => $semesterLabel,
         ])->setPaper('a4', 'portrait');
 
         return $pdf->download('laporan-absensi-'.str($ekskul->nama)->slug().'.pdf');
     }
 
-    public function absensiDestroy(Request $request, string $tanggal): RedirectResponse
+    public function absensiDestroy(Request $request, string $sesiId): RedirectResponse
     {
         $ekskul = auth()->user()->ekstrakurikuler;
-        $topik = $request->input('topik', '');
 
         // Hapus semua record absensi untuk sesi ini
         Absensi::where('ekstrakurikuler_id', $ekskul->id)
-            ->whereDate('tanggal', $tanggal)
-            ->where('topik', $topik)
+            ->where('sesi_id', $sesiId)
             ->delete();
 
         return redirect()->route('ketua.absensi.index')->with('success', 'Sesi kegiatan berhasil dihapus.');
