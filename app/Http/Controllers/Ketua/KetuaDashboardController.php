@@ -371,9 +371,27 @@ class KetuaDashboardController extends Controller
             return redirect()->route('ketua.dashboard')->with('error', 'Anda tidak memimpin ekstrakurikuler apa pun.');
         }
 
+        // 1. Generate list tahun pelajaran (5 tahun ke belakang)
+        $currentYear = (int)date('Y');
+        $yearsList = [];
+        for ($i = 0; $i < 5; $i++) {
+            $start = $currentYear - $i;
+            $end = $start + 1;
+            $yearsList[] = "{$start}/{$end}";
+        }
+        $tahunAjaranEkskul = $ekskul->tahun_ajaran ?? '2024/2025';
+        if (!in_array($tahunAjaranEkskul, $yearsList)) {
+            $yearsList[] = $tahunAjaranEkskul;
+        }
+        usort($yearsList, function($a, $b) {
+            return (int)explode('/', $b)[0] - (int)explode('/', $a)[0];
+        });
+
+        // 2. Baca parameter filter
         $semesterFilter = $request->input('semester', 'all');
-        $tahunAjaran = $ekskul->tahun_ajaran ?? '2025/2026';
-        $parts = explode('/', $tahunAjaran);
+        $tahunPelajarnFilter = $request->input('tahun_pelajaran', $tahunAjaranEkskul);
+
+        $parts = explode('/', $tahunPelajarnFilter);
         $tahunAwal = isset($parts[0]) ? (int)$parts[0] : (int)date('Y');
         $tahunAkhir = isset($parts[1]) ? (int)$parts[1] : $tahunAwal + 1;
 
@@ -381,12 +399,13 @@ class KetuaDashboardController extends Controller
 
         if ($semesterFilter === 'ganjil') {
             $queryAbsensi->whereBetween('tanggal', ["{$tahunAwal}-07-01", "{$tahunAwal}-12-31"]);
-            $semesterLabel = "Semester Ganjil {$tahunAjaran} (Juli {$tahunAwal} - Desember {$tahunAwal})";
+            $semesterLabel = "Semester Ganjil {$tahunPelajarnFilter} (Juli {$tahunAwal} - Desember {$tahunAwal})";
         } elseif ($semesterFilter === 'genap') {
             $queryAbsensi->whereBetween('tanggal', ["{$tahunAkhir}-01-01", "{$tahunAkhir}-06-30"]);
-            $semesterLabel = "Semester Genap {$tahunAjaran} (Januari {$tahunAkhir} - Juni {$tahunAkhir})";
+            $semesterLabel = "Semester Genap {$tahunPelajarnFilter} (Januari {$tahunAkhir} - Juni {$tahunAkhir})";
         } else {
-            $semesterLabel = "Tahun Pelajaran {$tahunAjaran}";
+            $queryAbsensi->whereBetween('tanggal', ["{$tahunAwal}-07-01", "{$tahunAkhir}-06-30"]);
+            $semesterLabel = "Tahun Pelajaran {$tahunPelajarnFilter}";
         }
 
         $absensi = $queryAbsensi->get(['siswa_id', 'tanggal', 'topik', 'status']);
@@ -435,6 +454,8 @@ class KetuaDashboardController extends Controller
             'totalPertemuan' => $totalPertemuan,
             'semester' => $semesterLabel,
             'semesterFilter' => $semesterFilter,
+            'tahunPelajarnFilter' => $tahunPelajarnFilter,
+            'yearsList' => $yearsList,
         ]);
     }
 
@@ -447,8 +468,9 @@ class KetuaDashboardController extends Controller
         }
 
         $semesterFilter = $request->input('semester', 'all');
-        $tahunAjaran = $ekskul->tahun_ajaran ?? '2025/2026';
-        $parts = explode('/', $tahunAjaran);
+        $tahunPelajarnFilter = $request->input('tahun_pelajaran', $ekskul->tahun_ajaran ?? '2024/2025');
+
+        $parts = explode('/', $tahunPelajarnFilter);
         $tahunAwal = isset($parts[0]) ? (int)$parts[0] : (int)date('Y');
         $tahunAkhir = isset($parts[1]) ? (int)$parts[1] : $tahunAwal + 1;
 
@@ -456,12 +478,13 @@ class KetuaDashboardController extends Controller
 
         if ($semesterFilter === 'ganjil') {
             $queryAbsensi->whereBetween('tanggal', ["{$tahunAwal}-07-01", "{$tahunAwal}-12-31"]);
-            $semesterLabel = "Semester Ganjil {$tahunAjaran} (Juli {$tahunAwal} - Desember {$tahunAwal})";
+            $semesterLabel = "Semester Ganjil {$tahunPelajarnFilter} (Juli {$tahunAwal} - Desember {$tahunAwal})";
         } elseif ($semesterFilter === 'genap') {
             $queryAbsensi->whereBetween('tanggal', ["{$tahunAkhir}-01-01", "{$tahunAkhir}-06-30"]);
-            $semesterLabel = "Semester Genap {$tahunAjaran} (Januari {$tahunAkhir} - Juni {$tahunAkhir})";
+            $semesterLabel = "Semester Genap {$tahunPelajarnFilter} (Januari {$tahunAkhir} - Juni {$tahunAkhir})";
         } else {
-            $semesterLabel = "Tahun Pelajaran {$tahunAjaran}";
+            $queryAbsensi->whereBetween('tanggal', ["{$tahunAwal}-07-01", "{$tahunAkhir}-06-30"]);
+            $semesterLabel = "Tahun Pelajaran {$tahunPelajarnFilter}";
         }
 
         $absensi = $queryAbsensi->get(['siswa_id', 'tanggal', 'topik', 'status']);
