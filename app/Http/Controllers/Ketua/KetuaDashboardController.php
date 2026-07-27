@@ -249,8 +249,7 @@ class KetuaDashboardController extends Controller
             ->whereDate('tanggal', $tanggal)
             ->where('topik', $topik)
             ->latest('id')
-            ->paginate($this->perPage(10))
-            ->withQueryString();
+            ->get();
 
         // Ambil semua anggota (status disetujui) untuk form absensi
         $anggotaList = Pendaftaran::with([
@@ -358,10 +357,8 @@ class KetuaDashboardController extends Controller
             );
         }
 
-        return redirect()->route('ketua.absensi.show', [
-            'tanggal' => $tanggal,
-            'topik' => $topik,
-        ])->with('success', 'Absensi berhasil disimpan.');
+        return redirect()->route('ketua.absensi.index')
+            ->with('success', 'Absensi berhasil disimpan.');
     }
 
     public function absensiReport(Request $request): View|RedirectResponse
