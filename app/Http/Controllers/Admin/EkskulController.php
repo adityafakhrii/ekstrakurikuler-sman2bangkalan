@@ -106,7 +106,11 @@ class EkskulController extends Controller
 
         $message = 'Ekstrakurikuler berhasil ditambahkan.';
         if ($compressionInfo) {
-            $message .= " Gambar berhasil dikompres dari {$compressionInfo['original_size_formatted']} menjadi {$compressionInfo['compressed_size_formatted']} ({$compressionInfo['percentage']}% lebih ringan).";
+            if ($compressionInfo['compressed'] ?? false) {
+                $message .= " Gambar berhasil dikompres dari {$compressionInfo['original_size_formatted']} menjadi {$compressionInfo['compressed_size_formatted']} ({$compressionInfo['percentage']}% lebih ringan).";
+            } else {
+                $message .= " Gambar berhasil diunggah. Kompresi WebP dilewati karena extension GD belum aktif di server.";
+            }
         }
 
         return redirect()->route('ekskul.index')->with('success', $message);
@@ -166,10 +170,8 @@ class EkskulController extends Controller
         try {
             DB::transaction(function () use ($request, $validated, $ekskul, &$compressionInfo) {
                 $logoPath = $ekskul->logo;
+                $oldLogoPath = $ekskul->logo;
                 if ($request->hasFile('logo')) {
-                    if ($logoPath) {
-                        Storage::disk('public')->delete($logoPath);
-                    }
                     $compressionInfo = ImageHelper::convertToWebp($request->file('logo'), 'ekskul-images');
                     $logoPath = $compressionInfo['path'];
                 }
@@ -183,6 +185,10 @@ class EkskulController extends Controller
                     'jadwal' => $validated['jadwal'],
                     'logo' => $logoPath,
                 ]);
+
+                if ($request->hasFile('logo') && $oldLogoPath && $oldLogoPath !== $logoPath) {
+                    Storage::disk('public')->delete($oldLogoPath);
+                }
 
                 // Pre-load semua aspek sekaligus (1 query, bukan 6 query di loop)
                 $mapping = [
@@ -222,7 +228,11 @@ class EkskulController extends Controller
 
         $message = 'Ekstrakurikuler berhasil diperbarui.';
         if ($compressionInfo) {
-            $message .= " Gambar berhasil dikompres dari {$compressionInfo['original_size_formatted']} menjadi {$compressionInfo['compressed_size_formatted']} ({$compressionInfo['percentage']}% lebih ringan).";
+            if ($compressionInfo['compressed'] ?? false) {
+                $message .= " Gambar berhasil dikompres dari {$compressionInfo['original_size_formatted']} menjadi {$compressionInfo['compressed_size_formatted']} ({$compressionInfo['percentage']}% lebih ringan).";
+            } else {
+                $message .= " Gambar berhasil diunggah. Kompresi WebP dilewati karena extension GD belum aktif di server.";
+            }
         }
 
         return redirect()->route('ekskul.index')->with('success', $message);

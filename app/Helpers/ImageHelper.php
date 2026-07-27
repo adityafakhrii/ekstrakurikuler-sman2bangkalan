@@ -19,6 +19,11 @@ class ImageHelper
     public static function convertToWebp(UploadedFile $file, string $directory, int $quality = 80): array
     {
         $originalSize = $file->getSize(); // dalam bytes
+
+        if (! self::isGdAvailable()) {
+            return self::storeOriginalImage($file, $directory, $originalSize);
+        }
+
         $tempPath = $file->getRealPath();
         
         // Dapatkan gambar GD berdasarkan tipe mime
@@ -82,6 +87,41 @@ class ImageHelper
             'original_size_formatted' => $origFormatted,
             'compressed_size_formatted' => $compFormatted,
             'percentage' => $reductionPercentage,
+            'compressed' => true,
+        ];
+    }
+
+    private static function isGdAvailable(): bool
+    {
+        return extension_loaded('gd')
+            && function_exists('imagecreatefromjpeg')
+            && function_exists('imagecreatefrompng')
+            && function_exists('imagecreatefromgif')
+            && function_exists('imagecreatefromwebp')
+            && function_exists('imagewebp');
+    }
+
+    /**
+     * Simpan gambar original jika extension GD tidak tersedia.
+     *
+     * @return array{path: string, original_size_formatted: string, compressed_size_formatted: string, percentage: float, compressed: bool}
+     */
+    private static function storeOriginalImage(UploadedFile $file, string $directory, int $originalSize): array
+    {
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $sanitized = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $originalName) ?: 'image';
+        $sanitized = trim($sanitized, '_') ?: 'image';
+        $extension = strtolower($file->getClientOriginalExtension() ?: $file->extension() ?: 'jpg');
+        $filename = $sanitized . '_' . Str::random(8) . '.' . $extension;
+        $storedPath = Storage::disk('public')->putFileAs($directory, $file, $filename);
+        $formattedSize = self::formatSize($originalSize);
+
+        return [
+            'path' => $storedPath,
+            'original_size_formatted' => $formattedSize,
+            'compressed_size_formatted' => $formattedSize,
+            'percentage' => 0,
+            'compressed' => false,
         ];
     }
 

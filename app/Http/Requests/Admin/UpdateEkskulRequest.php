@@ -25,7 +25,7 @@ class UpdateEkskulRequest extends FormRequest
             'jadwal' => ['required', 'string', 'max:255'],
             'whatsapp_group' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:10240'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:5120'],
             'ketangkasan' => ['required', 'integer', 'between:1,5'],
             'intelektual' => ['required', 'integer', 'between:1,5'],
             'sosial' => ['required', 'integer', 'between:1,5'],
@@ -41,7 +41,7 @@ class UpdateEkskulRequest extends FormRequest
             'name.unique' => 'Mohon maaf, nama ekstrakurikuler tersebut sudah digunakan oleh ekskul lain. Silakan periksa kembali daftar ekskul atau pilih nama lain.',
             'logo.image' => 'File yang diunggah harus berupa gambar ekstrakurikuler.',
             'logo.mimes' => 'Gambar ekstrakurikuler harus berformat JPG, JPEG, PNG, GIF, atau WebP.',
-            'logo.max' => 'Ukuran gambar ekstrakurikuler maksimal 10 MB. Sistem akan mengompresnya otomatis menjadi WebP setelah diunggah.',
+            'logo.max' => 'Ukuran gambar ekstrakurikuler maksimal 5 MB. Sistem akan mengompresnya otomatis menjadi WebP jika extension GD aktif.',
         ];
     }
 }
