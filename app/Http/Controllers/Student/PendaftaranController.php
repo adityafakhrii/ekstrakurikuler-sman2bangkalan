@@ -21,14 +21,6 @@ class PendaftaranController extends Controller
             return redirect()->route('siswa.ekskul.show', $id)->with('error', 'Data siswa tidak ditemukan.');
         }
 
-        $activeCount = Pendaftaran::where('siswa_id', $siswa->id)
-            ->whereIn('status', ['menunggu', 'disetujui'])
-            ->count();
-
-        if ($activeCount >= 2) {
-            return redirect()->route('siswa.ekskul.show', $id)->with('error', 'Siswa hanya dapat mendaftar maksimal 2 ekstrakurikuler.');
-        }
-
         $alreadyRegistered = Pendaftaran::where('siswa_id', $siswa->id)
             ->where('ekstrakurikuler_id', $id)
             ->exists();

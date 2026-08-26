@@ -37,22 +37,13 @@ class EkskulController extends Controller
         $registerMessage = $siswa ? '' : 'Data siswa tidak ditemukan';
 
         if ($siswa) {
-            $activeCount = \App\Models\Pendaftaran::where('siswa_id', $siswa->id)
-                ->whereIn('status', ['menunggu', 'disetujui'])
-                ->count();
+            $alreadyRegistered = \App\Models\Pendaftaran::where('siswa_id', $siswa->id)
+                ->where('ekstrakurikuler_id', $id)
+                ->exists();
 
-            if ($activeCount >= 2) {
+            if ($alreadyRegistered) {
                 $canRegister = false;
-                $registerMessage = 'Maksimal 2 ekskul diikuti';
-            } else {
-                $alreadyRegistered = \App\Models\Pendaftaran::where('siswa_id', $siswa->id)
-                    ->where('ekstrakurikuler_id', $id)
-                    ->exists();
-
-                if ($alreadyRegistered) {
-                    $canRegister = false;
-                    $registerMessage = 'Sudah terdaftar di ekskul ini';
-                }
+                $registerMessage = 'Sudah terdaftar di ekskul ini';
             }
         }
 
