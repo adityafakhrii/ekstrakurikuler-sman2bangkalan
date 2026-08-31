@@ -43,15 +43,6 @@ class StorePendaftaranRequest extends FormRequest
                 return;
             }
 
-            // Max 2 pendaftaran aktif (menunggu/disetujui)
-            $activeCount = Pendaftaran::where('siswa_id', $siswa->id)
-                ->whereIn('status', ['menunggu', 'disetujui'])
-                ->count();
-
-            if ($activeCount >= 2) {
-                $validator->errors()->add('ekstrakurikuler', 'Siswa hanya dapat mendaftar maksimal 2 ekstrakurikuler.');
-            }
-
             // Cek duplikat per ekskul
             $ekskulId = $this->route('id');
             $duplicate = Pendaftaran::where('siswa_id', $siswa->id)
