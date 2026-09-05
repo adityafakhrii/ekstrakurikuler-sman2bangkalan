@@ -1,0 +1,17 @@
+{
+  "resources/css/shared/app.css": {
+    "file": "assets/app-BQWCjbZS.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/shared/app.css",
+    "isEntry": true
+  },
+  "resources/js/shared/app.js": {
+    "file": "assets/app-DlkO1i-4.js",
+    "name": "app",
+    "src": "resources/js/shared/app.js",
+    "isEntry": true
+  }
+}
